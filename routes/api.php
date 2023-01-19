@@ -3,6 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\MasterController;
+use App\Http\Controllers\API\PendidikanController;
+use App\Http\Controllers\API\RiwayatController;
+use App\Http\Controllers\API\StrukturController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,3 +23,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 // Master
 Route::get('getMaster',[MasterController::class,'index']);
+Route::get('getPendidikan',[PendidikanController::class,'index']);
+Route::get('getRiwayat',[RiwayatController::class,'index']);
+Route::get('getStruktur',[StrukturController::class,'index']);

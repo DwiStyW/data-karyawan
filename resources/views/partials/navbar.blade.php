@@ -3,7 +3,7 @@
     style="background-color:#353535;position:fixed;top:0;z-index: 100;width:100%">
     <div class="container-fluid px-md-4">
         <a class="navbar-brand d-flex align-items-top order-lg-2 me-lg-0" href="sidar-ui">
-            <img src="assets/img/logo/log.png" width="120" style="margin-left: -10px;">
+            <img src="../assets/img/logo/log.png" width="120" style="margin-left: -10px;">
         </a>
         <button class="navbar-toggler bg-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar">
             <span class="navbar-toggler-icon"></span>

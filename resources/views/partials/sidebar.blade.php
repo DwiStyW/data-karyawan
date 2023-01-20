@@ -2,16 +2,10 @@
     aria-labelledby="sidebarLabel">
     <div class="offcanvas-header d-block text-center position-relative py-4">
         <div class="position-relative d-inline-block mb-1">
-            <img src="assets/img/team-2.jpg" class="img-thumbnail rounded-circle border-0 bg-dark" width="66"
-                alt="" style="padding: .35rem;">
+            <img src="../assets/img/logo/logo.png" width="180" alt="" style="padding: .35rem;">
         </div>
-        <h5 class="offcanvas-title mb-1" id="sidebarLabel">Admin</h5>
-        <p class="mb-1 small text-secondary">
-            Administrator
-        </p>
-        <p class="mb-0 small text-secondary">
-            zzzz
-        </p>
+        <h5 class="offcanvas-title mb-1" id="sidebarLabel" style="color:#353535"><b>Sistem Informasi</b></h5>
+        <h6 class="offcanvas-title mb-1" id="sidebarLabel" style="color:#353535">Data Karyawan</h6>
         <button type="button" class="btn-close position-absolute top-0 end-0 m-1 d-lg-none" data-bs-dismiss="offcanvas"
             data-bs-target="#sidebar" aria-label="Close"></button>
     </div>
@@ -32,20 +26,20 @@
                 <li class="list-group-item">
                     <a class="btn" href="news.html" id="navDAR">
                         <div class="btn-header me-3">
-                            <i class="bi bi-pencil"></i>
+                            <i class="bi bi-building"></i>
                         </div>
                         <div class="btn-body">
-                            Tiket WO
+                            Departemen
                         </div>
                     </a>
                 </li>
                 <li class="list-group-item">
                     <a class="btn" id="navDAR">
                         <div class="btn-header me-3">
-                            <i class="bi bi-eraser"></i>
+                            <i class="bi bi-diagram-3"></i>
                         </div>
                         <div class="btn-body">
-                            Category
+                            Status/Golongan
                         </div>
                     </a>
                 </li>
@@ -96,7 +90,7 @@
             left: 0;
             bottom: 0;
             width: 100%;
-            max-width: 280px;
+            max-width: 230px;
         }
     }
 

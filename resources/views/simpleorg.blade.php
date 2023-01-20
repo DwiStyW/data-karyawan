@@ -33,15 +33,6 @@
             height: auto;
         }
 
-        /*
-        [data-n-id] rect {
-            fill: #58c2ff;
-        } */
-
-        /* [data-n-id='1'] rect {
-            fill: #0045ad;
-        } */
-
         .field_0 {
             font-family: cursive;
             text-transform: uppercase;
@@ -52,30 +43,6 @@
         .field_1 {
             fill: #cfcfcf;
         }
-
-        /* [data-l-id] path {
-            stroke: #474747;
-        } */
-
-        /* [data-l-id='[3][4]'] path {
-            stroke: #474747;
-        } */
-
-        /* [data-ctrl-ec-id] circle {
-            fill: #474747 !important;
-        } */
-
-        /* [data-ctrl-ec-id='3'] circle {
-            fill: #474747 !important;
-        } */
-
-        /* [data-ctrl-n-menu-id] circle {
-            fill: #474747;
-        } */
-
-        /* [data-ctrl-n-menu-id] rect:hover~circle {
-            fill: 474747;
-        } */
 
         #tree>svg {
             background-color: #ddd;

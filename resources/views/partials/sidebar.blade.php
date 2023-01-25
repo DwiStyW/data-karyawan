@@ -24,6 +24,16 @@
                     </a>
                 </li>
                 <li class="list-group-item">
+                    <a class="btn" id="navDAR" href="master">
+                        <div class="btn-header me-3">
+                            <i class="bi bi-people"></i>
+                        </div>
+                        <div class="btn-body">
+                            Master
+                        </div>
+                    </a>
+                </li>
+                <li class="list-group-item">
                     <a class="btn" href="news.html" id="navDAR">
                         <div class="btn-header me-3">
                             <i class="bi bi-building"></i>

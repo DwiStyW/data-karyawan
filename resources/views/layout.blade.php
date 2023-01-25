@@ -40,9 +40,9 @@
     @include('partials.navbar')
     <main class="wrapper">
         <div class="container">
-            <div>
-                <h5 class="p-2">Struktur</h5>
-            </div>
+            <header class="mb-3">
+                <h3 class="title-pages fw-bold">Struktur</h3>
+            </header>
             <div id="tree"></div>
         </div>
         @include('partials.footer')

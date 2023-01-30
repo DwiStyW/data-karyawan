@@ -32,21 +32,21 @@
                 <table id='mTable' width='100%' class="table table-striped table-bordered ">
                     <thead>
                         <tr style="background-color:#5F7A61;color:#ddd;font-weight:bold">
-                            <td>No</td>
-                            <td>Nama</td>
-                            <td>No KTP</td>
-                            <td>Tempat Lahir</td>
-                            <td>Tanggal Lahir</td>
-                            <td>Jenis Kelamin</td>
-                            <td>Alamat</td>
-                            <td>No Hp</td>
-                            <td>Agama</td>
-                            <td>Jabatan</td>
-                            <td>Golongan</td>
-                            <td>Awal Kerja</td>
-                            <td>BPJS TK</td>
-                            <td>Status Pensiun</td>
-                            <td>Aksi</td>
+                            <th data-priority="1">No</th>
+                            <th data-priority="1">Nama</th>
+                            <th data-priority="3">No KTP</th>
+                            <th data-priority="3">Tempat Lahir</th>
+                            <th data-priority="3">Tanggal Lahir</th>
+                            <th data-priority="3">Jenis Kelamin</th>
+                            <th data-priority="3">Alamat</th>
+                            <th data-priority="3">No Hp</th>
+                            <th data-priority="3">Agama</th>
+                            <th data-priority="3">Jabatan</th>
+                            <th data-priority="3">Golongan</th>
+                            <th data-priority="3">Awal Kerja</th>
+                            <th data-priority="3">BPJS TK</th>
+                            <th data-priority="3">Status Pensiun</th>
+                            <th data-priority="2">Aksi</th>
                         </tr>
                     </thead>
                 </table>
@@ -107,7 +107,7 @@
             responsive: true,
             dom: '<"rowt justify-content-between"<l><"rowt"<f><B>>><"over"<"tabel-lg"t>><"rowt justify-content-between"ip>',
             columns: [{
-                    data: 'id'
+                    data: 'id',
                 },
                 {
                     targets: 0,

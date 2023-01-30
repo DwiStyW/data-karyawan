@@ -42,12 +42,26 @@ class MasterController extends Controller
         $totalRecordswithFilter = master::select('count(*) as allcount')->where('nama', 'like', '%' .$searchValue . '%')->count();
 
         // Fetch records
-        $records = master::orderBy($columnName,$columnSortOrder)
+        if($rowperpage != -1){
+            $records = master::orderBy($columnName,$columnSortOrder)
                ->where('master.nama', 'like', '%' .$searchValue . '%')
+               ->orwhere('master.tempat_lahir', 'like', '%' .$searchValue . '%')
+               ->orwhere('master.alamat', 'like', '%' .$searchValue . '%')
               ->select('master.*')
               ->skip($start)
               ->take($rowperpage)
               ->get();
+        }else{
+            $records = master::orderBy($columnName,$columnSortOrder)
+               ->where('master.nama', 'like', '%' .$searchValue . '%')
+               ->orwhere('master.tempat_lahir', 'like', '%' .$searchValue . '%')
+               ->orwhere('master.alamat', 'like', '%' .$searchValue . '%')
+              ->select('master.*')
+              ->skip($start)
+              ->take($totalRecords)
+              ->get();
+        }
+
 
         $data_arr = array();
         $no=$start;
@@ -56,15 +70,20 @@ class MasterController extends Controller
         foreach($records as $record){
            $no +=1;
            $nama = $record->nama;
-           $noktp = $record->noktp;
-           $tmptlhr = $record->tmptlhr;
-           $tgllhr = $record->tgllhr;
-           $kelamin = $record->kelamin;
+           $noktp = $record->nik;
+           $tmptlhr = $record->tempat_lahir;
+           $tgllhr = $record->tanggal_lahir;
+           $kelamin = $record->jenis_kelamin;
            $alamat = $record->alamat;
+           $nohp = $record->no_hp;
            $agama = $record->agama;
+           $jabatan = $record->id_jabatan;
+           $golongan = $record->golongan;
+           $awalkerja = $record->awal_kerja;
+           $bpjstk = $record->id_bpjs_tk;
+           $pensiun = $record->status_pensiun;
 
            $data_arr[] = array(
-               "max" => $totalRecords,
                "id" => $no,
                "nama" => $nama,
                "tmptlhr" => $tmptlhr,
@@ -72,7 +91,13 @@ class MasterController extends Controller
                "kelamin" => $kelamin,
                "alamat" => $alamat,
                "noktp" => $noktp,
-               "agama" => $agama
+               "nohp" => $nohp,
+               "agama" => $agama,
+               "jabatan" => $jabatan,
+               "golongan" => $golongan,
+               "awalkerja" => $awalkerja,
+               "bpjstk" => $bpjstk,
+               "pensiun" => $pensiun,
            );
         }
 

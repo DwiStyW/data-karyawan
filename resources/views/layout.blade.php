@@ -95,7 +95,7 @@
                 showXScroll: OrgChart.scroll.visible,
                 showYScroll: OrgChart.scroll.visible,
                 mouseScrool: OrgChart.action.ctrlZoom,
-                scaleInitial: 0.6,
+                scaleInitial: 0.8,
                 mode: 'light',
                 template: 'isla',
                 enableSearch: false,

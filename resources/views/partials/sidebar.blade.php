@@ -1,11 +1,11 @@
-<div class="offcanvas-lg offcanvas-start border-end shadow-sm h-100 bg-light" tabindex="-1" id="sidebar"
-    aria-labelledby="sidebarLabel">
+<div class="offcanvas-lg offcanvas-start border-end shadow-sm h-100" style="background-color: #D5EEBB !important;"
+    tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
     <div class="offcanvas-header d-block text-center position-relative py-4">
         <div class="position-relative d-inline-block mb-1">
-            <img src="../assets/img/logo/logo.png" width="180" alt="" style="padding: .35rem;">
+            <img src="../assets/img/logo/logo.png" width="140" alt="" style="padding: .35rem;">
         </div>
-        <h5 class="offcanvas-title mb-1" id="sidebarLabel" style="color:#353535"><b>Sistem Informasi</b></h5>
-        <h6 class="offcanvas-title mb-1" id="sidebarLabel" style="color:#353535">Data Karyawan</h6>
+        <h6 class="offcanvas-title mb-1" id="sidebarLabel" style="color:#444941"><b>Sistem Informasi</b></h6>
+        <p class="offcanvas-title mb-1" id="sidebarLabel" style="color:#444941">Data Karyawan</p>
         <button type="button" class="btn-close position-absolute top-0 end-0 m-1 d-lg-none" data-bs-dismiss="offcanvas"
             data-bs-target="#sidebar" aria-label="Close"></button>
     </div>
@@ -66,10 +66,10 @@
     }
 
     #sidebar .list-group-item {
-        background-color: inherit;
         padding: 0;
         border-left-width: 0 !important;
         border-right-width: 0 !important;
+        background-color: #D5EEBB;
     }
 
     #sidebar .list-group-item .btn {
@@ -89,8 +89,8 @@
 
     #sidebar .list-group-item .btn:hover,
     #sidebar .list-group-item .btn.active {
-        background-color: #323232;
-        color: white;
+        background-color: #444941;
+        color: #D5EEBB;
     }
 
     @media (min-width: 992px) {
@@ -100,7 +100,8 @@
             left: 0;
             bottom: 0;
             width: 100%;
-            max-width: 230px;
+            max-width: 190px;
+            background-color: #444941;
         }
     }
 

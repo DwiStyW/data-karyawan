@@ -10,32 +10,43 @@
     <link rel="stylesheet" href="../assets/ui/bootstrap-icons-1.10.2/bootstrap-icons.css">
     <link rel="stylesheet" href="../assets/ui/css/global.css">
 
-    {{-- <link rel="stylesheet" type="text/css" href="../assets/DataTables/datatables.min.css" /> --}}
-    <style>
 
-    </style>
 </head>
 
 <body>
     @include('partials.sidebar')
     @include('partials.navbar')
     <main class="wrapper">
-        <div class="container">
+        <div class="container-custome">
             <header class="mb-3">
                 <h3 class="title-pages fw-bold">Data Master</h3>
             </header>
+            <div class="pb-3">
+                <button href="sidar-ui" class="btn btn-sm btn-secondary">
+                    <i class="bi bi-plus-square-fill"></i>
+                    Master
+                </button>
+            </div>
+
             <div>
-                <table id='mTable' width='100%' class="table table-striped table-bordered">
+                <table id='mTable' width='100%' class="table table-striped table-bordered ">
                     <thead>
-                        <tr style="background-color:#353535;color:#ddd">
+                        <tr style="background-color:#5F7A61;color:#ddd;font-weight:bold">
                             <td>No</td>
                             <td>Nama</td>
+                            <td>No KTP</td>
                             <td>Tempat Lahir</td>
                             <td>Tanggal Lahir</td>
                             <td>Jenis Kelamin</td>
                             <td>Alamat</td>
-                            <td>No KTP</td>
+                            <td>No Hp</td>
                             <td>Agama</td>
+                            <td>Jabatan</td>
+                            <td>Golongan</td>
+                            <td>Awal Kerja</td>
+                            <td>BPJS TK</td>
+                            <td>Status Pensiun</td>
+                            <td>Aksi</td>
                         </tr>
                     </thead>
                 </table>
@@ -72,9 +83,10 @@
             serverSide: true,
             ajax: "{{ route('getMaster') }}",
             deferRender: true,
-            rowReorder: {
-                selector: 'td:nth-child(2)'
-            },
+            "lengthMenu": [
+                [10, 25, 50, -1],
+                [10, 25, 50, "All"]
+            ],
             buttons: [
                 'excelHtml5',
                 'pdfHtml5'
@@ -93,12 +105,15 @@
             },
             pagingType: 'simple_numbers',
             responsive: true,
-            dom: '<"rowt justify-content-between"<l><"rowt"fB>>t<"rowt justify-content-between"ip>',
+            dom: '<"rowt justify-content-between"<l><"rowt"<f><B>>><"over"<"tabel-lg"t>><"rowt justify-content-between"ip>',
             columns: [{
                     data: 'id'
                 },
                 {
                     data: 'nama'
+                },
+                {
+                    data: 'noktp'
                 },
                 {
                     data: 'tmptlhr'
@@ -113,10 +128,29 @@
                     data: 'alamat'
                 },
                 {
-                    data: 'noktp'
+                    data: 'nohp'
                 },
                 {
                     data: 'agama'
+                },
+                {
+                    data: 'jabatan'
+                },
+                {
+                    data: 'golongan'
+                },
+                {
+                    data: 'awalkerja'
+                },
+                {
+                    data: 'bpjstk'
+                },
+                {
+                    data: 'pensiun'
+                },
+                {
+                    data: null,
+                    defaultContent: '<div class="row justify-content-start" style="min-width:110px;"><div style="max-width:60px"><a type="button" class="btn btn-primary btn-block" href="#" ><i class="bi bi-pencil-square"></i></a></div><div style="max-width:60px"><a type="button" class="btn btn-danger btn-block" href="#" ><i class="bi bi-trash3-fill"></i></a></div></div>',
                 },
             ]
         });

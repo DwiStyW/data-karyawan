@@ -110,7 +110,12 @@
                     data: 'id'
                 },
                 {
-                    data: 'nama'
+                    targets: 0,
+                    data: 'nama',
+                    render: function(data, type, row, meta) {
+                        console.log(row.id_master)
+                        return '<a href="detailmaster/' + row.id_master + '">' + data + '</a>';
+                    }
                 },
                 {
                     data: 'noktp'
@@ -149,8 +154,16 @@
                     data: 'pensiun'
                 },
                 {
+                    targets: 0,
                     data: null,
-                    defaultContent: '<div class="row justify-content-start" style="min-width:110px;"><div style="max-width:60px"><a type="button" class="btn btn-primary btn-block" href="#" ><i class="bi bi-pencil-square"></i></a></div><div style="max-width:60px"><a type="button" class="btn btn-danger btn-block" href="#" ><i class="bi bi-trash3-fill"></i></a></div></div>',
+                    render: function(data, type, row, meta) {
+                        // console.log(row.id_master)
+                        return '<div class="row justify-content-start" style="min-width:110px;"><div style="max-width:60px"><a type="button" class="btn btn-primary btn-block" href="edit_master/' +
+                            row.id_master +
+                            '" ><i class="bi bi-pencil-square"></i></a></div><div style="max-width:60px"><a type="button" class="btn btn-danger btn-block" href="delete_master/' +
+                            row.id_master +
+                            '" ><i class="bi bi-trash3-fill"></i></a></div></div>';
+                    }
                 },
             ]
         });

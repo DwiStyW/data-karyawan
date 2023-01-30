@@ -19,3 +19,5 @@ Route::get('/', function () {
 });
 Route::get('master', [MasterController::class, 'index']);
 Route::get('/getMaster', [MasterController::class, 'getMaster'])->name('getMaster');
+
+Route::get('detailmaster/{id_master}', [MasterController::class, 'detailmaster']);

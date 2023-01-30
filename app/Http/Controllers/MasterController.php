@@ -69,6 +69,7 @@ class MasterController extends Controller
 
         foreach($records as $record){
            $no +=1;
+           $id=$record->id;
            $nama = $record->nama;
            $noktp = $record->nik;
            $tmptlhr = $record->tempat_lahir;
@@ -85,6 +86,7 @@ class MasterController extends Controller
 
            $data_arr[] = array(
                "id" => $no,
+               "id_master" => $id,
                "nama" => $nama,
                "tmptlhr" => $tmptlhr,
                "tgllhr" => $tgllhr,

@@ -114,7 +114,6 @@
                     targets: 0,
                     data: 'nama',
                     render: function(data, type, row, meta) {
-                        console.log(row.id_master)
                         return '<a href="detailmaster/' + row.id_master + '">' + data + '</a>';
                     }
                 },
@@ -158,7 +157,6 @@
                     targets: 0,
                     data: null,
                     render: function(data, type, row, meta) {
-                        // console.log(row.id_master)
                         return '<div class="row justify-content-start" style="min-width:110px;"><div style="max-width:60px"><button type="button" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#edit_master" onclick="edit(`' +
                             row.id_master + '`,`' + row.nama + '`,`' + row.noktp + '`,`' + row
                             .alamat + '`,`' + row.tmptlhr + '`,`' + row.tgllhr + '`,`' + row

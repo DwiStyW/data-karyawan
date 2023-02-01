@@ -15,7 +15,7 @@ class MasterController extends Controller
      */
     public function index()
     {
-        $data=Master::paginate(10);
+        $data=Master::all('id','nama','tmptlhr','tgllhr','kelamin','alamat','noktp','agama');
         return $data;
     }
 

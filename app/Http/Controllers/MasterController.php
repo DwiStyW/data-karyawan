@@ -118,6 +118,13 @@ class MasterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function detailmaster($id_master){
+        return view('detailmaster',[
+            "master" => master::where('id',$id_master)->get()
+        ]);
+    }
+
     public function create()
     {
         //

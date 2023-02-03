@@ -24,7 +24,7 @@
                     </a>
                 </li>
                 <li class="list-group-item">
-                    <a class="btn" id="navDAR" href="master">
+                    <a class="btn" id="navDAR" href="/master">
                         <div class="btn-header me-3">
                             <i class="bi bi-people"></i>
                         </div>

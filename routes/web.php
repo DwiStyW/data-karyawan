@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MasterController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +15,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('layout');
 });
+Route::get('master', [MasterController::class, 'index']);
+Route::get('/getMaster', [MasterController::class, 'getMaster'])->name('getMaster');
+Route::post('/postMaster', [MasterController::class, 'store']);
+Route::post('/updateMaster', [MasterController::class, 'update']);
+Route::post('/hapusMaster', [MasterController::class, 'destroy']);

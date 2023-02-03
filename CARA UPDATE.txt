@@ -1,0 +1,8 @@
+data-karyawan\app\Http\Controllers
+data-karyawan\app\Models
+data-karyawan\public\assets
+data-karyawan\resources\views
+data-karyawan\routes
+
+php artisan optimize
+php artisan server

@@ -113,7 +113,12 @@ class MasterController extends Controller
         );
         return response()->json($response);
      }
-
+     
+     public function detailmaster($id_master){
+        return view('detailmaster',[
+            "master" => master::where('id',$id_master)->get()
+        ]);
+    }
     /**
      * Show the form for creating a new resource.
      *

@@ -86,6 +86,10 @@ table{
   .mobile{
     display: none;
   }
+  .text-form {
+    text-align: right !important;
+    }
+
 .tabel-lg{
     min-width: 2000px;
   }
@@ -93,6 +97,11 @@ table{
 @media (min-width:1370px) {
 .tabel-lg{
     min-width: 2500px;
+  }
+}
+@media (max-width:768px) {
+    .footer{
+    margin-bottom: 3rem;
   }
 }
 .rowt {

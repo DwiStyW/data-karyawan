@@ -19,6 +19,7 @@ Route::get('/', function () {
 });
 Route::get('master', [MasterController::class, 'index']);
 Route::get('/getMaster', [MasterController::class, 'getMaster'])->name('getMaster');
+Route::get('detailmaster/{id_master}', [MasterController::class, 'detailmaster']);
 Route::post('/postMaster', [MasterController::class, 'store']);
 Route::post('/updateMaster', [MasterController::class, 'update']);
 Route::post('/hapusMaster', [MasterController::class, 'destroy']);

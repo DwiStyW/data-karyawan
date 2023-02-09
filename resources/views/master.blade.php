@@ -164,7 +164,7 @@
                             .bpjstk + '`,`' + row.jabatan + '`,`' + row.golongan + '`,`' + row
                             .awalkerja + '`,`' + row.pensiun +
                             '`)"><i class="bi bi-pencil-square"></i></button></div><div style="max-width:60px"><button type="button" class="btn btn-danger btn-block" data-bs-toggle="modal" data-bs-target="#hapus_master" onclick="hapus(`'+row.id_master+'`,`'+row.nama+'`)" ><i class="bi bi-trash3-fill"></i></button></div></div>';
-                    }
+                        }
                 },
             ]
         });

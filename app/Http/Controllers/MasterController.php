@@ -111,9 +111,10 @@ class MasterController extends Controller
            "iTotalDisplayRecords" => $totalRecordswithFilter,
            "aaData" => $data_arr
         );
+
         return response()->json($response);
      }
-     
+
      public function detailmaster($id_master){
         return view('detailmaster',[
             "master" => master::where('id',$id_master)->get()
@@ -229,12 +230,12 @@ class MasterController extends Controller
      */
     public function destroy(Request $request)
     {
-        $id_master = $request->id_master;
-        try{
-            master::where(['id'=>$id_master])->delete();
-            return redirect('/master')->with('success','Data berhasil dihapus!');
-        }catch(Exception $e){
-            return redirect('/master')->with('failed','Data gagal dihapus!');
-        }
+    $id_master = $request->id_master;
+    try{
+        master::where(['id'=>$id_master])->delete();
+        return redirect('/master')->with('success','Data berhasil dihapus!');
+    }catch(Exception $e){
+        return redirect('/master')->with('failed','Data gagal dihapus!');
     }
+}
 }

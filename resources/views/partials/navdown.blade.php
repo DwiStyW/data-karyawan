@@ -5,24 +5,24 @@
         <div class="container-fluid">
             <div class="row flex-nowrap justify-content-between justify-content-md-around">
                 <div class="col-auto">
-                    <a href="#" class="btn lh-1">
+                    <a href="/dashboard" class="btn lh-1">
                         <i class="bi bi-speedometer2 fs-5"></i>
                         <br>
                         <small>Dashboard</small>
                     </a>
                 </div>
                 <div class="col-auto">
-                    <a href="#" class="btn lh-1">
-                        <i class="bi bi-flag fs-5"></i>
+                    <a href="/master" class="btn lh-1">
+                        <i class="bi bi-people fs-5"></i>
                         <br>
-                        <small>Category</small>
+                        <small>Data Master</small>
                     </a>
                 </div>
                 <div class="col-auto">
-                    <a href="news.html" class="btn lh-1">
-                        <i class="bi bi-pencil fs-5"></i>
+                    <a href="/" class="btn lh-1">
+                        <i class="bi bi-diagram-3 fs-5"></i>
                         <br>
-                        <small>News</small>
+                        <small>Struktur</small>
                     </a>
                 </div>
             </div>

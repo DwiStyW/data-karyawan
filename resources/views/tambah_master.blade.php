@@ -9,34 +9,36 @@
             </div>
             <div class="modal-body">
                 <div class="container-fluid">
-                    <form action="/postMaster" method="post">
+                    <form action="/postMaster" enctype="multipart/form-data" method="post">
                         @csrf
                         <label for="">Nama</label>
-                        <input type="text" class="form-control" name="nama">
+                        <input type="text" class="form-control" required name="nama">
+                        <label for="" class="mt-3">Upload Foto</label>
+                        <input type="file" class="form-control" name="image">
                         <div class="row">
                             <div class="col-lg-6 mt-3">
                                 <label for="">NIK</label>
-                                <input type="text" class="form-control" name="nik">
+                                <input type="text" class="form-control" required name="nik">
                             </div>
                             <div class="col-lg-6 mt-3">
                                 <label for="">Alamat</label>
-                                <input type="text" class="form-control" name="alamat">
+                                <input type="text" class="form-control" required name="alamat">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-6 mt-3">
                                 <label for="">Tempat lahir</label>
-                                <input type="text" class="form-control" name="tempat_lahir">
+                                <input type="text" class="form-control" required name="tempat_lahir">
                             </div>
                             <div class="col-lg-6 mt-3">
                                 <label for="">Tanggal lahir</label>
-                                <input type="date" class="form-control" name="tanggal_lahir">
+                                <input type="date" class="form-control" required name="tanggal_lahir">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-6 mt-3">
                                 <label for="">Jenis Kelamin</label>
-                                <select type="select" class="form-control" name="jenis_kelamin">
+                                <select type="select" class="form-control" required name="jenis_kelamin">
                                     <option value disabled selected>Pilih Jenis Kelamin</option>
                                     <option value="laki-laki">Laki-laki</option>
                                     <option value="perempuan">Perempuan</option>
@@ -44,13 +46,13 @@
                             </div>
                             <div class="col-lg-6 mt-3">
                                 <label for="">Agama</label>
-                                <input type="text" class="form-control" name="agama">
+                                <input type="text" class="form-control" required name="agama">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-6 mt-3">
                                 <label for="">No. HP</label>
-                                <input type="text" class="form-control" name="no_hp">
+                                <input type="text" class="form-control" required name="no_hp">
                             </div>
                             <div class="col-lg-6 mt-3">
                                 <label for="">BPJS TK</label>
@@ -60,21 +62,21 @@
                         <div class="row">
                             <div class="col-lg-6 mt-3">
                                 <label for="">Jabatan</label>
-                                <input type="number" class="form-control" name="id_jabatan">
+                                <input type="number" class="form-control" required name="id_jabatan">
                             </div>
                             <div class="col-lg-6 mt-3">
                                 <label for="">Golongan</label>
-                                <input type="text" class="form-control" name="golongan">
+                                <input type="text" class="form-control" required name="golongan">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-6 mt-3">
                                 <label for="">Awal kerja</label>
-                                <input type="date" class="form-control" name="awal_kerja">
+                                <input type="date" class="form-control" required name="awal_kerja">
                             </div>
                             <div class="col-lg-6 mt-3">
                                 <label for="">Status pensiun</label>
-                                <input type="text" class="form-control" name="status_pensiun">
+                                <input type="text" class="form-control" required name="status_pensiun">
                             </div>
                         </div>
                 </div>

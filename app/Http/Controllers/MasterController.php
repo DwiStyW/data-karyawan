@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 
+
 class MasterController extends Controller
 {
     /**
@@ -138,6 +139,20 @@ class MasterController extends Controller
      */
     public function store(Request $request)
     {
+        $test = $request->id_bpjs_tk;
+        if (!isset($request->id_bpjs_tk)){
+            $test = "";
+        }
+
+        if($request->hasFile('image')){
+            $resorce       = $request->file('image');
+            $name   = $resorce->getClientOriginalName();
+            $resorce->move(\base_path() ."/public/assets/img/karyawan", $name);
+            echo "Gambar berhasil di upload";
+        }else{
+            echo "Gagal upload gambar";
+        }
+
         $data=[
             'nama'=>$request->nama,
             'nik'=>$request->nik,
@@ -150,11 +165,12 @@ class MasterController extends Controller
             'id_jabatan'=>$request->id_jabatan,
             'golongan'=>$request->golongan,
             'awal_kerja'=>$request->awal_kerja,
-            'id_bpjs_tk'=>$request->id_bpjs_tk,
+            'id_bpjs_tk'=>$test,
             'status_pensiun'=>$request->status_pensiun,
+            'foto' => $name,
             'updated_at'=>date("Y-m-d H:i:s")
         ];
-
+        
         try{
             master::insert($data);
             //alert berhasil

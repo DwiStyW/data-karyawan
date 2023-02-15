@@ -25,10 +25,7 @@
             <div class="pb-3">
                 <button data-bs-toggle="modal" data-bs-target="#tambah_master" class="btn btn-sm btn-secondary">
                     <i class="bi bi-plus-square-fill"></i>
-                    Karyawan
-                </button>
-                <button href="" class="btn btn-sm btn-secondary">
-                    Jabatan
+                    Master
                 </button>
             </div>
 
@@ -37,19 +34,10 @@
                     <thead>
                         <tr style="background-color:#5F7A61;color:#ddd;font-weight:bold">
                             <th data-priority="1">No</th>
-                            <th data-priority="1">Nama</th>
-                            <th data-priority="3">No KTP</th>
-                            <th data-priority="3">Tempat Lahir</th>
-                            <th data-priority="3">Tanggal Lahir</th>
-                            <th data-priority="3">Jenis Kelamin</th>
-                            <th data-priority="3">Alamat</th>
-                            <th data-priority="3">No Hp</th>
-                            <th data-priority="3">Agama</th>
-                            <th data-priority="3">Jabatan</th>
-                            <th data-priority="3">Golongan</th>
-                            <th data-priority="3">Awal Kerja</th>
-                            <th data-priority="3">BPJS TK</th>
-                            <th data-priority="3">Status Pensiun</th>
+                            <th data-priority="1">Nama Jabatan</th>
+                            <th data-priority="3">Departemen</th>
+                            <th data-priority="3">Bagian</th>
+                            <th data-priority="3">Sie</th>
                             <th data-priority="2" class="text-center">Aksi</th>
                         </tr>
                     </thead>

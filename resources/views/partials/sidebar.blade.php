@@ -14,7 +14,7 @@
         <section>
             <ul class="list-group mb-4 rounded-0">
                 <li class="list-group-item">
-                    <a href="sidar-ui" class="btn" id="navDashboard">
+                    <a href="/dashboard" class="btn" id="navDashboard">
                         <div class="btn-header me-3">
                             <i class="bi bi-speedometer2"></i>
                         </div>
@@ -24,17 +24,17 @@
                     </a>
                 </li>
                 <li class="list-group-item">
-                    <a class="btn" id="navDAR" href="master">
+                    <a class="btn" id="navDAR" href="/master">
                         <div class="btn-header me-3">
                             <i class="bi bi-people"></i>
                         </div>
                         <div class="btn-body">
-                            Master
+                            Data Master
                         </div>
                     </a>
                 </li>
                 <li class="list-group-item">
-                    <a class="btn" href="news.html" id="navDAR">
+                    <a class="btn" href="/departement" id="navDAR">
                         <div class="btn-header me-3">
                             <i class="bi bi-building"></i>
                         </div>
@@ -44,7 +44,7 @@
                     </a>
                 </li>
                 <li class="list-group-item">
-                    <a class="btn" id="navDAR">
+                    <a class="btn" href="/golongan" id="navDAR">
                         <div class="btn-header me-3">
                             <i class="bi bi-diagram-3"></i>
                         </div>
@@ -53,8 +53,56 @@
                         </div>
                     </a>
                 </li>
-
-
+                <li class="list-group-item">
+                    <a class="btn" href="/bpjstk" id="navDAR">
+                        <div class="btn-header me-3">
+                            <i class="bi bi-wrench-adjustable-circle"></i>
+                        </div>
+                        <div class="btn-body">
+                            BPJS Ketenagakerjaan
+                        </div>
+                    </a>
+                </li>
+                <li class="list-group-item">
+                    <a class="btn" href="/bpjskes" id="navDAR">
+                        <div class="btn-header me-3">
+                            <i class="bi bi-patch-plus"></i>
+                        </div>
+                        <div class="btn-body">
+                            BPJS Kesehatan
+                        </div>
+                    </a>
+                </li>
+                <li class="list-group-item">
+                    <a class="btn" href="/keluarmasuk" id="navDAR">
+                        <div class="btn-header me-3">
+                            <i class="bi bi-arrow-left-right"></i>
+                        </div>
+                        <div class="btn-body">
+                            Keluar Masuk
+                        </div>
+                    </a>
+                </li>
+                <li class="list-group-item">
+                    <a class="btn" href="/mutasi" id="navDAR">
+                        <div class="btn-header me-3">
+                            <i class="bi bi-shuffle"></i>
+                        </div>
+                        <div class="btn-body">
+                            Mutasi
+                        </div>
+                    </a>
+                </li>
+                <li class="list-group-item">
+                    <a class="btn" href="/absensi" id="navDAR">
+                        <div class="btn-header me-3">
+                            <i class="bi bi-clock-history"></i>
+                        </div>
+                        <div class="btn-body">
+                            Absensi Karyawan
+                        </div>
+                    </a>
+                </li>
             </ul>
 
             <!-- end of sidebar menu -->

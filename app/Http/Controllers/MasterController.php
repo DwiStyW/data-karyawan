@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Bataspensiun;
+use App\Models\Jabatan;
 use App\Models\Master;
+use App\Models\Pendidikan;
 use Exception;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class MasterController extends Controller
 {
@@ -16,9 +20,10 @@ class MasterController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
+        $jabatan=Jabatan::get();
 
          // Load index view
-         return view('master');
+         return view('master',compact('jabatan'));
      }
 
      // Fetch records
@@ -111,9 +116,45 @@ class MasterController extends Controller
            "iTotalDisplayRecords" => $totalRecordswithFilter,
            "aaData" => $data_arr
         );
+
         return response()->json($response);
      }
 
+     public function detailmaster($id_master){
+        $jabatan=Jabatan::get();
+
+        $jbatas=Bataspensiun::count();
+        $sekolah=Pendidikan::where('pendidikan.id_master',$id_master)
+        ->join('batas_pensiun','pendidikan.tingkat_pendidikan','=','batas_pensiun.tingkatan_pendidikan')
+        ->join('master','pendidikan.id_master','=','master.id')
+        ->orderby('batas_pensiun.id','ASC')
+        ->get();
+        $jsekolah=Pendidikan::where('pendidikan.id_master',$id_master)
+        ->join('batas_pensiun','pendidikan.tingkat_pendidikan','=','batas_pensiun.tingkatan_pendidikan')
+        ->join('master','pendidikan.id_master','=','master.id')
+        ->orderby('batas_pensiun.id','ASC')
+        ->count();
+        $master=Master::where('master.id',$id_master)
+        ->join('jabatan','master.id_jabatan','=','jabatan.id_jabatan')
+        ->get();
+        $pendidikan=Pendidikan::where('pendidikan.id_master',$id_master)->get();
+        if($jsekolah!=0){
+        foreach($sekolah as $s){
+            $sklh[]=$s->tingkat_pendidikan;
+        }
+        for ($i=0; $i < $jsekolah; $i++) {
+            $where[]='tingkatan_pendidikan != "' .$sklh[$i].'"';
+        }
+        $kalimat = implode(" and ",$where);
+        $bataspensiun=DB::select("SELECT * FROM batas_pensiun where $kalimat");
+        }else{
+            $bataspensiun=DB::select("SELECT * FROM batas_pensiun");
+        }
+
+        // dd($bataspensiun);
+
+        return view('detailmaster',compact('master','jabatan','bataspensiun','pendidikan'));
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -132,6 +173,22 @@ class MasterController extends Controller
      */
     public function store(Request $request)
     {
+        $test = $request->id_bpjs_tk;
+        if (!isset($request->id_bpjs_tk)){
+            $test = "";
+        }
+
+
+        if($request->hasFile('image')){
+            $resorce       = $request->file('image');
+            $name   = $resorce->getClientOriginalName();
+            $resorce->move(\base_path() ."/public/assets/img/karyawan", $name);
+            echo "Gambar berhasil di upload";
+        }else{
+            $name="";
+            echo "Gagal upload gambar";
+        }
+
         $data=[
             'nama'=>$request->nama,
             'nik'=>$request->nik,
@@ -144,8 +201,9 @@ class MasterController extends Controller
             'id_jabatan'=>$request->id_jabatan,
             'golongan'=>$request->golongan,
             'awal_kerja'=>$request->awal_kerja,
-            'id_bpjs_tk'=>$request->id_bpjs_tk,
+            'id_bpjs_tk'=>$test,
             'status_pensiun'=>$request->status_pensiun,
+            'foto' => $name,
             'updated_at'=>date("Y-m-d H:i:s")
         ];
 
@@ -210,12 +268,41 @@ class MasterController extends Controller
         ];
         try {
             master::where($where)->update($data);
-            return redirect('/master')->with('success','Data berhasil diedit!');
+            return back()->with('success','Data berhasil diedit!');
         }catch(Exception $e){
-            return redirect('/master')->with('failed','Data gagal diedit!');
+            return back()->with('failed','Data gagal diedit!');
         }
     }
 
+
+    public function gantifoto(Request $request){
+        $id=$request->id_masterfoto;
+
+        if($request->hasFile('image')){
+            $resorce= $request->file('image');
+            $name   = $resorce->getClientOriginalName();
+            $resorce->move(\base_path() ."/public/assets/img/karyawan", $name);
+            echo "Gambar berhasil di upload";
+        }else{
+            echo "Gagal upload gambar";
+        }
+
+        try {
+            master::where('id',$id)->update(['foto'=>$name]);
+            return back()->with('success','Data berhasil diedit!');
+        }catch(Exception $e){
+            return back()->with('failed','Data gagal diedit!');
+        }
+
+    }
+    public function hapusfoto($id){
+        try {
+            master::where('id',$id)->update(['foto'=>'']);
+            return back()->with('success','Data berhasil diedit!');
+        }catch(Exception $e){
+            return back()->with('failed','Data gagal diedit!');
+        }
+    }
     /**
      * Remove the specified resource from storage.
      *
@@ -224,12 +311,12 @@ class MasterController extends Controller
      */
     public function destroy(Request $request)
     {
-        $id_master = $request->id_master;
-        try{
-            master::where(['id'=>$id_master])->delete();
-            return redirect('/master')->with('success','Data berhasil dihapus!');
-        }catch(Exception $e){
-            return redirect('/master')->with('failed','Data gagal dihapus!');
-        }
+    $id_master = $request->id_master;
+    try{
+        master::where(['id'=>$id_master])->delete();
+        return redirect('/master')->with('success','Data berhasil dihapus!');
+    }catch(Exception $e){
+        return redirect('/master')->with('failed','Data gagal dihapus!');
     }
+}
 }

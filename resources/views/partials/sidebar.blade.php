@@ -54,7 +54,7 @@
                     </a>
                 </li>
                 <li class="list-group-item">
-                    <a class="btn" href="/golongan" id="navDAR">
+                    <a class="btn" href="/bpjstk" id="navDAR">
                         <div class="btn-header me-3">
                             <i class="bi bi-wrench-adjustable-circle"></i>
                         </div>
@@ -64,7 +64,7 @@
                     </a>
                 </li>
                 <li class="list-group-item">
-                    <a class="btn" href="/golongan" id="navDAR">
+                    <a class="btn" href="/bpjskes" id="navDAR">
                         <div class="btn-header me-3">
                             <i class="bi bi-patch-plus"></i>
                         </div>
@@ -74,7 +74,7 @@
                     </a>
                 </li>
                 <li class="list-group-item">
-                    <a class="btn" href="/golongan" id="navDAR">
+                    <a class="btn" href="/keluarmasuk" id="navDAR">
                         <div class="btn-header me-3">
                             <i class="bi bi-arrow-left-right"></i>
                         </div>
@@ -84,7 +84,7 @@
                     </a>
                 </li>
                 <li class="list-group-item">
-                    <a class="btn" href="/golongan" id="navDAR">
+                    <a class="btn" href="/mutasi" id="navDAR">
                         <div class="btn-header me-3">
                             <i class="bi bi-shuffle"></i>
                         </div>
@@ -94,7 +94,7 @@
                     </a>
                 </li>
                 <li class="list-group-item">
-                    <a class="btn" href="/golongan" id="navDAR">
+                    <a class="btn" href="/absensi" id="navDAR">
                         <div class="btn-header me-3">
                             <i class="bi bi-clock-history"></i>
                         </div>

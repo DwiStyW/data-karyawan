@@ -19,24 +19,38 @@
     @include('partials.navbar')
     <main class="wrapper">
         <div class="container">
+            @include('alert')
             @foreach ($master as $m)
                 <div class="col-lg-12">
-                    <div class="bg-light border-0 text-center pt-2">
-                        <h4><b>Detail Personal</b></h4>
+                    <div class="float-end">
+                        <button data-bs-toggle="modal" data-bs-target="#editmaster" class="btn btn-md btn-secondary"
+                            onclick="editmaster({{ $m->id }},'{{ $m->nama }}','{{ $m->nik }}','{{ $m->alamat }}','{{ $m->tempat_lahir }}','{{ $m->tanggal_lahir }}','{{ $m->jenis_kelamin }}','{{ $m->agama }}','{{ $m->no_hp }}','{{ $m->id_bpjs_tk }}','{{ $m->id_jabatan }}','{{ $m->golongan }}','{{ $m->awal_kerja }}','{{ $m->status_pensiun }}')">
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
+                    </div>
+                    <div class="bg-light border-0 text-center pt-2 pb-1 mb-3">
+                        <h6><b>Detail Personal</b></h6>
                     </div>
                 </div>
                 <div class="row pt-3">
                     <div class="col-lg-4">
                         <div class="row justify-content-center pt-2">
                             <div class="bg-light pt-3 pb-3" style="width:auto">
+                                <?php if($m->foto == ""){?>
                                 <img src="../assets/img/user.png" style="object-fit: cover;border: 1px solid black;"
                                     width="177px" height="236px" alt="">
+                                <?php } else{?>
+                                <img src="../assets/img/karyawan/{{ $m->foto }}"
+                                    style="object-fit: cover;border: 1px solid black;" width="177px" height="236px"
+                                    alt="">
+                                <?php } ?>
                             </div>
                             <div class="d-flex justify-content-center mt-3 mb-5">
-                                <a class="btn btn-sm btn-primary">
+                                <a type="button" onclick="ganti_foto({{ $m->id }})" data-bs-toggle="modal"
+                                    data-bs-target="#ganti_foto" class="btn btn-sm btn-primary">
                                     Ganti Foto
                                 </a>
-                                <a class="btn btn-sm btn-danger">
+                                <a href="/hapusFotoMaster/{{ $m->id }}" class="btn btn-sm btn-danger">
                                     Hapus
                                 </a>
                             </div>
@@ -49,7 +63,7 @@
                                         Lengkap</b></h6>
                             </div>
                             <div class="col-md-9">
-                                <label class="form-control">{{ $m->nama }}</label>
+                                <label class="form-control" style="min-height: 35px">{{ $m->nama }}</label>
                             </div>
                         </div>
 
@@ -58,7 +72,7 @@
                                 <h6 class="form-label text-form"><b>No KTP</b></h6>
                             </div>
                             <div class="col-md-9">
-                                <label class="form-control">x</label>
+                                <label class="form-control" style="min-height: 35px">{{ $m->nik }}</label>
                             </div>
                         </div>
 
@@ -67,7 +81,7 @@
                                 <h6 class="form-label text-form"><b>Departemen</b></h6>
                             </div>
                             <div class="col-md-9">
-                                <label class="form-control">x</label>
+                                <label class="form-control" style="min-height: 35px">{{ $m->departemen }}</label>
                             </div>
                         </div>
 
@@ -76,7 +90,7 @@
                                 <h6 class="form-label text-form"><b>Jabatan</b></h6>
                             </div>
                             <div class="col-md-9">
-                                <label class="form-control">x</label>
+                                <label class="form-control" style="min-height: 35px">{{ $m->nama_jabatan }}</label>
                             </div>
                         </div>
 
@@ -85,7 +99,7 @@
                                 <h6 class="form-label text-form"><b>Pendidikan Terakhir</b></h6>
                             </div>
                             <div class="col-md-9">
-                                <label class="form-control">x</label>
+                                <label class="form-control" style="min-height: 35px">x</label>
                             </div>
                         </div>
 
@@ -96,7 +110,8 @@
                                         <h6 class="form-label text-form"><b>Tanggal Lahir</b></h6>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-control">x</label>
+                                        <label class="form-control"
+                                            style="min-height: 35px">{{ $m->tanggal_lahir }}</label>
                                     </div>
                                 </div>
                             </div>
@@ -106,7 +121,14 @@
                                         <h6 class="form-label text-form"><b>Umur</b></h6>
                                     </div>
                                     <div class="col-md-8">
-                                        <label class="form-control">x</label>
+                                        @php
+                                            $sekarang = strtotime(date('Y-m-d'));
+                                            $tgl_lahir = strtotime($m->tanggal_lahir);
+                                            $umur = $sekarang - $tgl_lahir;
+                                        @endphp
+                                        <label class="form-control"
+                                            style="min-height: 35px">{{ floor($umur / (3600 * 24 * 365)) }}
+                                            Tahun</label>
                                     </div>
                                 </div>
                             </div>
@@ -119,7 +141,8 @@
                                         <h6 class="form-label text-form"><b>Tanggal Bergabung</b></h6>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-control">x</label>
+                                        <label class="form-control"
+                                            style="min-height: 35px">{{ $m->awal_kerja }}</label>
                                     </div>
                                 </div>
                             </div>
@@ -129,7 +152,7 @@
                                         <h6 class="form-label text-form"><b>Masa Kerja</b></h6>
                                     </div>
                                     <div class="col-md-8">
-                                        <label class="form-control">x</label>
+                                        <label class="form-control" style="min-height: 35px">x</label>
                                     </div>
                                 </div>
                             </div>
@@ -138,11 +161,18 @@
                 </div>
                 <div class="row col-lg-12 pt-3" style="margin-right: 0px !important">
                     <div class="col-lg-6 col-md-12">
+                        <div class="float-end">
+                            <button data-bs-toggle="modal" data-bs-target="#tambahpendidikan"
+                                class="btn btn-md btn-secondary">
+                                <i class="bi bi-plus-square"></i>
+                            </button>
+                        </div>
                         <div class="bg-light border-0 text-center pt-2 pb-1 mb-3">
                             <h6><b>Tabel Riwayat Pendidikan</b></h6>
                         </div>
                         <div class="table-responsive">
-                            <table id='mTable' width='100%' class="table table-striped table-bordered">
+                            <table id='mTable' width='100%'
+                                class="table table-striped table-bordered dt-responsive">
                                 <thead>
                                     <tr style="background-color:#5F7A61;color:#ddd;font-weight:bold">
                                         <th>Tingkatan</th>
@@ -153,10 +183,40 @@
                                         <th>aksi</th>
                                     </tr>
                                 </thead>
+                                <tbody>
+                                    @foreach ($pendidikan as $p)
+                                        <tr>
+                                            <td>{{ $p->tingkat_pendidikan }}</td>
+                                            <td>{{ $p->nama_sekolah }}</td>
+                                            <td>{{ $p->jurusan }}</td>
+                                            <td>{{ $p->tgl_awal }}</td>
+                                            <td>{{ $p->tgl_akhir }}</td>
+                                            <td>
+                                                <div class="row justify-content-center">
+                                                    <div style="max-width:60px">
+                                                        <button type="button" class="btn btn-primary btn-block">
+                                                            <i class="bi bi-pencil-square"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div style="max-width:60px;">
+                                                        <button type="button" class="btn btn-danger btn-block">
+                                                            <i class="bi bi-trash3-fill"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
                             </table>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-12">
+                        <div class="float-end">
+                            <button class="btn btn-md btn-secondary">
+                                <i class="bi bi-plus-square"></i>
+                            </button>
+                        </div>
                         <div class="bg-light border-0 text-center pt-2 pb-1 mb-3">
                             <h6><b>Tabel Riwayat Pekerjaan Sebelumnya</b></h6>
                         </div>
@@ -179,6 +239,11 @@
                 </div>
                 <div class="row col-lg-12 pt-3" style="margin-right: 0px !important">
                     <div class="col-lg-6 col-md-12">
+                        <div class="float-end">
+                            <button class="btn btn-md btn-secondary">
+                                <i class="bi bi-plus-square"></i>
+                            </button>
+                        </div>
                         <div class="bg-light border-0 text-center pt-2 pb-1 mb-3">
                             <h6><b>BPJS Kesehatan</b></h6>
                         </div>
@@ -198,6 +263,11 @@
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-12">
+                        <div class="float-end">
+                            <button class="btn btn-md btn-secondary">
+                                <i class="bi bi-plus-square"></i>
+                            </button>
+                        </div>
                         <div class="bg-light border-0 text-center pt-2 pb-1 mb-3">
                             <h6><b>BPJS ketenagakerjaan</b></h6>
                         </div>
@@ -216,6 +286,11 @@
                     </div>
                 </div>
                 <div class="col-lg-12 pt-3">
+                    <div class="float-end">
+                        <button class="btn btn-md btn-secondary">
+                            <i class="bi bi-plus-square"></i>
+                        </button>
+                    </div>
                     <div class="bg-light border-0 text-center pt-2 pb-1 mb-3">
                         <h6><b>Tabel Riwayat Karir pada PT INDOSAR</b></h6>
                     </div>
@@ -236,16 +311,9 @@
                 </div>
 
                 <div class="col-lg-12">
-                    <a href="#"><button class="btn btn-sm btn-info mb-2" type="button">Kembali</button></a>
-                    <a href="#"><button class="btn btn-sm btn-primary mb-2" type="submit">Input
-                            Riwayat Karir</button></a>
-                    <a href="#"><button class="btn btn-sm btn-warning mb-2" type="submit">Edit
-                            Data</button></a>
-                    <a href="#"><button class="btn btn-sm btn-info mb-2" type="submit">Riwayat
-                            Pendidikan</button></a>
-                    <a href="#"><button class="btn btn-sm btn-primary mb-2" type="submit">Riwayat
-                            Pekerjaan</button></a>
-                    <a href="#"><button class="btn btn-sm btn-warning mb-2" type="submit">Mutasi</button></a>
+                    <a href="/master"><button class="btn btn-sm btn-light mb-2" type="button">Kembali</button></a>
+                    <a href="#"><button class="btn btn-sm btn-secondary mb-2"
+                            type="submit">Mutasi</button></a>
                 </div>
             @endforeach
         </div>
@@ -254,6 +322,7 @@
     @include('partials.navdown')
 
 </body>
+
 <script src="../assets/ui/jquery-3.6.1/jquery-3.6.1.min.js"></script>
 <script src="../assets/ui/bootstrap-5.2.1-dist/js/bootstrap.bundle.min.js"></script>
 <script>
@@ -268,5 +337,9 @@
         $(this).select();
     });
 </script>
+
+@include('DetailMaster.editdetailmaster')
+@include('DetailMaster.editfotomaster')
+@include('DetailMaster.tambahpendidikanmaster')
 
 </html>

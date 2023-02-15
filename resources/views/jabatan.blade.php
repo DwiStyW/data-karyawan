@@ -21,8 +21,9 @@
             <header class="mb-3">
                 <h3 class="title-pages fw-bold">Data Master</h3>
             </header>
+            @include('alert')
             <div class="pb-3">
-                <button href="sidar-ui" class="btn btn-sm btn-secondary">
+                <button data-bs-toggle="modal" data-bs-target="#tambah_master" class="btn btn-sm btn-secondary">
                     <i class="bi bi-plus-square-fill"></i>
                     Master
                 </button>
@@ -33,20 +34,11 @@
                     <thead>
                         <tr style="background-color:#5F7A61;color:#ddd;font-weight:bold">
                             <th data-priority="1">No</th>
-                            <th data-priority="1">Nama</th>
-                            <th data-priority="3">No KTP</th>
-                            <th data-priority="3">Tempat Lahir</th>
-                            <th data-priority="3">Tanggal Lahir</th>
-                            <th data-priority="3">Jenis Kelamin</th>
-                            <th data-priority="3">Alamat</th>
-                            <th data-priority="3">No Hp</th>
-                            <th data-priority="3">Agama</th>
-                            <th data-priority="3">Jabatan</th>
-                            <th data-priority="3">Golongan</th>
-                            <th data-priority="3">Awal Kerja</th>
-                            <th data-priority="3">BPJS TK</th>
-                            <th data-priority="3">Status Pensiun</th>
-                            <th data-priority="2">Aksi</th>
+                            <th data-priority="1">Nama Jabatan</th>
+                            <th data-priority="3">Departemen</th>
+                            <th data-priority="3">Bagian</th>
+                            <th data-priority="3">Sie</th>
+                            <th data-priority="2" class="text-center">Aksi</th>
                         </tr>
                     </thead>
                 </table>
@@ -113,7 +105,6 @@
                     targets: 0,
                     data: 'nama',
                     render: function(data, type, row, meta) {
-                        console.log(row.id_master)
                         return '<a href="detailmaster/' + row.id_master + '">' + data + '</a>';
                     }
                 },
@@ -157,12 +148,15 @@
                     targets: 0,
                     data: null,
                     render: function(data, type, row, meta) {
-                        // console.log(row.id_master)
-                        return '<div class="row justify-content-start" style="min-width:110px;"><div style="max-width:60px"><a type="button" class="btn btn-primary btn-block" href="edit_master/' +
-                            row.id_master +
-                            '" ><i class="bi bi-pencil-square"></i></a></div><div style="max-width:60px"><a type="button" class="btn btn-danger btn-block" href="delete_master/' +
-                            row.id_master +
-                            '" ><i class="bi bi-trash3-fill"></i></a></div></div>';
+                        return '<div class="row justify-content-center" style="min-width:110px;"><div style="max-width:60px"><button type="button" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#edit_master" onclick="edit(`' +
+                            row.id_master + '`,`' + row.nama + '`,`' + row.noktp + '`,`' + row
+                            .alamat + '`,`' + row.tmptlhr + '`,`' + row.tgllhr + '`,`' + row
+                            .kelamin + '`,`' + row.agama + '`,`' + row.nohp + '`,`' + row
+                            .bpjstk + '`,`' + row.jabatan + '`,`' + row.golongan + '`,`' + row
+                            .awalkerja + '`,`' + row.pensiun +
+                            '`)"><i class="bi bi-pencil-square"></i></button></div><div style="max-width:60px"><button type="button" class="btn btn-danger btn-block" data-bs-toggle="modal" data-bs-target="#hapus_master" onclick="hapus(`' +
+                            row.id_master + '`,`' + row.nama +
+                            '`)" ><i class="bi bi-trash3-fill"></i></button></div></div>';
                     }
                 },
             ]
@@ -170,5 +164,8 @@
 
     });
 </script>
+@include('tambah_master');
+@include('edit_master');
+@include('hapus_master')
 
 </html>

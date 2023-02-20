@@ -20,9 +20,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('layout');
-});
+Route::get('/', [AuthController::class, 'index']);
 
 Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('/auth', [AuthController::class, 'auth']);
@@ -51,4 +49,3 @@ Route::get('jabatan', [JabatanController::class, 'index']);
 Route::get('/getJabatan', [JabatanController::class, 'getJabatan'])->name('getJabatan');
 Route::post('/postJabatan', [JabatanController::class, 'store']);
 Route::post('/updatejabatan', [JabatanController::class, 'update']);
-Route::post('/hapusJabatan', [JabatanController::class, 'destroy']);

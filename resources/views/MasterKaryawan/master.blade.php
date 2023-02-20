@@ -27,9 +27,9 @@
                     <i class="bi bi-plus-square-fill"></i>
                     Karyawan
                 </button>
-                <button href="" class="btn btn-sm btn-secondary">
+                <a href="/jabatan" class="btn btn-sm btn-secondary">
                     Jabatan
-                </button>
+                </a>
             </div>
 
             <div>
@@ -117,55 +117,57 @@
                     targets: 0,
                     data: 'nama',
                     render: function(data, type, row, meta) {
+                        console.log(row)
                         return '<a href="detailmaster/' + row.id_master + '">' + data + '</a>';
+
                     }
                 },
                 {
-                    data: 'noktp'
+                    data: 'nik'
                 },
                 {
-                    data: 'tmptlhr'
+                    data: 'tempat_lahir'
                 },
                 {
-                    data: 'tgllhr'
+                    data: 'tanggal_lahir'
                 },
                 {
-                    data: 'kelamin'
+                    data: 'jenis_kelamin'
                 },
                 {
                     data: 'alamat'
                 },
                 {
-                    data: 'nohp'
+                    data: 'no_hp'
                 },
                 {
                     data: 'agama'
                 },
                 {
-                    data: 'jabatan'
+                    data: 'id_jabatan'
                 },
                 {
                     data: 'golongan'
                 },
                 {
-                    data: 'awalkerja'
+                    data: 'awal_kerja'
                 },
                 {
-                    data: 'bpjstk'
+                    data: 'bpjs_tk'
                 },
                 {
-                    data: 'pensiun'
+                    data: 'status_pensiun'
                 },
                 {
                     targets: 0,
                     data: null,
                     render: function(data, type, row, meta) {
                         return '<div class="row justify-content-center" style="min-width:110px;"><div style="max-width:60px"><button type="button" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#edit_master" onclick="edit(`' +
-                            row.id_master + '`,`' + row.nama + '`,`' + row.noktp + '`,`' + row
-                            .alamat + '`,`' + row.tmptlhr + '`,`' + row.tgllhr + '`,`' + row
-                            .kelamin + '`,`' + row.agama + '`,`' + row.nohp + '`,`' + row
-                            .bpjstk + '`,`' + row.jabatan + '`,`' + row.golongan + '`,`' + row
-                            .awalkerja + '`,`' + row.pensiun +
+                            row.id_master + '`,`' + row.nama + '`,`' + row.nik + '`,`' + row
+                            .alamat + '`,`' + row.tempat_lahir + '`,`' + row.tanggal_lahir +
+                            '`,`' + row.jenis_kelamin + '`,`' + row.agama + '`,`' + row.no_hp +
+                            '`,`' + row.bpjs_tk + '`,`' + row.jabatan + '`,`' + row
+                            .golongan + '`,`' + row.awal_kerja + '`,`' + row.status_pensiun +
                             '`)"><i class="bi bi-pencil-square"></i></button></div><div style="max-width:60px"><button type="button" class="btn btn-danger btn-block" data-bs-toggle="modal" data-bs-target="#hapus_master" onclick="hapus(`' +
                             row.id_master + '`,`' + row.nama +
                             '`)" ><i class="bi bi-trash3-fill"></i></button></div></div>';

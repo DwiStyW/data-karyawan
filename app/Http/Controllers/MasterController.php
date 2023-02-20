@@ -47,23 +47,30 @@ class MasterController extends Controller
         // Total records
         $totalRecords = master::select('count(*) as allcount')->count();
         $totalRecordswithFilter = master::select('count(*) as allcount')->where('nama', 'like', '%' .$searchValue . '%')->count();
-
+        if($columnName=='id'){
+            $columnName='master.id';
+        }else{
+            $columnName = $columnName_arr[$columnIndex]['data'];
+        }
         // Fetch records
         if($rowperpage != -1){
+
             $records = master::orderBy($columnName,$columnSortOrder)
+            ->join('jabatan','master.id_jabatan','=','jabatan.id')
                ->where('master.nama', 'like', '%' .$searchValue . '%')
                ->orwhere('master.tempat_lahir', 'like', '%' .$searchValue . '%')
                ->orwhere('master.alamat', 'like', '%' .$searchValue . '%')
-              ->select('master.*')
+              ->select('master.*','nama_jabatan')
               ->skip($start)
               ->take($rowperpage)
               ->get();
         }else{
             $records = master::orderBy($columnName,$columnSortOrder)
+            ->join('jabatan','master.id_jabatan','=','jabatan.id')
                ->where('master.nama', 'like', '%' .$searchValue . '%')
                ->orwhere('master.tempat_lahir', 'like', '%' .$searchValue . '%')
                ->orwhere('master.alamat', 'like', '%' .$searchValue . '%')
-              ->select('master.*')
+              ->select('master.*','nama_jabatan')
               ->skip($start)
               ->take($totalRecords)
               ->get();
@@ -85,28 +92,30 @@ class MasterController extends Controller
            $alamat = $record->alamat;
            $nohp = $record->no_hp;
            $agama = $record->agama;
-           $jabatan = $record->id_jabatan;
+           $id_jabatan = $record->id_jabatan;
+           $jabatan = $record->nama_jabatan;
            $golongan = $record->golongan;
            $awalkerja = $record->awal_kerja;
-           $bpjstk = $record->id_bpjs_tk;
+           $bpjstk = $record->bpjs_tk;
            $pensiun = $record->status_pensiun;
 
            $data_arr[] = array(
                "id" => $no,
                "id_master" => $id,
                "nama" => $nama,
-               "tmptlhr" => $tmptlhr,
-               "tgllhr" => $tgllhr,
-               "kelamin" => $kelamin,
+               "tempat_lahir" => $tmptlhr,
+               "tanggal_lahir" => $tgllhr,
+               "jenis_kelamin" => $kelamin,
                "alamat" => $alamat,
-               "noktp" => $noktp,
-               "nohp" => $nohp,
+               "nik" => $noktp,
+               "no_hp" => $nohp,
                "agama" => $agama,
-               "jabatan" => $jabatan,
+               "id_jabatan" => $jabatan,
+               "jabatan"=>$id_jabatan,
                "golongan" => $golongan,
-               "awalkerja" => $awalkerja,
-               "bpjstk" => $bpjstk,
-               "pensiun" => $pensiun,
+               "awal_kerja" => $awalkerja,
+               "bpjs_tk" => $bpjstk,
+               "status_pensiun" => $pensiun,
            );
         }
 
@@ -135,7 +144,7 @@ class MasterController extends Controller
         ->orderby('batas_pensiun.id','ASC')
         ->count();
         $master=Master::where('master.id',$id_master)
-        ->join('jabatan','master.id_jabatan','=','jabatan.id_jabatan')
+        ->join('jabatan','master.id_jabatan','=','jabatan.id')
         ->get();
         $pendidikan=Pendidikan::where('pendidikan.id_master',$id_master)->get();
         if($jsekolah!=0){
@@ -153,7 +162,7 @@ class MasterController extends Controller
 
         // dd($bataspensiun);
 
-        return view('DetailMaster.detailmaster',compact('master','jabatan','bataspensiun','pendidikan'));
+        return view('DetailMaster.detailmaster',compact('master','id_master','jabatan','bataspensiun','pendidikan'));
     }
     /**
      * Show the form for creating a new resource.
@@ -201,12 +210,12 @@ class MasterController extends Controller
             'id_jabatan'=>$request->id_jabatan,
             'golongan'=>$request->golongan,
             'awal_kerja'=>$request->awal_kerja,
-            'id_bpjs_tk'=>$test,
+            'bpjs_tk'=>$test,
             'status_pensiun'=>$request->status_pensiun,
             'foto' => $name,
             'updated_at'=>date("Y-m-d H:i:s")
         ];
-
+        // dd($data);
         try{
             master::insert($data);
             //alert berhasil
@@ -260,14 +269,16 @@ class MasterController extends Controller
             'id_jabatan'=>$request->id_jabatan,
             'golongan'=>$request->golongan,
             'awal_kerja'=>$request->awal_kerja,
-            'id_bpjs_tk'=>$request->id_bpjs_tk,
+            'bpjs_tk'=>$request->id_bpjs_tk,
             'status_pensiun'=>$request->status_pensiun,
         ];
         $where = [
             'id'=>$request->id_master
         ];
+        $id=$request->id_master;
+        // dd($id);
         try {
-            master::where($where)->update($data);
+            master::where('id',$id)->update($data);
             return back()->with('success','Data berhasil diedit!');
         }catch(Exception $e){
             return back()->with('failed','Data gagal diedit!');

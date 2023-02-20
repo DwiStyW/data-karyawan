@@ -24,7 +24,7 @@
                 <div class="col-lg-12">
                     <div class="float-end">
                         <button data-bs-toggle="modal" data-bs-target="#editmaster" class="btn btn-md btn-secondary"
-                            onclick="editmaster({{ $m->id }},'{{ $m->nama }}','{{ $m->nik }}','{{ $m->alamat }}','{{ $m->tempat_lahir }}','{{ $m->tanggal_lahir }}','{{ $m->jenis_kelamin }}','{{ $m->agama }}','{{ $m->no_hp }}','{{ $m->id_bpjs_tk }}','{{ $m->id_jabatan }}','{{ $m->golongan }}','{{ $m->awal_kerja }}','{{ $m->status_pensiun }}')">
+                            onclick="editmaster({{ $id_master }},'{{ $m->nama }}','{{ $m->nik }}','{{ $m->alamat }}','{{ $m->tempat_lahir }}','{{ $m->tanggal_lahir }}','{{ $m->jenis_kelamin }}','{{ $m->agama }}','{{ $m->no_hp }}','{{ $m->bpjs_tk }}','{{ $m->id_jabatan }}','{{ $m->golongan }}','{{ $m->awal_kerja }}','{{ $m->status_pensiun }}')">
                             <i class="bi bi-pencil-square"></i>
                         </button>
                     </div>
@@ -46,11 +46,11 @@
                                 <?php } ?>
                             </div>
                             <div class="d-flex justify-content-center mt-3 mb-5">
-                                <a type="button" onclick="ganti_foto({{ $m->id }})" data-bs-toggle="modal"
+                                <a type="button" onclick="ganti_foto({{ $id_master }})" data-bs-toggle="modal"
                                     data-bs-target="#ganti_foto" class="btn btn-sm btn-primary">
                                     Ganti Foto
                                 </a>
-                                <a href="/hapusFotoMaster/{{ $m->id }}" class="btn btn-sm btn-danger">
+                                <a href="/hapusFotoMaster/{{ $id_master }}" class="btn btn-sm btn-danger">
                                     Hapus
                                 </a>
                             </div>
@@ -194,14 +194,18 @@
                                             <td>
                                                 <div class="row justify-content-center">
                                                     <div style="max-width:60px">
-                                                        <button type="button" class="btn btn-primary btn-block">
+                                                        <button type="button" data-bs-toggle="modal"
+                                                            data-bs-target="#editpendidikan"
+                                                            onclick="editpendidikan({{ $p->id_pendidikan }},'{{ $p->tingkat_pendidikan }}','{{ $p->nama_sekolah }}','{{ $p->jurusan }}','{{ $p->tgl_awal }}','{{ $p->tgl_akhir }}')"
+                                                            class="btn btn-primary btn-block">
                                                             <i class="bi bi-pencil-square"></i>
                                                         </button>
                                                     </div>
                                                     <div style="max-width:60px;">
-                                                        <button type="button" class="btn btn-danger btn-block">
+                                                        <a type="button" class="btn btn-danger btn-block"
+                                                            href="/hapuspendidikan/{{ $p->id_pendidikan }}">
                                                             <i class="bi bi-trash3-fill"></i>
-                                                        </button>
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </td>
@@ -341,5 +345,6 @@
 @include('DetailMaster.editdetailmaster')
 @include('DetailMaster.editfotomaster')
 @include('DetailMaster.tambahpendidikanmaster')
+@include('DetailMaster.editpendidikan')
 
 </html>

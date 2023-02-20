@@ -103,8 +103,17 @@
                         </div>
                     </a>
                 </li>
+                <li class="list-group-item mobile">
+                    <a class="btn" href="/logout" id="navDAR">
+                        <div class="btn-header me-3">
+                            <i class="bi bi-box-arrow-left"></i>
+                        </div>
+                        <div class="btn-body">
+                            Logout
+                        </div>
+                    </a>
+                </li>
             </ul>
-
             <!-- end of sidebar menu -->
     </div>
 </div>

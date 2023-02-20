@@ -15,7 +15,13 @@
                             <div class="card bordered mb-4 pt-3"style="padding-left:20px;padding-right:20px">
                                 <div class="row">
                                     <div class="col-lg-2">
-                                        <label for="">{{ $bp->tingkatan_pendidikan }}</label>
+                                        <label for="">
+                                            @if ($bp->tingkatan_pendidikan == 'SMA')
+                                                {{ 'SMA/SMK' }}
+                                            @else
+                                                {{ $bp->tingkatan_pendidikan }}
+                                            @endif
+                                        </label>
                                     </div>
                                     <div class="col-lg-10 mb-3">
                                         <input type="text" class="form-control" placeholder="nama sekolah"
@@ -71,7 +77,7 @@
                             </div>
                         @endforeach
                         <input type="hidden" class="form-control" id="master" name="id_master"
-                            value="{{ $m->id }}">
+                            value="{{ $id_master }}">
                 </div>
             </div>
             <div class="modal-footer">

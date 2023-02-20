@@ -73,7 +73,7 @@
                                 <select name="id_jabatan" id="id_jabatan" class="form-select" required>
                                     <option value="" selected>Pilih Jabatan</option>
                                     @foreach ($jabatan as $j)
-                                        <option value="{{ $j->id_jabatan }}">{{ $j->nama_jabatan }}</option>
+                                        <option value="{{ $j->id }}">{{ $j->nama_jabatan }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -107,6 +107,8 @@
     function editmaster(id_master, nama, nik, alamat, tempat_lahir, tanggal_lahir, jenis_kelamin, agama, no_hp,
         id_bpjs_tk,
         id_jabatan, golongan, awal_kerja, status_pensiun) {
+        console.log(id_master, nama, nik, alamat, tempat_lahir, tanggal_lahir, jenis_kelamin, agama, no_hp,
+            id_bpjs_tk, id_jabatan, golongan, awal_kerja, status_pensiun);
         document.getElementById('id_master').value = id_master;
         document.getElementById('nama').value = nama;
         document.getElementById('nik').value = nik;

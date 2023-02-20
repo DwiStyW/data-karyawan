@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Jabatan;
+use Exception;
 use Illuminate\Http\Request;
 
 class JabatanController extends Controller
@@ -14,9 +15,9 @@ class JabatanController extends Controller
      */
     public function index()
     {
-        return view('jabatan');
+        return view('jabatan.jabatan');
     }
-    public function getMaster(Request $request){
+    public function getJabatan(Request $request){
 
         ## Read value
         $draw = $request->get('draw');
@@ -75,7 +76,7 @@ class JabatanController extends Controller
 
            $data_arr[] = array(
                "id" => $no,
-               "id_master" => $id,
+               "id_jabatan" => $id,
                "nama_jabatan" => $nama_jabatan,
                "departemen" => $departemen,
                "bagian" => $bagian,
@@ -111,7 +112,20 @@ class JabatanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data=[
+            'nama_jabatan'=>$request->nama_jabatan,
+            'departemen'=>$request->departemen,
+            'bagian'=>$request->bagian,
+            'sie'=>$request->sie,
+            'updated_at'=>date("Y-m-d H:i:s")
+        ];
+        try{
+            Jabatan::insert($data);
+            return back()->with('success','Data berhasil ditambahkan!');
+        }catch(Exception $e){
+            //alert gagal
+            return back()->with('failed','Data gagal ditambahkan!');
+        }
     }
 
     /**
@@ -143,9 +157,24 @@ class JabatanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $data=[
+            'nama_jabatan'=>$request->nama_jabatan,
+            'departemen'=>$request->departemen,
+            'bagian'=>$request->bagian,
+            'sie'=>$request->sie,
+        ];
+        $where=[
+            'id'=>$request->id_jabatan
+        ];
+        $id=$request->id_jabatan;
+        try {
+            Jabatan::where('id',$id)->update($data);
+            return back()->with('success','Data berhasil diedit!');
+        }catch(Exception $e){
+            return back()->with('failed','Data gagal diedit!');
+        }
     }
 
     /**
@@ -154,8 +183,15 @@ class JabatanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+    $id_jabatan = $request->jabatan_id;
+    // dd($id_jabatan);
+    try{
+        Jabatan::where(['id'=>$id_jabatan])->delete();
+        return back()->with('success','Data berhasil dihapus!');
+    }catch(Exception $e){
+        return back()->with('failed','Data gagal dihapus!');
+    }
     }
 }

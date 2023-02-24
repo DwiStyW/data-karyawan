@@ -1,14 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\Jabatan;
-use App\Models\Struktur;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
-class StrukturController extends Controller
+class BpjstkController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,35 +13,7 @@ class StrukturController extends Controller
      */
     public function index()
     {
-        $data=Jabatan::all();
-        // $parentid=Struktur::getPid();
-        // foreach($parentid as $p){
-        //     $pid=$p->pid;
-        //     $data[]=DB::connection('mysql')->select("select id,tags from struktur where id=$pid");
-        // }
-
-        foreach($data as $datalist){
-            // if($datalist['tags']=='1'){
-            //     $tags="";
-            // }else if($datalist['tags']=='2'){
-            //     $tags="subLevels1";
-            // }else if($datalist['tags']=='3'){
-            //     $tags="subLevels2";
-            // }else if($datalist['tags']=='4'){
-            //     $tags="subLevels3";
-            // }else if($datalist['tags']=='5'){
-            //     $tags="subLevels4";
-            // }else if($datalist['tags']=='6'){
-            //     $tags="subLevels0";
-            // }
-
-            $datas[]=['id'=>$datalist['id'],
-                    'nama'=>$datalist['nama_jabatan'],
-                    'level'=>$datalist['level'],
-                    'pid'=>$datalist['pid'],
-                    'tags'=>["subLevels".$datalist['tags']]];
-        }
-        return $datas;
+        //
     }
 
     /**
@@ -66,7 +34,7 @@ class StrukturController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        echo 'test';
     }
 
     /**

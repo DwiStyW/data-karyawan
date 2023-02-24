@@ -1,12 +1,16 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BpjskesController;
+use App\Http\Controllers\BpjstkController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\GolonganController;
+use App\Http\Controllers\HistoryPekerjaanController;
 use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\PendidikanController;
+use App\Http\Controllers\SimpleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,6 +27,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('layout');
 });
+Route::get('coba', [SimpleController::class, 'index']);
 
 Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('/auth', [AuthController::class, 'auth']);
@@ -43,6 +48,18 @@ Route::get('/hapusFotoMaster/{id_master}', [MasterController::class, 'hapusfoto'
 Route::post('/postpendidikan', [PendidikanController::class, 'store'])->middleware('auth');
 Route::post('/updatependidikan', [PendidikanController::class, 'update']);
 Route::get('/hapuspendidikan/{id}', [PendidikanController::class, 'destroy']);
+
+Route::post('/postriwayatkerja', [HistoryPekerjaanController::class, 'store'])->middleware('auth');
+Route::post('/updateriwayatkerja', [HistoryPekerjaanController::class, 'update']);
+Route::get('/hapusriwayatkerja/{id}', [HistoryPekerjaanController::class, 'destroy']);
+
+Route::post('/postbpjskes', [BpjskesController::class, 'store'])->middleware('auth');
+Route::post('/updatebpjskes', [BpjskesController::class, 'update']);
+Route::get('/hapusbpjskes/{id}', [BpjskesController::class, 'destroy']);
+
+Route::post('/postbpjstk', [BpjstkController::class, 'store'])->middleware('auth');
+Route::post('/updatebpjstk', [BpjstkController::class, 'update']);
+Route::get('/hapusbpjstk/{id}', [BpjstkController::class, 'destroy']);
 
 Route::get('departement', [DepartementController::class, 'index'])->middleware('auth');
 Route::get('golongan', [GolonganController::class, 'index']);

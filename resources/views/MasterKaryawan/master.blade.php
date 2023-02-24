@@ -48,7 +48,6 @@
                             <th data-priority="3">Jabatan</th>
                             <th data-priority="3">Golongan</th>
                             <th data-priority="3">Awal Kerja</th>
-                            <th data-priority="3">BPJS TK</th>
                             <th data-priority="3">Status Pensiun</th>
                             <th data-priority="2" class="text-center">Aksi</th>
                         </tr>
@@ -153,9 +152,6 @@
                     data: 'awal_kerja'
                 },
                 {
-                    data: 'bpjs_tk'
-                },
-                {
                     data: 'status_pensiun'
                 },
                 {
@@ -166,7 +162,7 @@
                             row.id_master + '`,`' + row.nama + '`,`' + row.nik + '`,`' + row
                             .alamat + '`,`' + row.tempat_lahir + '`,`' + row.tanggal_lahir +
                             '`,`' + row.jenis_kelamin + '`,`' + row.agama + '`,`' + row.no_hp +
-                            '`,`' + row.bpjs_tk + '`,`' + row.jabatan + '`,`' + row
+                            '`,`' + row.jabatan + '`,`' + row
                             .golongan + '`,`' + row.awal_kerja + '`,`' + row.status_pensiun +
                             '`)"><i class="bi bi-pencil-square"></i></button></div><div style="max-width:60px"><button type="button" class="btn btn-danger btn-block" data-bs-toggle="modal" data-bs-target="#hapus_master" onclick="hapus(`' +
                             row.id_master + '`,`' + row.nama +
@@ -178,8 +174,8 @@
 
     });
 </script>
-@include('MasterKaryawan.tambah_master');
-@include('MasterKaryawan.edit_master');
+@include('MasterKaryawan.tambah_master')
+@include('MasterKaryawan.edit_master')
 @include('MasterKaryawan.hapus_master')
 
 </html>

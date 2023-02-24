@@ -43,6 +43,36 @@
                                 <input type="text" class="form-control" name="sie">
                             </div>
                         </div>
+                        <div class="row mb-3">
+                            <div class="col-lg-3">
+                                <label for="">Level</label>
+                            </div>
+                            <div class="col-lg-9">
+                                <select class="form-select" name="level" id="level" onchange="selectpid()">
+                                    <option value="" disabled selected>Pilih Level</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-lg-3">
+                                <label for="">Atasan</label>
+                            </div>
+                            <div class="col-lg-9">
+                                <select class="form-select" name="pid" id="pid">
+                                    <option value="" disabled selected>Pilih Atasan</option>
+                                    @foreach ($jabatan as $j)
+                                        <option value="{{ $j->id }}">{{ $j->nama_jabatan }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -53,3 +83,27 @@
         </div>
     </div>
 </div>
+<script>
+    console.log(@json($jabatan))
+    var pid = @json($jabatan);
+    var filtered = pid.filter(p => p.level < 5)
+    console.log(filtered)
+
+    function selectpid() {
+        var level = document.getElementById('level').value;
+        console.log(level);
+        var filtered = pid.filter(p => p.level < level);
+        str = "<select class='form-select' name='pid' id='pid'>";
+        str += "<option value='' disabled selected>Pilih Atasan</option>";
+
+        for (let index = 0; index < filtered.length; index++) {
+            //const element = array[index];
+            console.log(filtered[index].nama_jabatan);
+            str += "<option value=" + filtered[index].id + ">" + filtered[index].nama_jabatan + "</option>";
+        }
+        str += "</select>";
+        console.log(str);
+        document.getElementById('pid').innerHTML = str;
+
+    }
+</script>

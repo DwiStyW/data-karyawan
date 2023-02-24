@@ -12,23 +12,28 @@
                     <form action="/postMaster" enctype="multipart/form-data" method="post">
                         @csrf
                         <label for="">Nama</label>
-                        <input type="text" class="form-control" required name="nama">
+                        <input type="text" class="form-control" required name="nama" placeholder="nama">
                         <label for="" class="mt-3">Upload Foto</label>
                         <input type="file" class="form-control" name="image">
+                        <div class="col-lg-12 mt-3">
+                            <label for="">Alamat</label>
+                            <input type="text" class="form-control" required name="alamat" placeholder="alamat">
+                        </div>
                         <div class="row">
                             <div class="col-lg-6 mt-3">
                                 <label for="">NIK</label>
-                                <input type="text" class="form-control" required name="nik">
+                                <input type="text" class="form-control" required name="nik" placeholder="nik">
                             </div>
                             <div class="col-lg-6 mt-3">
-                                <label for="">Alamat</label>
-                                <input type="text" class="form-control" required name="alamat">
+                                <label for="">No. HP</label>
+                                <input type="text" class="form-control" required name="no_hp" placeholder="no hp">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-6 mt-3">
                                 <label for="">Tempat lahir</label>
-                                <input type="text" class="form-control" required name="tempat_lahir">
+                                <input type="text" class="form-control" required name="tempat_lahir"
+                                    placeholder="tempat lahir">
                             </div>
                             <div class="col-lg-6 mt-3">
                                 <label for="">Tanggal lahir</label>
@@ -60,16 +65,6 @@
                         </div>
                         <div class="row">
                             <div class="col-lg-6 mt-3">
-                                <label for="">No. HP</label>
-                                <input type="text" class="form-control" required name="no_hp">
-                            </div>
-                            <div class="col-lg-6 mt-3">
-                                <label for="">BPJS TK</label>
-                                <input type="text" class="form-control" name="id_bpjs_tk">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-6 mt-3">
                                 <label for="">Jabatan</label>
                                 {{-- <input type="number" class="form-control" required name="id_jabatan"> --}}
                                 <select name="id_jabatan" id="id_jabatan" class="form-select" required>
@@ -81,7 +76,8 @@
                             </div>
                             <div class="col-lg-6 mt-3">
                                 <label for="">Golongan</label>
-                                <input type="text" class="form-control" required name="golongan">
+                                <input type="text" class="form-control" required name="golongan"
+                                    placeholder="golongan">
                             </div>
                         </div>
                         <div class="row">
@@ -91,7 +87,8 @@
                             </div>
                             <div class="col-lg-6 mt-3">
                                 <label for="">Status pensiun</label>
-                                <input type="text" class="form-control" required name="status_pensiun">
+                                <input type="text" class="form-control" required name="status_pensiun"
+                                    placeholder="status pensiun">
                             </div>
                         </div>
                 </div>

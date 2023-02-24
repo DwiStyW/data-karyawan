@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Jabatan;
+use App\Models\Master;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,8 @@ class JabatanController extends Controller
      */
     public function index()
     {
-        return view('jabatan.jabatan');
+        $jabatan=Jabatan::get();
+        return view('jabatan.jabatan',compact('jabatan'));
     }
     public function getJabatan(Request $request){
 
@@ -73,6 +75,9 @@ class JabatanController extends Controller
            $departemen = $record->departemen;
            $bagian = $record->bagian;
            $sie = $record->sie;
+           $level = $record->level;
+           $pid = $record->pid;
+           $tags = $record->tags;
 
            $data_arr[] = array(
                "id" => $no,
@@ -81,6 +86,9 @@ class JabatanController extends Controller
                "departemen" => $departemen,
                "bagian" => $bagian,
                "sie" => $sie,
+               "level" => $level,
+               "pid" => $pid,
+               "tags" => $tags,
            );
         }
 
@@ -112,13 +120,23 @@ class JabatanController extends Controller
      */
     public function store(Request $request)
     {
+        $pid=$request->pid;
+        $level=$request->level;
+        $levelpid=Jabatan::where('id',$pid)->get('level');
+        foreach ($levelpid as $lpid){
+            $lvpid=$lpid->level;
+        };
+        $tags=$level-$lvpid-1;
         $data=[
             'nama_jabatan'=>$request->nama_jabatan,
             'departemen'=>$request->departemen,
             'bagian'=>$request->bagian,
             'sie'=>$request->sie,
-            'updated_at'=>date("Y-m-d H:i:s")
+            'level'=>$request->level,
+            'pid'=>$request->pid,
+            'tags'=>$tags,
         ];
+
         try{
             Jabatan::insert($data);
             return back()->with('success','Data berhasil ditambahkan!');
@@ -159,11 +177,21 @@ class JabatanController extends Controller
      */
     public function update(Request $request)
     {
+        $pid=$request->pid;
+        $level=$request->level;
+        $levelpid=Jabatan::where('id',$pid)->get('level');
+        foreach ($levelpid as $lpid){
+            $lvpid=$lpid->level;
+        };
+        $tags=$level-$lvpid-1;
         $data=[
             'nama_jabatan'=>$request->nama_jabatan,
             'departemen'=>$request->departemen,
             'bagian'=>$request->bagian,
             'sie'=>$request->sie,
+            'level'=>$request->level,
+            'pid'=>$request->pid,
+            'tags'=>$tags,
         ];
         $where=[
             'id'=>$request->id_jabatan
@@ -187,10 +215,13 @@ class JabatanController extends Controller
     {
     $id_jabatan = $request->jabatan_id;
     // dd($id_jabatan);
-    try{
+    $cek=Master::where('id_jabatan',$id_jabatan)->count();
+    // dd($cek);
+
+    if($cek==0){
         Jabatan::where(['id'=>$id_jabatan])->delete();
         return back()->with('success','Data berhasil dihapus!');
-    }catch(Exception $e){
+    }else{
         return back()->with('failed','Data gagal dihapus!');
     }
     }

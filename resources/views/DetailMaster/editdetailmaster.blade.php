@@ -14,14 +14,19 @@
                         <label for="">Nama</label>
                         <input type="text" id="nama" class="form-control" name="nama">
                         <input type="hidden" id="id_master" class="form-control mb-3" name="id_master">
+                        <div class="col-lg-12 mt-3">
+                            <label for="">Alamat</label>
+                            <input id="alamat" type="text" class="form-control" name="alamat">
+                        </div>
                         <div class="row">
                             <div class="col-lg-6 mt-3">
                                 <label for="">NIK</label>
                                 <input id="nik" type="text" class="form-control" name="nik">
                             </div>
+
                             <div class="col-lg-6 mt-3">
-                                <label for="">Alamat</label>
-                                <input id="alamat" type="text" class="form-control" name="alamat">
+                                <label for="">No. HP</label>
+                                <input type="number" id="no_hp" class="form-control" name="no_hp">
                             </div>
                         </div>
                         <div class="row">
@@ -55,16 +60,6 @@
                                     <option value="Khonghucu">Khonghucu</option>
                                     <option value="Lainnya">Lainnya</option>
                                 </select>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-6 mt-3">
-                                <label for="">No. HP</label>
-                                <input type="number" id="no_hp" class="form-control" name="no_hp">
-                            </div>
-                            <div class="col-lg-6 mt-3">
-                                <label for="">BPJS TK</label>
-                                <input type="text" id="id_bpjs_tk" class="form-control" name="id_bpjs_tk">
                             </div>
                         </div>
                         <div class="row">
@@ -105,10 +100,9 @@
 </div>
 <script>
     function editmaster(id_master, nama, nik, alamat, tempat_lahir, tanggal_lahir, jenis_kelamin, agama, no_hp,
-        id_bpjs_tk,
         id_jabatan, golongan, awal_kerja, status_pensiun) {
         console.log(id_master, nama, nik, alamat, tempat_lahir, tanggal_lahir, jenis_kelamin, agama, no_hp,
-            id_bpjs_tk, id_jabatan, golongan, awal_kerja, status_pensiun);
+            id_jabatan, golongan, awal_kerja, status_pensiun);
         document.getElementById('id_master').value = id_master;
         document.getElementById('nama').value = nama;
         document.getElementById('nik').value = nik;
@@ -118,7 +112,6 @@
         document.getElementById('jenis_kelamin').value = jenis_kelamin;
         document.getElementById('agama').value = agama;
         document.getElementById('no_hp').value = no_hp;
-        document.getElementById('id_bpjs_tk').value = id_bpjs_tk;
         document.getElementById('id_jabatan').value = id_jabatan;
         document.getElementById('golongan').value = golongan;
         document.getElementById('awal_kerja').value = awal_kerja;

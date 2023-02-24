@@ -10,7 +10,9 @@
     <link rel="stylesheet" href="../assets/ui/bootstrap-icons-1.10.2/bootstrap-icons.css">
     <link rel="stylesheet" href="../assets/ui/css/global.css">
     <style>
-
+        .table-lg {
+            max-width: 1000px;
+        }
     </style>
 </head>
 
@@ -24,7 +26,7 @@
                 <div class="col-lg-12">
                     <div class="float-end">
                         <button data-bs-toggle="modal" data-bs-target="#editmaster" class="btn btn-md btn-secondary"
-                            onclick="editmaster({{ $id_master }},'{{ $m->nama }}','{{ $m->nik }}','{{ $m->alamat }}','{{ $m->tempat_lahir }}','{{ $m->tanggal_lahir }}','{{ $m->jenis_kelamin }}','{{ $m->agama }}','{{ $m->no_hp }}','{{ $m->bpjs_tk }}','{{ $m->id_jabatan }}','{{ $m->golongan }}','{{ $m->awal_kerja }}','{{ $m->status_pensiun }}')">
+                            onclick="editmaster({{ $id_master }},'{{ $m->nama }}','{{ $m->nik }}','{{ $m->alamat }}','{{ $m->tempat_lahir }}','{{ $m->tanggal_lahir }}','{{ $m->jenis_kelamin }}','{{ $m->agama }}','{{ $m->no_hp }}','{{ $m->id_jabatan }}','{{ $m->golongan }}','{{ $m->awal_kerja }}','{{ $m->status_pensiun }}')">
                             <i class="bi bi-pencil-square"></i>
                         </button>
                     </div>
@@ -99,7 +101,11 @@
                                 <h6 class="form-label text-form"><b>Pendidikan Terakhir</b></h6>
                             </div>
                             <div class="col-md-9">
-                                <label class="form-control" style="min-height: 35px">x</label>
+                                <label class="form-control" style="min-height: 35px">
+                                    @foreach ($pendidikanterakhir as $pt)
+                                        {{ $pt->nama_sekolah }}
+                                    @endforeach
+                                </label>
                             </div>
                         </div>
 
@@ -171,8 +177,7 @@
                             <h6><b>Tabel Riwayat Pendidikan</b></h6>
                         </div>
                         <div class="table-responsive">
-                            <table id='mTable' width='100%'
-                                class="table table-striped table-bordered dt-responsive">
+                            <table width='100%' class="table table-striped table-bordered">
                                 <thead>
                                     <tr style="background-color:#5F7A61;color:#ddd;font-weight:bold">
                                         <th>Tingkatan</th>
@@ -197,12 +202,12 @@
                                                         <button type="button" data-bs-toggle="modal"
                                                             data-bs-target="#editpendidikan"
                                                             onclick="editpendidikan({{ $p->id_pendidikan }},'{{ $p->tingkat_pendidikan }}','{{ $p->nama_sekolah }}','{{ $p->jurusan }}','{{ $p->tgl_awal }}','{{ $p->tgl_akhir }}')"
-                                                            class="btn btn-primary btn-block">
+                                                            class="btn btn-sm btn-primary btn-block">
                                                             <i class="bi bi-pencil-square"></i>
                                                         </button>
                                                     </div>
                                                     <div style="max-width:60px;">
-                                                        <a type="button" class="btn btn-danger btn-block"
+                                                        <a type="button" class="btn btn-sm btn-danger btn-block"
                                                             href="/hapuspendidikan/{{ $p->id_pendidikan }}">
                                                             <i class="bi bi-trash3-fill"></i>
                                                         </a>
@@ -217,7 +222,8 @@
                     </div>
                     <div class="col-lg-6 col-md-12">
                         <div class="float-end">
-                            <button class="btn btn-md btn-secondary">
+                            <button data-bs-toggle="modal" data-bs-target="#tambahriwayatkerja"
+                                class="btn btn-md btn-secondary">
                                 <i class="bi bi-plus-square"></i>
                             </button>
                         </div>
@@ -225,18 +231,48 @@
                             <h6><b>Tabel Riwayat Pekerjaan Sebelumnya</b></h6>
                         </div>
                         <div class="table-responsive">
-                            <table id='mTable' width='100%' class="table table-striped table-bordered">
+                            <table width='100%' class="table table-striped table-bordered">
                                 <thead>
                                     <tr style="background-color:#5F7A61;color:#ddd;font-weight:bold">
                                         <th>Nama Perusahaan</th>
                                         <th>Alamat</th>
-                                        <th>Tahun Masuk</th>
-                                        <th>Tahun Keluar</th>
+                                        <th>tanggal Masuk</th>
+                                        <th>Tanggal Keluar</th>
                                         <th>Jabatan Terakhir</th>
                                         <th>Alasan Pindah</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
+                                <tbody>
+                                    @foreach ($historykerja as $h)
+                                        <tr>
+                                            <td>{{ $h->nama_perusahaan }}</td>
+                                            <td>{{ $h->alamat }}</td>
+                                            <td>{{ $h->tahun_masuk }}</td>
+                                            <td>{{ $h->tahun_keluar }}</td>
+                                            <td>{{ $h->jabatan_terakhir }}</td>
+                                            <td>{{ $h->alasan_pindah }}</td>
+                                            <td>
+                                                <div class="row justify-content-center">
+                                                    <div style="max-width:60px">
+                                                        <button type="button" data-bs-toggle="modal"
+                                                            data-bs-target="#editriwayatkerja"
+                                                            onclick="editriwayatkerja({{ $h->id }},'{{ $h->nama_perusahaan }}','{{ $h->alamat }}','{{ $h->tahun_masuk }}','{{ $h->tahun_keluar }}','{{ $h->jabatan_terakhir }}','{{ $h->alasan_pindah }}')"
+                                                            class="btn btn-sm btn-primary btn-block">
+                                                            <i class="bi bi-pencil-square"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div style="max-width:60px;">
+                                                        <a type="button" class="btn btn-sm btn-danger btn-block"
+                                                            href="/hapusriwayatkerja/{{ $h->id }}">
+                                                            <i class="bi bi-trash3-fill"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -244,7 +280,8 @@
                 <div class="row col-lg-12 pt-3" style="margin-right: 0px !important">
                     <div class="col-lg-6 col-md-12">
                         <div class="float-end">
-                            <button class="btn btn-md btn-secondary">
+                            <button data-bs-toggle="modal" data-bs-target="#tambahbpjskes"
+                                class="btn btn-md btn-secondary">
                                 <i class="bi bi-plus-square"></i>
                             </button>
                         </div>
@@ -263,12 +300,43 @@
                                         <th>aksi</th>
                                     </tr>
                                 </thead>
+                                <tbody>
+                                    @foreach ($bpjskes as $kes)
+                                        <tr>
+                                            <td>{{ $kes->no_bpjs_kes }}</td>
+                                            <td>{{ $kes->nama }}</td>
+                                            <td>{{ $kes->tanggungan }}</td>
+                                            <td>{{ $kes->kelas }}</td>
+                                            <td>{{ $kes->iuran }}</td>
+                                            <td>
+                                                <div class="row justify-content-center">
+                                                    <div style="max-width:60px">
+                                                        <button type="button" data-bs-toggle="modal"
+                                                            data-bs-target="#editbpjskes"
+                                                            onclick="editbpjskes({{ $kes->id }},'{{ $kes->no_bpjs_kes }}','{{ $kes->nama }}','{{ $kes->tanggungan }}','{{ $kes->kelas }}','{{ $kes->iuran }}')"
+                                                            class="btn btn-sm btn-primary btn-block">
+                                                            <i class="bi bi-pencil-square"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div style="max-width:60px;">
+                                                        <a type="button" class="btn btn-sm btn-danger btn-block"
+                                                            href="/hapusbpjskes/{{ $kes->id }}">
+                                                            <i class="bi bi-trash3-fill"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
                             </table>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-12">
                         <div class="float-end">
-                            <button class="btn btn-md btn-secondary">
+                            <button data-bs-toggle="modal" data-bs-target="#tambahbpjstk"
+                                class="btn btn-md
+                                btn-secondary">
                                 <i class="bi bi-plus-square"></i>
                             </button>
                         </div>
@@ -341,10 +409,65 @@
         $(this).select();
     });
 </script>
-
 @include('DetailMaster.editdetailmaster')
 @include('DetailMaster.editfotomaster')
 @include('DetailMaster.tambahpendidikanmaster')
 @include('DetailMaster.editpendidikan')
+@include('DetailMaster.tambahriwayatpekerjaan')
+@include('DetailMaster.editriwayatpekerjaan')
+@include('DetailMaster.tambahbpjskes')
+@include('DetailMaster.editbpjskes')
+
+<!-- Modal tambah bpjskes -->
+<div class="modal fade" id="tambahbpjstk" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Tambah BPJS Ketenagakerjaan</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <form action="/postbpjstk" enctype="multipart/form-data" method="post">
+                        @csrf
+                        <div class="row mb-3">
+                            <div class="col-lg-3">
+                                <label for="">Nomor BPJS Ketenagakerjaan</label>
+                            </div>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control" placeholder="Nomor BPJS" required
+                                    name="no_bpjs_tk">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-lg-3">
+                                <label for="">Tanggal Kepesertaan</label>
+                            </div>
+                            <div class="col-lg-9">
+                                <input type="date" class="form-control" placeholder="nama" name="nama">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-lg-3">
+                                <label for="">Iuran</label>
+                            </div>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control" placeholder="iuran" name="iuran">
+                            </div>
+                        </div>
+                        <input type="hidden" class="form-control" id="master" name="id_master"
+                            value="{{ $id_master }}">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 
 </html>

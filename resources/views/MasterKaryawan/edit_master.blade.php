@@ -14,14 +14,19 @@
                           <label for="">Nama</label>
                           <input type="text" id="nama" class="form-control" name="nama">
                           <input type="hidden" id="id_master" class="form-control mb-3" name="id_master">
+                          <div class="col-lg-12 mt-3">
+                              <label for="">Alamat</label>
+                              <input id="alamat" type="text" class="form-control" name="alamat">
+                          </div>
                           <div class="row">
                               <div class="col-lg-6 mt-3">
                                   <label for="">NIK</label>
                                   <input id="nik" type="text" class="form-control" name="nik">
                               </div>
+
                               <div class="col-lg-6 mt-3">
-                                  <label for="">Alamat</label>
-                                  <input id="alamat" type="text" class="form-control" name="alamat">
+                                  <label for="">No. HP</label>
+                                  <input type="number" id="no_hp" class="form-control" name="no_hp">
                               </div>
                           </div>
                           <div class="row">
@@ -59,16 +64,6 @@
                           </div>
                           <div class="row">
                               <div class="col-lg-6 mt-3">
-                                  <label for="">No. HP</label>
-                                  <input type="number" id="no_hp" class="form-control" name="no_hp">
-                              </div>
-                              <div class="col-lg-6 mt-3">
-                                  <label for="">BPJS TK</label>
-                                  <input type="text" id="id_bpjs_tk" class="form-control" name="id_bpjs_tk">
-                              </div>
-                          </div>
-                          <div class="row">
-                              <div class="col-lg-6 mt-3">
                                   <label for="">Jabatan</label>
                                   <select name="id_jabatan" id="id_jabatann" class="form-select" required>
                                       <option value="" selected>Pilih Jabatan</option>
@@ -79,7 +74,7 @@
                               </div>
                               <div class="col-lg-6 mt-3">
                                   <label for="">Golongan</label>
-                                  <input type="text" class="form-control" id="golongan" name="golongan">
+                                  <input type="text" class="form-control" id="golongann" name="golongan">
                               </div>
                           </div>
                           <div class="row">
@@ -89,7 +84,7 @@
                               </div>
                               <div class="col-lg-6 mt-3">
                                   <label for="">Status pensiun</label>
-                                  <input type="text" id="status_pensiun" class="form-control"
+                                  <input type="text" id="status_pensiunn" class="form-control"
                                       name="status_pensiun">
                               </div>
                           </div>
@@ -105,7 +100,7 @@
   </div>
 
   <script>
-      function edit(id_master, nama, nik, alamat, tempat_lahir, tanggal_lahir, jenis_kelamin, agama, no_hp, id_bpjs_tk,
+      function edit(id_master, nama, nik, alamat, tempat_lahir, tanggal_lahir, jenis_kelamin, agama, no_hp,
           id_jabatan, golongan, awal_kerja, status_pensiun) {
           console.log(id_jabatan)
           document.getElementById('id_master').value = id_master;
@@ -117,10 +112,9 @@
           document.getElementById('jenis_kelamin').value = jenis_kelamin;
           document.getElementById('agamaa').value = agama;
           document.getElementById('no_hp').value = no_hp;
-          document.getElementById('id_bpjs_tk').value = id_bpjs_tk;
           document.getElementById('id_jabatann').value = id_jabatan;
-          document.getElementById('golongan').value = golongan;
+          document.getElementById('golongann').value = golongan;
           document.getElementById('awal_kerja').value = awal_kerja;
-          document.getElementById('status_pensiun').value = status_pensiun;
+          document.getElementById('status_pensiunn').value = status_pensiun;
       }
   </script>

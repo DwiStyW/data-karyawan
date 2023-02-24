@@ -123,7 +123,8 @@
                         // console.log(row)
                         return '<div class="row justify-content-center" style="min-width:110px;"><div style="max-width:60px"><button type="button" class="btn btn-sm btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#editjabatan" onclick="editjabatan(`' +
                             row.id_jabatan + '`,`' + row.nama_jabatan + '`,`' + row.departemen +
-                            '`,`' + row.bagian + '`,`' + row.sie +
+                            '`,`' + row.bagian + '`,`' + row.sie + '`,`' + row.level + '`,`' +
+                            row.pid +
                             '`)"><i class="bi bi-pencil-square"></i></button></div><div style="max-width:60px"><button type="button" class="btn btn-sm btn-danger btn-block" data-bs-toggle="modal" data-bs-target="#hapusjabatan" onclick="hapusjabatan(`' +
                             row.id_jabatan + '`,`' + row.nama_jabatan +
                             '`)" ><i class="bi bi-trash3-fill"></i></button></div></div>';

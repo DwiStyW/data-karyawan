@@ -416,9 +416,9 @@
                                     <th>No</th>
                                     <th>Tanggal</th>
                                     <th>Jenis</th>
-                                    <th>Deskripsi</th>
+                                    <th class="text-center">Deskripsi</th>
                                     <th>Keterangan</th>
-                                    <th>Aksi</th>
+                                    {{-- <th>Aksi</th> --}}
                                 </tr>
                             </thead>
                             <tbody>
@@ -438,7 +438,7 @@
                                                 {{ $rk->keterangan }}
                                             @endif
                                         </td>
-                                        <td>
+                                        {{-- <td>
                                             <div class="row justify-content-center">
                                                 <div style="max-width:60px">
                                                     <button type="button" data-bs-toggle="modal"
@@ -457,7 +457,7 @@
                                                     </button>
                                                 </div>
                                             </div>
-                                        </td>
+                                        </td> --}}
                                     </tr>
                                 @endforeach
                             </tbody>

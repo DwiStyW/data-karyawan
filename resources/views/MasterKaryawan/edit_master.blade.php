@@ -42,7 +42,7 @@
                           <div class="row">
                               <div class="col-lg-6 mt-3">
                                   <label for="">Jenis Kelamin</label>
-                                  <select type="select" id="jenis_kelamin" class="form-control" name="jenis_kelamin">
+                                  <select type="select" id="jenis_kelamin" class="form-select" name="jenis_kelamin">
                                       <option value disabled selected>Pilih Jenis Kelamin</option>
                                       <option value="laki-laki">Laki-laki</option>
                                       <option value="perempuan">Perempuan</option>
@@ -62,7 +62,7 @@
                                   </select>
                               </div>
                           </div>
-                          <div class="row">
+                          {{-- <div class="row">
                               <div class="col-lg-6 mt-3">
                                   <label for="">Jabatan</label>
                                   <select name="id_jabatan" id="id_jabatann" class="form-select" required>
@@ -87,7 +87,7 @@
                                   <input type="text" id="status_pensiunn" class="form-control"
                                       name="status_pensiun">
                               </div>
-                          </div>
+                          </div> --}}
                   </div>
               </div>
               <div class="modal-footer">
@@ -100,9 +100,8 @@
   </div>
 
   <script>
-      function edit(id_master, nama, nik, alamat, tempat_lahir, tanggal_lahir, jenis_kelamin, agama, no_hp,
-          id_jabatan, golongan, awal_kerja, status_pensiun) {
-          console.log(id_jabatan)
+      function edit(id_master, nama, nik, alamat, tempat_lahir, tanggal_lahir, jenis_kelamin, agama, no_hp) {
+          console.log(id_master)
           document.getElementById('id_master').value = id_master;
           document.getElementById('nama').value = nama;
           document.getElementById('nik').value = nik;
@@ -112,9 +111,9 @@
           document.getElementById('jenis_kelamin').value = jenis_kelamin;
           document.getElementById('agamaa').value = agama;
           document.getElementById('no_hp').value = no_hp;
-          document.getElementById('id_jabatann').value = id_jabatan;
-          document.getElementById('golongann').value = golongan;
-          document.getElementById('awal_kerja').value = awal_kerja;
-          document.getElementById('status_pensiunn').value = status_pensiun;
+          //   document.getElementById('id_jabatann').value = id_jabatan;
+          //   document.getElementById('golongann').value = golongan;
+          //   document.getElementById('awal_kerja').value = awal_kerja;
+          //   document.getElementById('status_pensiunn').value = status_pensiun;
       }
   </script>

@@ -7,8 +7,10 @@
         <div class="nonmobile" style="position: fixed;right:10px;margin-right:20px">
             <div class="navbar-brand d-flex align-items-top order-lg-2 me-lg-0">
                 <div class="dropdown">
-                    <i class="bi bi-person-circle"></i>
-                    <b>&nbsp;{{ auth()->user()->name }}</b>
+                    <div class="text-white">
+                        <i class="bi bi-person-circle"></i>
+                        <b>&nbsp;{{ auth()->user()->name }}</b>
+                    </div>
                     <div class="dropdown-content text-center">
                         <a href="/logout" class="btn">
                             <i class="bi bi-box-arrow-left"></i>

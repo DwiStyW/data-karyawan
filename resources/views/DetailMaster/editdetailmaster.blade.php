@@ -62,7 +62,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="row">
+                        {{-- <div class="row">
                             <div class="col-lg-6 mt-3">
                                 <label for="">Jabatan</label>
                                 <select name="id_jabatan" id="id_jabatan" class="form-select" required>
@@ -87,7 +87,7 @@
                                 <input type="text" id="status_pensiun" class="form-control"
                                     name="status_pensiun">
                             </div>
-                        </div>
+                        </div> --}}
                 </div>
             </div>
             <div class="modal-footer">

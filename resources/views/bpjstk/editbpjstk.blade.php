@@ -1,5 +1,5 @@
 <!-- Modal edit bpjskes -->
-<div class="modal fade" id="editbpjskes" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+<div class="modal fade" id="editbpjstk" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
@@ -9,33 +9,38 @@
             </div>
             <div class="modal-body">
                 <div class="container-fluid">
-                    <form action="/updatebpjskes" enctype="multipart/form-data" method="post">
+                    <form action="/updatebpjstk" enctype="multipart/form-data" method="post">
                         @csrf
                         <div class="row mb-3">
                             <div class="col-lg-3">
-                                <label for="">Nomor BPJS Kesehatan</label>
+                                <label for="">Pilih Master</label>
+                            </div>
+                            <div class="col-lg-9">
+                                <select class="form-select" name="id_master" id="id_master"
+                                    onchange="selectdepartemen()">
+                                    <option value="0" disabled selected>Pilih Master</option>
+                                    @foreach ($master as $m)
+                                        <option value="{{ $m->id }}">{{ $m->nama }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-lg-3">
+                                <label for="">Nomor BPJS Ketenagakerjaan</label>
                             </div>
                             <div class="col-lg-9">
                                 <input type="text" class="form-control" placeholder="Nomor BPJS" required
-                                    name="no_bpjs_kes" id="no_bpjs_kes">
+                                    name="no_bpjs_tk" id="no_bpjs_tk">
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-lg-3">
-                                <label for="">Nama</label>
+                                <label for="">Tanggal Kepesertaan</label>
                             </div>
                             <div class="col-lg-9">
-                                <input type="text" class="form-control" placeholder="nama" name="nama"
-                                    id="nama_pengguna">
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-lg-3">
-                                <label for="">Kelas</label>
-                            </div>
-                            <div class="col-lg-9">
-                                <input type="text" class="form-control" placeholder="kelas" name="kelas"
-                                    id="kelas">
+                                <input type="date" class="form-control" placeholder="nama" name="tgl_kepesertaan"
+                                    id="tgl_kepesertaan">
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -44,12 +49,10 @@
                             </div>
                             <div class="col-lg-9">
                                 <input type="text" class="form-control" placeholder="iuran" name="iuran"
-                                    id="iuran">
+                                    id="iurantk">
                             </div>
                         </div>
-                        <input type="hidden" class="form-control" id="master" name="id_master"
-                            value="{{ $id_master }}">
-                        <input type="hidden" class="form-control" id="id_bpjskes" name="id_bpjskes">
+                        <input type="hidden" class="form-control" id="id_bpjstk" name="id_bpjstk">
                 </div>
             </div>
             <div class="modal-footer">
@@ -61,12 +64,12 @@
     </div>
 </div>
 <script>
-    function editbpjskes(id, nomor, nama, kelas, iuran) {
-        // console.log(id, nomor, nama, tanggungan, kelas, iuran)
-        document.getElementById('id_bpjskes').value = id;
-        document.getElementById('no_bpjs_kes').value = nomor;
-        document.getElementById('nama_pengguna').value = nama;
-        document.getElementById('kelas').value = kelas;
-        document.getElementById('iuran').value = iuran;
+    function editbpjstk(id, id_master, nomor, tanggal, iuran) {
+        console.log(id, id_master, nomor, tanggal, iuran)
+        document.getElementById('id_bpjstk').value = id;
+        document.getElementById('no_bpjs_tk').value = nomor;
+        document.getElementById('tgl_kepesertaan').value = tanggal;
+        document.getElementById('iurantk').value = iuran;
+        document.getElementById('id_master').value = id_master;
     }
 </script>

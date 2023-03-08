@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bagian;
+use App\Models\Departemen;
 use App\Models\Jabatan;
 use App\Models\Master;
+use App\Models\Sie;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class JabatanController extends Controller
 {
@@ -16,91 +20,15 @@ class JabatanController extends Controller
      */
     public function index()
     {
+        $Tjabatan=DB::select('SELECT jabatan.*, nama_jabatan,nama_departemen,nama_bagian,nama_sie FROM jabatan LEFT JOIN departemen ON departemen.id=jabatan.departemen LEFT JOIN bagian ON bagian.id=jabatan.bagian LEFT JOIN sie ON sie.id=jabatan.sie');
         $jabatan=Jabatan::get();
-        return view('jabatan.jabatan',compact('jabatan'));
+        $departemen=Departemen::get();
+        $bagian=Bagian::get();
+        // dd($Tjabatan);
+        $sie=Sie::get();
+        return view('jabatan.jabatan',compact('Tjabatan','jabatan','departemen','bagian','sie'));
     }
-    public function getJabatan(Request $request){
 
-        ## Read value
-        $draw = $request->get('draw');
-        $start = $request->get("start");
-        $rowperpage = $request->get("length"); // Rows display per page
-
-        $columnIndex_arr = $request->get('order');
-        $columnName_arr = $request->get('columns');
-        $order_arr = $request->get('order');
-        $search_arr = $request->get('search');
-
-        $columnIndex = $columnIndex_arr[0]['column']; // Column index
-        $columnName = $columnName_arr[$columnIndex]['data']; // Column name
-        $columnSortOrder = $order_arr[0]['dir']; // asc or desc
-        $searchValue = $search_arr['value']; // Search value
-
-        // Total records
-        $totalRecords = Jabatan::select('count(*) as allcount')->count();
-        $totalRecordswithFilter = Jabatan::select('count(*) as allcount')->where('nama_jabatan', 'like', '%' .$searchValue . '%')->count();
-
-        // Fetch records
-        if($rowperpage != -1){
-            $records = Jabatan::orderBy($columnName,$columnSortOrder)
-               ->where('jabatan.nama_jabatan', 'like', '%' .$searchValue . '%')
-               ->orwhere('jabatan.departemen', 'like', '%' .$searchValue . '%')
-               ->orwhere('jabatan.bagian', 'like', '%' .$searchValue . '%')
-               ->orwhere('jabatan.sie', 'like', '%' .$searchValue . '%')
-              ->select('jabatan.*')
-              ->skip($start)
-              ->take($rowperpage)
-              ->get();
-        }else{
-            $records = Jabatan::orderBy($columnName,$columnSortOrder)
-               ->where('jabatan.nama_jabatan', 'like', '%' .$searchValue . '%')
-               ->orwhere('jabatan.departemen', 'like', '%' .$searchValue . '%')
-               ->orwhere('jabatan.bagian', 'like', '%' .$searchValue . '%')
-               ->orwhere('jabatan.sie', 'like', '%' .$searchValue . '%')
-              ->select('jabatan.*')
-              ->skip($start)
-              ->take($totalRecords)
-              ->get();
-        }
-
-
-        $data_arr = array();
-        $no=$start;
-
-
-        foreach($records as $record){
-           $no +=1;
-           $id=$record->id;
-           $nama_jabatan = $record->nama_jabatan;
-           $departemen = $record->departemen;
-           $bagian = $record->bagian;
-           $sie = $record->sie;
-           $level = $record->level;
-           $pid = $record->pid;
-           $tags = $record->tags;
-
-           $data_arr[] = array(
-               "id" => $no,
-               "id_jabatan" => $id,
-               "nama_jabatan" => $nama_jabatan,
-               "departemen" => $departemen,
-               "bagian" => $bagian,
-               "sie" => $sie,
-               "level" => $level,
-               "pid" => $pid,
-               "tags" => $tags,
-           );
-        }
-
-        $response = array(
-           "draw" => intval($draw),
-           "iTotalRecords" => $totalRecords,
-           "iTotalDisplayRecords" => $totalRecordswithFilter,
-           "aaData" => $data_arr
-        );
-
-        return response()->json($response);
-     }
 
     /**
      * Show the form for creating a new resource.

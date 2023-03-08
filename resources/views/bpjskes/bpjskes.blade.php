@@ -19,17 +19,14 @@
     <main class="wrapper">
         <div class="container-custome">
             <header class="mb-3">
-                <h3 class="title-pages fw-bold">Data Jabatan</h3>
+                <h3 class="title-pages fw-bold">Data BPJS KES</h3>
             </header>
             @include('alert')
             <div class="pb-3">
-                <button data-bs-toggle="modal" data-bs-target="#tambah_Jabatan" class="btn btn-sm btn-secondary">
+                <button data-bs-toggle="modal" data-bs-target="#tambahbpjskes" class="btn btn-sm btn-secondary">
                     <i class="bi bi-plus-square-fill"></i>
-                    Jabatan
+                    BPJS KES
                 </button>
-                <a href="master" class="btn btn-sm btn-secondary">
-                    Karyawan
-                </a>
             </div>
 
             <div>
@@ -37,10 +34,11 @@
                     <thead>
                         <tr style="background-color:#5F7A61;color:#ddd;font-weight:bold">
                             <th data-priority="1">No</th>
-                            <th data-priority="1">Nama Jabatan</th>
-                            <th data-priority="3">Departemen</th>
-                            <th data-priority="3">Bagian</th>
-                            <th data-priority="3">Sie</th>
+                            <th data-priority="1">Nama</th>
+                            <th data-priority="1">Nama Penanggung</th>
+                            <th data-priority="3">Nomor BPJS</th>
+                            <th data-priority="3">Kelas</th>
+                            <th data-priority="3">Iuran</th>
                             <th data-priority="2" class="text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -48,24 +46,25 @@
                         @php
                             $no = 1;
                         @endphp
-                        @foreach ($Tjabatan as $j)
+                        @foreach ($bpjskes as $bkes)
                             <tr>
                                 <td>{{ $no++ }}</td>
-                                <td>{{ $j->nama_jabatan }}</td>
-                                <td>{{ $j->nama_departemen }}</td>
-                                <td>{{ $j->nama_bagian }}</td>
-                                <td>{{ $j->nama_sie }}</td>
+                                <td>{{ $bkes->nama }}</td>
+                                <td>{{ $bkes->nama_master }}</td>
+                                <td>{{ $bkes->no_bpjs_kes }}</td>
+                                <td>{{ $bkes->kelas }}</td>
+                                <td>{{ $bkes->iuran }}</td>
                                 <td>
                                     <div class="row justify-content-center" style="min-width:110px;">
                                         <div style="max-width:60px"><button type="button"
                                                 class="btn btn-sm btn-primary btn-block" data-bs-toggle="modal"
-                                                data-bs-target="#editjabatan"
-                                                onclick="editjabatan({{ $j->id }},'{{ $j->nama_jabatan }}','{{ $j->departemen }}','{{ $j->bagian }}','{{ $j->sie }}','{{ $j->level }}','{{ $j->pid }}')">
+                                                data-bs-target="#editbpjskes"
+                                                onclick="editbpjskes({{ $bkes->id }},'{{ $bkes->no_bpjs_kes }}','{{ $bkes->nama }}','{{ $bkes->kelas }}','{{ $bkes->iuran }}','{{ $bkes->id_master }}')">
                                                 <i class="bi bi-pencil-square"></i></button></div>
                                         <div style="max-width:60px"><button type="button"
                                                 class="btn btn-sm btn-danger btn-block" data-bs-toggle="modal"
-                                                data-bs-target="#hapusjabatan"
-                                                onclick="hapusjabatan({{ $j->id }},'{{ $j->nama_jabatan }}')"><i
+                                                data-bs-target="#hapusbpjskes"
+                                                onclick="hapusbpjskes({{ $bkes->id }},'{{ $bkes->no_bpjs_kes }}')"><i
                                                     class="bi bi-trash3-fill"></i></button></div>
                                     </div>
                                 </td>
@@ -83,6 +82,7 @@
 <script src="../assets/ui/jquery-3.6.1/jquery-3.6.1.min.js"></script>
 <script src="../assets/ui/bootstrap-5.2.1-dist/js/bootstrap.bundle.min.js"></script>
 <script>
+    console.log(@json($bpjskes))
     $(document).on("scroll", function() {
         if ($(document).scrollTop() > 100) {
             $(".navbar").addClass("border-bottom");
@@ -98,7 +98,6 @@
 <script type="text/javascript" src="../assets/DataTables/datatables.min.js"></script>
 <!-- Script -->
 <script>
-    console.log(@json($Tjabatan))
     $(document).ready(function() {
         $('#table').DataTable({
             processing: true,
@@ -134,8 +133,8 @@
         });
     });
 </script>
-@include('jabatan.tambahjabatan')
-@include('jabatan.editjabatan')
-@include('jabatan.hapusjabatan')
+@include('bpjskes.tambahbpjskes')
+@include('bpjskes.editbpjskes')
+@include('bpjskes.hapusbpjskes')
 
 </html>

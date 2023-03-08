@@ -24,7 +24,13 @@
                                 <label for="">Departemen</label>
                             </div>
                             <div class="col-lg-9">
-                                <input type="text" class="form-control" name="departemen">
+                                <select class="form-select" name="departemen" id="departemenn"
+                                    onchange="selectdepartemen()">
+                                    <option value="0" selected>Pilih Departemen</option>
+                                    @foreach ($departemen as $d)
+                                        <option value="{{ $d->id }}">{{ $d->nama_departemen }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -32,7 +38,12 @@
                                 <label for="">Bagian</label>
                             </div>
                             <div class="col-lg-9">
-                                <input type="text" class="form-control" name="bagian">
+                                <select class="form-select" name="bagian" id="bagiann" onchange="selectbagian()">
+                                    <option value="0" selected>Pilih Bagian</option>
+                                    @foreach ($bagian as $b)
+                                        <option value="{{ $b->id }}">{{ $b->nama_bagian }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -40,7 +51,12 @@
                                 <label for="">Sie</label>
                             </div>
                             <div class="col-lg-9">
-                                <input type="text" class="form-control" name="sie">
+                                <select class="form-select" name="sie" id="siee">
+                                    <option value="0" selected>Pilih Sie</option>
+                                    @foreach ($sie as $s)
+                                        <option value="{{ $s->id }}">{{ $s->nama_sie }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -84,10 +100,66 @@
     </div>
 </div>
 <script>
-    console.log(@json($jabatan))
+    // selectdepartemen
+    // console.log(@json($bagian))
+    var bagian = @json($bagian);
+    var sie = @json($sie);
+
+    function selectdepartemen() {
+        var departemen = document.getElementById('departemenn').value;
+        var filterderpartemen = bagian.filter(b => b.id_departemen == departemen);
+        console.log(filterderpartemen);
+        str = "<select class='form-select' name='bagian' id='bagiann'>";
+        str += "<option value='0' selected>Pilih Bagian</option>";
+
+        for (let index = 0; index < filterderpartemen.length; index++) {
+            //const element = array[index];
+            console.log(filterderpartemen[index].nama_bagian);
+            str += "<option value=" + filterderpartemen[index].id + ">" + filterderpartemen[index].nama_bagian +
+                "</option>";
+        }
+        str += "</select>";
+        // console.log(str);
+        document.getElementById('bagiann').innerHTML = str;
+
+        console.log(sie);
+        strsie = "<select class='form-select' name='sie' id='siee'>";
+        strsie += "<option value='0' selected>Pilih Sie</option>";
+
+        for (let index = 0; index < sie.length; index++) {
+            //const element = array[index];
+            console.log(sie[index].nama_bagian);
+            strsie += "<option value=" + sie[index].id + ">" + sie[index].nama_sie +
+                "</option>";
+        }
+        strsie += "</select>";
+        document.getElementById('siee').innerHTML = strsie;
+
+
+    }
+
+    // selectbagian
+    function selectbagian() {
+        var bagian = document.getElementById('bagiann').value;
+        var filtersie = sie.filter(b => b.id_bagian == bagian);
+        console.log(filtersie);
+        str = "<select class='form-select' name='sie' id='siee'>";
+        str += "<option value='0' selected>Pilih Sie</option>";
+
+        for (let index = 0; index < filtersie.length; index++) {
+            //const element = array[index];
+            console.log(filtersie[index].nama_sie);
+            str += "<option value=" + filtersie[index].id + ">" + filtersie[index].nama_sie +
+                "</option>";
+        }
+        str += "</select>";
+        // console.log(str);
+        document.getElementById('siee').innerHTML = str;
+    }
+
+    // selectpid
+    // console.log(@json($jabatan))
     var pid = @json($jabatan);
-    var filtered = pid.filter(p => p.level < 5)
-    console.log(filtered)
 
     function selectpid() {
         var level = document.getElementById('level').value;
@@ -102,7 +174,7 @@
             str += "<option value=" + filtered[index].id + ">" + filtered[index].nama_jabatan + "</option>";
         }
         str += "</select>";
-        console.log(str);
+        // console.log(str);
         document.getElementById('pid').innerHTML = str;
 
     }

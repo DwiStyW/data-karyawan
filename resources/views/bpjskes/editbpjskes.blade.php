@@ -13,6 +13,20 @@
                         @csrf
                         <div class="row mb-3">
                             <div class="col-lg-3">
+                                <label for="">Pilih Karyawan</label>
+                            </div>
+                            <div class="col-lg-9">
+                                <select class="form-select" name="id_master" id="id_master"
+                                    onchange="selectdepartemen()">
+                                    <option value="0" disabled selected>Pilih Karyawan</option>
+                                    @foreach ($master as $m)
+                                        <option value="{{ $m->id }}">{{ $m->nama }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-lg-3">
                                 <label for="">Nomor BPJS Kesehatan</label>
                             </div>
                             <div class="col-lg-9">
@@ -47,8 +61,6 @@
                                     id="iuran">
                             </div>
                         </div>
-                        <input type="hidden" class="form-control" id="master" name="id_master"
-                            value="{{ $id_master }}">
                         <input type="hidden" class="form-control" id="id_bpjskes" name="id_bpjskes">
                 </div>
             </div>
@@ -61,12 +73,13 @@
     </div>
 </div>
 <script>
-    function editbpjskes(id, nomor, nama, kelas, iuran) {
-        // console.log(id, nomor, nama, tanggungan, kelas, iuran)
+    function editbpjskes(id, nomor, nama, kelas, iuran, id_master) {
+        console.log(id, nomor, nama, kelas, iuran, id_master)
         document.getElementById('id_bpjskes').value = id;
         document.getElementById('no_bpjs_kes').value = nomor;
         document.getElementById('nama_pengguna').value = nama;
         document.getElementById('kelas').value = kelas;
         document.getElementById('iuran').value = iuran;
+        document.getElementById('id_master').value = id_master;
     }
 </script>

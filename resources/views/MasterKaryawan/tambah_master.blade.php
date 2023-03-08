@@ -76,8 +76,16 @@
                             </div>
                             <div class="col-lg-6 mt-3">
                                 <label for="">Golongan</label>
-                                <input type="text" class="form-control" required name="golongan"
-                                    placeholder="golongan">
+                                <select name="golongan" class="form-select" required>
+                                    <option value="" selected disabled>Pilih Golongan</option>
+                                    <option value="Golongan I">Golongan I</option>
+                                    <option value="Golongan II">Golongan II</option>
+                                    <option value="Golongan III">Golongan III</option>
+                                    <option value="Golongan IV">Golongan IV</option>
+                                    <option value="Kontrak">Kontrak</option>
+                                    <option value="Tetap">Tetap</option>
+                                    <option value="Harian Lepas">Harian Lepas</option>
+                                </select>
                             </div>
                         </div>
                         <div class="row">
@@ -85,11 +93,14 @@
                                 <label for="">Awal kerja</label>
                                 <input type="date" class="form-control" required name="awal_kerja">
                             </div>
-                            <div class="col-lg-6 mt-3">
-                                <label for="">Status pensiun</label>
-                                <input type="text" class="form-control" required name="status_pensiun"
-                                    placeholder="status pensiun">
-                            </div>
+                            {{-- <div class="col-lg-6 mt-3">
+                                <label for="">Status</label>
+                                <select name="status_pensiun" class="form-select" required>
+                                    <option value="" selected disabled>Pilih Status</option>
+                                    <option value="Aktif">Aktif</option>
+                                    <option value="Non Aktif">Non Aktif</option>
+                                </select>
+                            </div> --}}
                         </div>
                 </div>
             </div>

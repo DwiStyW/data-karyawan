@@ -25,8 +25,11 @@
             @foreach ($master as $m)
                 <div class="col-lg-12">
                     <div class="float-end">
+                        <a target="_blank" class="btn btn-md btn-secondary" href="/print/{{ $id_master }}">
+                            <i class="bi bi-printer"></i>
+                        </a>
                         <button data-bs-toggle="modal" data-bs-target="#editmaster" class="btn btn-md btn-secondary"
-                            onclick="editmaster({{ $id_master }},'{{ $m->nama }}','{{ $m->nik }}','{{ $m->alamat }}','{{ $m->tempat_lahir }}','{{ $m->tanggal_lahir }}','{{ $m->jenis_kelamin }}','{{ $m->agama }}','{{ $m->no_hp }}','{{ $m->id_jabatan }}','{{ $m->golongan }}','{{ $m->awal_kerja }}','{{ $m->status_pensiun }}')">
+                            onclick="editmaster({{ $id_master }},'{{ $m->nama }}','{{ $m->nik }}','{{ $m->alamat }}','{{ $m->tempat_lahir }}','{{ $m->tanggal_lahir }}','{{ $m->jenis_kelamin }}','{{ $m->agama }}','{{ $m->no_hp }}')">
                             <i class="bi bi-pencil-square"></i>
                         </button>
                     </div>
@@ -83,7 +86,7 @@
                                 <h6 class="form-label text-form"><b>Departemen</b></h6>
                             </div>
                             <div class="col-md-9">
-                                <label class="form-control" style="min-height: 35px">{{ $m->departemen }}</label>
+                                <label class="form-control" style="min-height: 35px">{{ $m->nama_departemen }}</label>
                             </div>
                         </div>
 
@@ -148,7 +151,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-control"
-                                            style="min-height: 35px">{{ $m->awal_kerja }}</label>
+                                            style="min-height: 35px">{{ $m->tanggal }}</label>
                                     </div>
                                 </div>
                             </div>
@@ -158,7 +161,16 @@
                                         <h6 class="form-label text-form"><b>Masa Kerja</b></h6>
                                     </div>
                                     <div class="col-md-8">
-                                        <label class="form-control" style="min-height: 35px">x</label>
+                                        <label class="form-control" style="min-height: 35px">
+                                            @php
+                                                $sekarang = strtotime(date('Y-m-d'));
+                                                $tglgabung = strtotime($m->tanggal);
+                                                $awal = date_create($m->tanggal);
+                                                $akhir = date_create();
+                                                $diff = date_diff($akhir, $awal);
+                                                echo $hari = $diff->y . ' Tahun ' . $diff->m . ' Bulan';
+                                            @endphp
+                                        </label>
                                     </div>
                                 </div>
                             </div>
@@ -294,7 +306,6 @@
                                     <tr style="background-color:#5F7A61;color:#ddd;font-weight:bold">
                                         <th>Nomor BPJS</th>
                                         <th>Nama</th>
-                                        <th>Tanggungan</th>
                                         <th>Kelas</th>
                                         <th>Iuran</th>
                                         <th>aksi</th>
@@ -305,7 +316,6 @@
                                         <tr>
                                             <td>{{ $kes->no_bpjs_kes }}</td>
                                             <td>{{ $kes->nama }}</td>
-                                            <td>{{ $kes->tanggungan }}</td>
                                             <td>{{ $kes->kelas }}</td>
                                             <td>{{ $kes->iuran }}</td>
                                             <td>
@@ -313,16 +323,18 @@
                                                     <div style="max-width:60px">
                                                         <button type="button" data-bs-toggle="modal"
                                                             data-bs-target="#editbpjskes"
-                                                            onclick="editbpjskes({{ $kes->id }},'{{ $kes->no_bpjs_kes }}','{{ $kes->nama }}','{{ $kes->tanggungan }}','{{ $kes->kelas }}','{{ $kes->iuran }}')"
+                                                            onclick="editbpjskes({{ $kes->id }},'{{ $kes->no_bpjs_kes }}','{{ $kes->nama }}','{{ $kes->kelas }}','{{ $kes->iuran }}')"
                                                             class="btn btn-sm btn-primary btn-block">
                                                             <i class="bi bi-pencil-square"></i>
                                                         </button>
                                                     </div>
                                                     <div style="max-width:60px;">
-                                                        <a type="button" class="btn btn-sm btn-danger btn-block"
-                                                            href="/hapusbpjskes/{{ $kes->id }}">
+                                                        <button type="button" data-bs-toggle="modal"
+                                                            data-bs-target="#hapusbpjskes"
+                                                            onclick="hapusbpjskes({{ $kes->id }},'{{ $kes->no_bpjs_kes }}')"
+                                                            class="btn btn-sm btn-danger btn-block">
                                                             <i class="bi bi-trash3-fill"></i>
-                                                        </a>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </td>
@@ -353,13 +365,44 @@
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
+                                <tbody>
+                                    @foreach ($bpjstk as $tk)
+                                        <tr>
+                                            <td>{{ $tk->no_bpjs_tk }}</td>
+                                            <td>{{ $tk->tgl_kepesertaan }}</td>
+                                            <td>{{ $tk->iuran }}</td>
+                                            <td>
+                                                <div class="row justify-content-center">
+                                                    <div style="max-width:60px">
+                                                        <button type="button" data-bs-toggle="modal"
+                                                            data-bs-target="#editbpjstk"
+                                                            onclick="editbpjstk({{ $tk->id }},'{{ $tk->no_bpjs_tk }}','{{ $tk->tgl_kepesertaan }}','{{ $tk->iuran }}')"
+                                                            class="btn btn-sm btn-primary btn-block">
+                                                            <i class="bi bi-pencil-square"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div style="max-width:60px;">
+                                                        <button type="button" data-bs-toggle="modal"
+                                                            data-bs-target="#hapusbpjstk"
+                                                            onclick="hapusbpjstk({{ $tk->id }},'{{ $tk->no_bpjs_tk }}')"
+                                                            class="btn btn-sm btn-danger btn-block">
+                                                            <i class="bi bi-trash3-fill"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-12 pt-3">
                     <div class="float-end">
-                        <button class="btn btn-md btn-secondary">
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#tambahriwayatkaryawan"
+                            onclick="tambahriwayatkaryawan('{{ $m->nama_jabatan }}')"
+                            class="btn btn-md btn-secondary">
                             <i class="bi bi-plus-square"></i>
                         </button>
                     </div>
@@ -371,21 +414,59 @@
                             <thead>
                                 <tr style="background-color:#5F7A61;color:#ddd;font-weight:bold">
                                     <th>No</th>
-                                    <th>Alamat</th>
                                     <th>Tanggal</th>
+                                    <th>Jenis</th>
                                     <th>Deskripsi</th>
                                     <th>Keterangan</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
+                            <tbody>
+                                @php
+                                    $no = 1;
+                                @endphp
+                                @foreach ($riwayatkaryawan as $rk)
+                                    <tr>
+                                        <td>{{ $no++ }}</td>
+                                        <td>{{ $rk->tanggal }}</td>
+                                        <td>{{ $rk->jenis }}</td>
+                                        <td>{{ $rk->deskripsi }}</td>
+                                        <td>
+                                            @if ($rk->keterangan == '')
+                                                {{ '-' }}
+                                            @else
+                                                {{ $rk->keterangan }}
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <div class="row justify-content-center">
+                                                <div style="max-width:60px">
+                                                    <button type="button" data-bs-toggle="modal"
+                                                        data-bs-target="#editriwayat"
+                                                        onclick="editriwayat({{ $rk->id }},'{{ $rk->jenis }}','{{ $rk->jabatan }}','{{ $rk->keterangan }}','{{ $rk->tanggal }}')"
+                                                        class="btn btn-sm btn-primary btn-block">
+                                                        <i class="bi bi-pencil-square"></i>
+                                                    </button>
+                                                </div>
+                                                <div style="max-width:60px;">
+                                                    <button type="button" data-bs-toggle="modal"
+                                                        data-bs-target="#hapusriwayat"
+                                                        onclick="hapusriwayat({{ $rk->id }})"
+                                                        class="btn btn-sm btn-danger btn-block">
+                                                        <i class="bi bi-trash3-fill"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
                         </table>
                     </div>
                 </div>
 
                 <div class="col-lg-12">
                     <a href="/master"><button class="btn btn-sm btn-light mb-2" type="button">Kembali</button></a>
-                    <a href="#"><button class="btn btn-sm btn-secondary mb-2"
-                            type="submit">Mutasi</button></a>
                 </div>
             @endforeach
         </div>
@@ -417,57 +498,10 @@
 @include('DetailMaster.editriwayatpekerjaan')
 @include('DetailMaster.tambahbpjskes')
 @include('DetailMaster.editbpjskes')
-
-<!-- Modal tambah bpjskes -->
-<div class="modal fade" id="tambahbpjstk" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">Tambah BPJS Ketenagakerjaan</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="container-fluid">
-                    <form action="/postbpjstk" enctype="multipart/form-data" method="post">
-                        @csrf
-                        <div class="row mb-3">
-                            <div class="col-lg-3">
-                                <label for="">Nomor BPJS Ketenagakerjaan</label>
-                            </div>
-                            <div class="col-lg-9">
-                                <input type="text" class="form-control" placeholder="Nomor BPJS" required
-                                    name="no_bpjs_tk">
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-lg-3">
-                                <label for="">Tanggal Kepesertaan</label>
-                            </div>
-                            <div class="col-lg-9">
-                                <input type="date" class="form-control" placeholder="nama" name="nama">
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-lg-3">
-                                <label for="">Iuran</label>
-                            </div>
-                            <div class="col-lg-9">
-                                <input type="text" class="form-control" placeholder="iuran" name="iuran">
-                            </div>
-                        </div>
-                        <input type="hidden" class="form-control" id="master" name="id_master"
-                            value="{{ $id_master }}">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-            </form>
-        </div>
-    </div>
-</div>
-
+@include('DetailMaster.hapusbpjskes')
+@include('DetailMaster.tambahbpjstk')
+@include('DetailMaster.editbpjstk')
+@include('DetailMaster.hapusbpjstk')
+@include('DetailMaster.tambahriwayatkaryawan')
 
 </html>

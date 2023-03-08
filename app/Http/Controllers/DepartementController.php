@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Departemen;
 use Illuminate\Http\Request;
 
 class DepartementController extends Controller
@@ -13,7 +14,8 @@ class DepartementController extends Controller
      */
     public function index()
     {
-         return view('departement');
+        $departemen=Departemen::get();
+         return view('departement',compact('departemen'));
     }
 
     /**

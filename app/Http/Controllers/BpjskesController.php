@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bpjskes;
+use App\Models\Master;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BpjskesController extends Controller
 {
@@ -15,7 +17,10 @@ class BpjskesController extends Controller
      */
     public function index()
     {
-        //
+        $bpjskes=DB::select('SELECT bpjs_kes.*, master.nama as nama_master from bpjs_kes join master on master.id=bpjs_kes.id_master order by id_master ASC');
+        $master=Master::get();
+        // dd($bpjstk);
+        return view('bpjskes.bpjskes',compact('bpjskes','master'));
     }
 
     /**
@@ -39,16 +44,15 @@ class BpjskesController extends Controller
         $data=[
             'no_bpjs_kes'=>$request->no_bpjs_kes,
             'nama'=>$request->nama,
-            'tanggungan'=>$request->tanggungan,
             'kelas'=>$request->kelas,
             'iuran'=>$request->iuran,
             'id_master'=>$request->id_master,
         ];
         // dd($data);
-        try{
+         if($request->id_master!=0) {
             Bpjskes::insert($data);
             return back()->with('success','Data berhasil ditambahkan!');
-        }catch(Exception $e){
+         }else{
             //alert gagal
             return back()->with('failed','Data gagal ditambahkan!');
         }
@@ -88,17 +92,16 @@ class BpjskesController extends Controller
         $data=[
             'no_bpjs_kes'=>$request->no_bpjs_kes,
             'nama'=>$request->nama,
-            'tanggungan'=>$request->tanggungan,
             'kelas'=>$request->kelas,
             'iuran'=>$request->iuran,
             'id_master'=>$request->id_master,
         ];
         $id=$request->id_bpjskes;
         // dd($data);
-        try {
+        if($request->id_master!=0) {
             Bpjskes::where('id',$id)->update($data);
             return back()->with('success','Data berhasil diedit!');
-        }catch(Exception $e){
+        }else{
             return back()->with('failed','Data gagal diedit!');
         }
     }
@@ -109,8 +112,9 @@ class BpjskesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
+        $id = $request->id;
         try{
             Bpjskes::where(['id'=>$id])->delete();
             return back()->with('success','Data berhasil dihapus!');

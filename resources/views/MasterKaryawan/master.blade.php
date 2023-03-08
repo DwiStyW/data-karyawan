@@ -47,11 +47,43 @@
                             <th data-priority="3">Agama</th>
                             <th data-priority="3">Jabatan</th>
                             <th data-priority="3">Golongan</th>
-                            <th data-priority="3">Awal Kerja</th>
-                            <th data-priority="3">Status Pensiun</th>
                             <th data-priority="2" class="text-center">Aksi</th>
                         </tr>
                     </thead>
+                    <tbody>
+                        @php
+                            $no = 1;
+                        @endphp
+                        @foreach ($Tmaster as $Tm)
+                            <tr>
+                                <td>{{ $no++ }}</td>
+                                <td><a href="detailmaster/{{ $Tm->id }}">{{ $Tm->nama }}</a></td>
+                                <td>{{ $Tm->nik }}</td>
+                                <td>{{ $Tm->tempat_lahir }}</td>
+                                <td>{{ $Tm->tanggal_lahir }}</td>
+                                <td>{{ $Tm->jenis_kelamin }}</td>
+                                <td>{{ $Tm->alamat }}</td>
+                                <td>{{ $Tm->no_hp }}</td>
+                                <td>{{ $Tm->agama }}</td>
+                                <td>{{ $Tm->nama_jabatan }}</td>
+                                <td>{{ $Tm->golongan }}</td>
+                                <td>
+                                    <div class="row justify-content-center" style="min-width:110px;">
+                                        <div style="max-width:60px"><button type="button"
+                                                class="btn btn-primary btn-block" data-bs-toggle="modal"
+                                                data-bs-target="#edit_master"
+                                                onclick="edit({{ $Tm->id }},'{{ $Tm->nama }}','{{ $Tm->nik }}','{{ $Tm->alamat }}','{{ $Tm->tempat_lahir }}','{{ $Tm->tanggal_lahir }}','{{ $Tm->jenis_kelamin }}','{{ $Tm->agama }}','{{ $Tm->no_hp }}')"><i
+                                                    class="bi bi-pencil-square"></i></button></div>
+                                        <div style="max-width:60px"><button type="button"
+                                                class="btn btn-danger btn-block" data-bs-toggle="modal"
+                                                data-bs-target="#hapus_master"
+                                                onclick="hapus({{ $Tm->id }},'{{ $Tm->nama }}')"><i
+                                                    class="bi bi-trash3-fill"></i></button></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -79,20 +111,22 @@
 <!-- Script -->
 <script type="text/javascript">
     $(document).ready(function() {
-
         // DataTable
         $('#mTable').DataTable({
             processing: true,
-            serverSide: true,
-            ajax: "{{ route('getMaster') }}",
             deferRender: true,
             "lengthMenu": [
                 [10, 25, 50, -1],
                 [10, 25, 50, "All"]
             ],
-            buttons: [
-                'excelHtml5',
-                'pdfHtml5'
+            buttons: [{
+                    extend: 'excelHtml5',
+                    title: 'Data export Karyawan'
+                },
+                {
+                    extend: 'pdfHtml5',
+                    title: 'Data export Karyawan'
+                }
             ],
             language: {
                 paginate: {
@@ -109,67 +143,67 @@
             pagingType: 'simple_numbers',
             responsive: true,
             dom: '<"rowt justify-content-between"<l><"rowt"<f><B>>><"over"<"tabel-lg"t>><"rowt justify-content-between"ip>',
-            columns: [{
-                    data: 'id',
-                },
-                {
-                    targets: 0,
-                    data: 'nama',
-                    render: function(data, type, row, meta) {
-                        console.log(row)
-                        return '<a href="detailmaster/' + row.id_master + '">' + data + '</a>';
+            // columns: [{
+            //         data: 'id',
+            //     },
+            //     {
+            //         targets: 0,
+            //         data: 'nama',
+            //         render: function(data, type, row, meta) {
+            //             console.log(row)
+            //             return '<a href="detailmaster/' + row.id_master + '">' + data + '</a>';
 
-                    }
-                },
-                {
-                    data: 'nik'
-                },
-                {
-                    data: 'tempat_lahir'
-                },
-                {
-                    data: 'tanggal_lahir'
-                },
-                {
-                    data: 'jenis_kelamin'
-                },
-                {
-                    data: 'alamat'
-                },
-                {
-                    data: 'no_hp'
-                },
-                {
-                    data: 'agama'
-                },
-                {
-                    data: 'id_jabatan'
-                },
-                {
-                    data: 'golongan'
-                },
-                {
-                    data: 'awal_kerja'
-                },
-                {
-                    data: 'status_pensiun'
-                },
-                {
-                    targets: 0,
-                    data: null,
-                    render: function(data, type, row, meta) {
-                        return '<div class="row justify-content-center" style="min-width:110px;"><div style="max-width:60px"><button type="button" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#edit_master" onclick="edit(`' +
-                            row.id_master + '`,`' + row.nama + '`,`' + row.nik + '`,`' + row
-                            .alamat + '`,`' + row.tempat_lahir + '`,`' + row.tanggal_lahir +
-                            '`,`' + row.jenis_kelamin + '`,`' + row.agama + '`,`' + row.no_hp +
-                            '`,`' + row.jabatan + '`,`' + row
-                            .golongan + '`,`' + row.awal_kerja + '`,`' + row.status_pensiun +
-                            '`)"><i class="bi bi-pencil-square"></i></button></div><div style="max-width:60px"><button type="button" class="btn btn-danger btn-block" data-bs-toggle="modal" data-bs-target="#hapus_master" onclick="hapus(`' +
-                            row.id_master + '`,`' + row.nama +
-                            '`)" ><i class="bi bi-trash3-fill"></i></button></div></div>';
-                    }
-                },
-            ]
+            //         }
+            //     },
+            //     {
+            //         data: 'nik'
+            //     },
+            //     {
+            //         data: 'tempat_lahir'
+            //     },
+            //     {
+            //         data: 'tanggal_lahir'
+            //     },
+            //     {
+            //         data: 'jenis_kelamin'
+            //     },
+            //     {
+            //         data: 'alamat'
+            //     },
+            //     {
+            //         data: 'no_hp'
+            //     },
+            //     {
+            //         data: 'agama'
+            //     },
+            //     {
+            //         data: 'id_jabatan'
+            //     },
+            //     {
+            //         data: 'golongan'
+            //     },
+            //     {
+            //         data: 'awal_kerja'
+            //     },
+            //     {
+            //         data: 'status_pensiun'
+            //     },
+            //     {
+            //         targets: 0,
+            //         data: null,
+            //         render: function(data, type, row, meta) {
+            //             return '<div class="row justify-content-center" style="min-width:110px;"><div style="max-width:60px"><button type="button" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#edit_master" onclick="edit(`' +
+            //                 row.id_master + '`,`' + row.nama + '`,`' + row.nik + '`,`' + row
+            //                 .alamat + '`,`' + row.tempat_lahir + '`,`' + row.tanggal_lahir +
+            //                 '`,`' + row.jenis_kelamin + '`,`' + row.agama + '`,`' + row.no_hp +
+            //                 '`,`' + row.jabatan + '`,`' + row
+            //                 .golongan + '`,`' + row.awal_kerja + '`,`' + row.status_pensiun +
+            //                 '`)"><i class="bi bi-pencil-square"></i></button></div><div style="max-width:60px"><button type="button" class="btn btn-danger btn-block" data-bs-toggle="modal" data-bs-target="#hapus_master" onclick="hapus(`' +
+            //                 row.id_master + '`,`' + row.nama +
+            //                 '`)" ><i class="bi bi-trash3-fill"></i></button></div></div>';
+            //         }
+            //     },
+            // ]
         });
 
     });

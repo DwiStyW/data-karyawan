@@ -27,6 +27,10 @@
                     <i class="bi bi-plus-square-fill"></i>
                     Jabatan
                 </button>
+
+                <a href="/struktur" class="btn btn-sm btn-secondary">
+                    Struktur
+                </a>
                 <a href="master" class="btn btn-sm btn-secondary">
                     Karyawan
                 </a>

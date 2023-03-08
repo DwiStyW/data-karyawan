@@ -30,6 +30,9 @@
                 <a href="/jabatan" class="btn btn-sm btn-secondary">
                     Jabatan
                 </a>
+                <a href="/struktur" class="btn btn-sm btn-secondary">
+                    Struktur
+                </a>
             </div>
 
             <div>

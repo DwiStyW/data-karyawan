@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 08, 2023 at 04:23 AM
+-- Generation Time: Mar 13, 2023 at 04:07 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -142,6 +142,8 @@ CREATE TABLE `bpjs_kes`
 (100) NOT NULL,
   `id_master` int
 (11) NOT NULL,
+  `status` varchar
+(50) NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp
 () ON
 UPDATE current_timestamp()
@@ -155,8 +157,9 @@ UPDATE current_timestamp()
 INSERT INTO `bpjs_kes` (`
 id`,
 `no_bpjs_kes
-`, `nama`, `kelas`, `iuran`, `id_master`, `updated_at`) VALUES
-(1, '1234567890', 'wibi', 'ekonomi', '123456', 5, '2023-03-08 02:48:49');
+`, `nama`, `kelas`, `iuran`, `id_master`, `status`, `updated_at`) VALUES
+(1, '1234567890', 'yanto', '1', '100000', 2, 'Aktif', '2023-03-10 03:18:25'),
+(2, '0987654310987', 'agus', '1', '100000', 2, 'Aktif', '2023-03-10 03:18:30');
 
 -- --------------------------------------------------------
 
@@ -175,11 +178,23 @@ CREATE TABLE `bpjs_tk`
 (100) NOT NULL,
   `id_master` int
 (11) NOT NULL,
+  `status` varchar
+(50) NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp
 () ON
 UPDATE current_timestamp()
 ) ENGINE
 =InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `bpjs_tk`
+--
+
+INSERT INTO `bpjs_tk` (`
+id`,
+`no_bpjs_tk
+`, `tgl_kepesertaan`, `iuran`, `id_master`, `status`, `updated_at`) VALUES
+(1, '465767089823', '2019-02-09', '100000', 2, '', '2023-03-09 01:36:37');
 
 -- --------------------------------------------------------
 
@@ -239,6 +254,16 @@ UPDATE current_timestamp()
 ) ENGINE
 =InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `history_pekerjaan`
+--
+
+INSERT INTO `history_pekerjaan` (`
+id`,
+`nama_perusahaan
+`, `alamat`, `tahun_masuk`, `tahun_keluar`, `jabatan_terakhir`, `alasan_pindah`, `id_master`, `updated_at`) VALUES
+(1, 'cv. coba aja', 'jl. slempit', '2016-01-09', '2018-12-09', 'angkat2', 'sakit boyok', 2, '2023-03-08 18:35:01');
+
 -- --------------------------------------------------------
 
 --
@@ -278,11 +303,11 @@ id`,
 `nama_jabatan
 `, `departemen`, `bagian`, `sie`, `level`, `pid`, `tags`, `updated_at`) VALUES
 (1, 'GENERAL MANAGER', 0, 0, 0, 1, '-', '-', '2023-02-17 01:28:16'),
-(2, 'QUALITY MANAGER', 0, 0, 0, 2, '1', '0', '2023-02-17 01:28:16'),
+(2, 'QUALITY MANAGER', 0, 0, 0, 2, '-', '0', '2023-03-13 02:50:30'),
 (3, 'ACCOUNTING MANAGER', 2, 8, 0, 2, '1', '0', '2023-02-27 21:29:47'),
 (4, 'PRODUCTION MANAGER', 4, 11, 0, 2, '1', '0', '2023-02-27 21:30:24'),
-(5, 'PURCHASING MANAGER', 0, 0, 0, 2, '1', '0', '2023-02-17 01:28:16'),
-(6, 'KABAG HRD', 0, 0, 0, 3, '1', '1', '2023-02-17 01:28:16'),
+(5, 'PURCHASING MANAGER', 5, 16, 0, 2, '1', '0', '2023-03-07 23:59:37'),
+(6, 'KABAG HRD', 0, 2, 0, 3, '1', '1', '2023-03-08 00:00:11'),
 (7, 'KABAG EXIM', 0, 0, 0, 3, '1', '1', '2023-02-17 01:28:16'),
 (8, 'KABAG QUALITY ASSURRANCE', 0, 0, 0, 3, '2', '0', '2023-02-17 01:28:16'),
 (9, 'KABAG KASIR', 0, 0, 0, 3, '3', '0', '2023-02-17 01:28:16'),
@@ -433,12 +458,8 @@ id`,
 `tempat_lahir`,
 `tanggal_lahir
 `, `jenis_kelamin`, `alamat`, `no_hp`, `agama`, `id_jabatan`, `golongan`, `status`, `updated_at`) VALUES
-(1, 'wibi', 'apel5.jpg', '1234567890123456', 'Tengah Laut', '2001-05-06', 'laki-laki', 'jl. kendung rw 03', '085852024777', 'Hindu', 3, 'Golongan I', 'Aktif', '2023-03-06 05:34:59'),
-(2, 'yanto suyanti', 'apel9.jpg', '1234567890123456', 'Tengah Laut', '2023-03-06', 'perempuan', 'jl. kendung rw 03', '085852024777', 'Hindu', 18, 'Golongan II', 'Aktif', '2023-03-07 01:27:24'),
-(3, 'coba', 'apel9.jpg', '1234567890123456', 'Tengah Laut', '1111-11-11', 'laki-laki', 'jl. kendung rw 03', '085852024777', 'Hindu', 17, 'Golongan II', 'Aktif', '2023-03-06 07:16:09'),
-(4, 'aziza nur aini', '4051379336753_s_1-500x500.jpg', '123445687998765', 'pantai', '1945-08-17', 'laki-laki', 'menganti', '085852024777', 'Islam', 2, 'Golongan III', 'Aktif', '2023-03-08 02:05:16'),
-(5, 'wibisono', '', '3434202091919747', 'kbs', '2001-11-21', 'laki-laki', 'jl. bongso wetan', '08112345678', 'Hindu', 33, 'Kontrak', 'Aktif', '2023-03-08 02:55:15'),
-(6, 'test', '', '3434202091919747', 'pantai', '2002-12-22', 'perempuan', 'jl. kendung rw 03', '085852024777', 'Khonghucu', 34, 'Kontrak', 'Aktif', '2023-03-08 02:35:46');
+(1, 'aziz gasido gagap', 'apel3.jpg', '123445687998765', 'kbs', '2023-03-08', 'laki-laki', 'jl. kendung rw 03', '085852024777', 'Islam', 14, 'Staff Trainee', 'Non Aktif', '2023-03-08 08:54:05'),
+(2, 'agus', 'apel5.jpg', '123445687998765', 'pantai', '2002-02-22', 'perempuan', 'jl. kendung rw 03', '085852024777', 'Khonghucu', 33, 'Kontrak', 'Aktif', '2023-03-13 01:31:44');
 
 -- --------------------------------------------------------
 
@@ -471,8 +492,9 @@ INSERT INTO `pendidikan` (`
 id_pendidikan`,
 `tingkat_pendidikan
 `, `nama_sekolah`, `jurusan`, `tgl_awal`, `tgl_akhir`, `id_master`, `updated_at`) VALUES
-(1, 'SD', 'SDN Pengalangan', '-', '2023-03-07', '2023-03-08', 4, '2023-03-07 01:47:27'),
-(2, 'SMA', 'SMAN 1 Menganti', 'IPA', '2023-03-08', '2023-03-08', 5, '2023-03-08 02:48:09');
+(1, 'SMP', 'SMPN 2 Menganti', '-', '2023-03-09', '2023-03-09', 2, '2023-03-09 01:33:42'),
+(2, 'SMA', 'SMAN 1 Menganti', 'IPA', '2023-03-09', '2023-03-09', 2, '2023-03-09 01:33:42'),
+(3, 'S1', 'Universitas Wijaya Putra Surabaya', 'Teknik Informatika', '2023-03-09', '2023-03-09', 2, '2023-03-09 01:33:42');
 
 -- --------------------------------------------------------
 
@@ -502,6 +524,8 @@ CREATE TABLE `riwayat_bpjs_tk`
   `id` int
 (11) NOT NULL,
   `id_bpjs` int
+(11) NOT NULL,
+  `id_master` int
 (11) NOT NULL,
   `iuran` varchar
 (255) NOT NULL,
@@ -541,16 +565,11 @@ INSERT INTO `riwayat_karyawan` (`
 id`,
 `id_master
 `, `jenis`, `jabatan`, `deskripsi`, `keterangan`, `tanggal`, `updated_at`) VALUES
-(1, 1, 'Masuk', '3', '', '', '2022-01-06', '2023-03-07 02:13:23'),
-(2, 2, 'Masuk', '18', '', '', '2023-03-24', '2023-03-07 02:13:27'),
-(3, 3, 'Masuk', '17', '', '', '2222-02-22', '2023-03-07 02:13:32'),
-(4, 4, 'Masuk', '8', '', '', '2020-03-07', '2023-03-07 02:13:37'),
-(5, 4, 'Promosi', '2', 'Jenis mutasi Promosi dari Departemen bagian jabatan KABAG QUALITY ASSURRANCE menjadi Departemen bagian jabatan QUALITY MANAGER', 'testing', '2023-03-14', '2023-03-08 02:05:16'),
-(6, 5, 'Masuk', '33', 'karyawan baru', '', '2022-08-08', '2023-03-08 02:29:09'),
-(7, 6, 'Masuk', '34', 'karyawan baru', '', '2023-03-08', '2023-03-08 02:35:46'),
-(8, 5, 'SP 1', '33', 'sanksi SP 1', 'test aja', '2023-03-01', '2023-03-08 02:39:02'),
-(9, 5, 'Promosi', '13', 'Jenis mutasi Promosi dari Departemen bagian jabatan STAFF IT menjadi Departemen bagian jabatan KABAG TEKNIK PROJEK', 'testing aja', '2023-03-07', '2023-03-08 02:42:49'),
-(10, 5, 'Demosi', '33', 'Jenis mutasi Demosi dari Departemen bagian jabatan KABAG TEKNIK PROJEK menjadi Departemen bagian jabatan STAFF IT', 'tes', '2023-03-09', '2023-03-08 02:55:15');
+(1, 1, 'Masuk', '14', 'karyawan baru', '', '2023-03-08', '2023-03-08 08:40:15'),
+(2, 1, 'Non Aktif', '14', 'Status menjadi Non Aktif ', '', '2023-03-08', '2023-03-08 08:54:05'),
+(3, 2, 'Masuk', '64', 'karyawan baru', '', '2019-03-01', '2023-03-09 01:32:17'),
+(4, 2, 'Promosi', '33', 'Jenis mutasi Promosi dari Departemen bagian jabatan TAMAN LUAR menjadi Departemen bagian jabatan STAFF IT', 'test', '2022-02-09', '2023-03-09 01:37:20'),
+(5, 2, 'Kontrak', '33', 'Status Karyawan menjadi Kontrak', 'test', '2023-02-02', '2023-03-09 01:37:45');
 
 -- --------------------------------------------------------
 
@@ -925,14 +944,14 @@ ALTER TABLE `batas_pensiun`
 --
 ALTER TABLE `bpjs_kes`
   MODIFY `id` int
-(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `bpjs_tk`
 --
 ALTER TABLE `bpjs_tk`
   MODIFY `id` int
-(11) NOT NULL AUTO_INCREMENT;
+(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `departemen`
@@ -946,28 +965,28 @@ ALTER TABLE `departemen`
 --
 ALTER TABLE `history_pekerjaan`
   MODIFY `id` int
-(11) NOT NULL AUTO_INCREMENT;
+(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `jabatan`
 --
 ALTER TABLE `jabatan`
   MODIFY `id` int
-(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=122;
+(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=123;
 
 --
 -- AUTO_INCREMENT for table `master`
 --
 ALTER TABLE `master`
   MODIFY `id` int
-(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `pendidikan`
 --
 ALTER TABLE `pendidikan`
   MODIFY `id_pendidikan` int
-(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `riwayat_bpjs_kes`
@@ -988,7 +1007,7 @@ ALTER TABLE `riwayat_bpjs_tk`
 --
 ALTER TABLE `riwayat_karyawan`
   MODIFY `id` int
-(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `sie`

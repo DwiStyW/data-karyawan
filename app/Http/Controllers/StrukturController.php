@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Jabatan;
-use App\Models\Struktur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -17,26 +15,14 @@ class StrukturController extends Controller
      */
     public function index()
     {
-        // $data=Jabatan::get();
-        // $data=DB::select("SELECT * from jabatan");
-        // foreach($data as $datalist){
-
-        //     $datas[]=['id'=>$datalist['id'],
-        //             'nama'=>$datalist['nama_jabatan'],
-        //             'level'=>$datalist['level'],
-        //             'pid'=>$datalist['pid'],
-        //             'tags'=>["subLevels".$datalist['tags']]];
-        // }
-        // return $datas;
-        $data=DB::select("SELECT jabatan.*, nama from jabatan left join master on master.id_jabatan=jabatan.id  order by jabatan.id ASC");
+        $data=DB::select("SELECT * from jabatan");
         // $data=Jabatan::get();
         // dd($data);
 
         foreach($data as $datalist){
 
             $datas[]=['id'=>$datalist->id,
-                    'jabatan'=>$datalist->nama_jabatan,
-                    'nama'=>$datalist->nama,
+                    'nama'=>$datalist->nama_jabatan,
                     'level'=>$datalist->level,
                     'pid'=>$datalist->pid,
                     'tags'=>["subLevels".$datalist->tags]];

@@ -83,7 +83,7 @@ class MasterController extends Controller
         return view('DetailMaster.detailmaster',compact('master','pendidikanterakhir','id_master','jabatan','bataspensiun','pendidikan','historykerja','bpjskes','bpjstk','riwayatkaryawan'));
     }
     public function print($id_master){
-        $jabatan=Jabatan::get(); //untuk select option jabatan
+         $jabatan=Jabatan::get(); //untuk select option jabatan
         $sekolah=Pendidikan::where('pendidikan.id_master',$id_master) //untuk perulangan insert pendidikan all
         ->join('batas_pensiun','pendidikan.tingkat_pendidikan','=','batas_pensiun.tingkatan_pendidikan')
         ->join('master','pendidikan.id_master','=','master.id')
@@ -105,14 +105,14 @@ class MasterController extends Controller
         ->orderby('batas_pensiun.id','ASC')
         ->get();
         if($jsekolah!=0){
-            foreach($sekolah as $s){
-                $sklh[]=$s->tingkat_pendidikan;
-            }
-            for ($i=0; $i < $jsekolah; $i++) {
-                $where[]='tingkatan_pendidikan != "' .$sklh[$i].'"';
-            }
-            $kalimat = implode(" and ",$where);//where sekolah yang belum diinput
-            $bataspensiun=DB::select("SELECT * FROM batas_pensiun where $kalimat");
+        foreach($sekolah as $s){
+            $sklh[]=$s->tingkat_pendidikan;
+        }
+        for ($i=0; $i < $jsekolah; $i++) {
+            $where[]='tingkatan_pendidikan != "' .$sklh[$i].'"';
+        }
+        $kalimat = implode(" and ",$where);//where sekolah yang belum diinput
+        $bataspensiun=DB::select("SELECT * FROM batas_pensiun where $kalimat");
         }else{
             $bataspensiun=DB::select("SELECT * FROM batas_pensiun");
         }
@@ -126,11 +126,14 @@ class MasterController extends Controller
         ->take(1)
         ->get();
         // dd($bataspensiun);
-        $riwayatkaryawan=Riwayatkaryawan::where('riwayat_karyawan.id_master',$id_master)
-        ->join('jabatan','jabatan.id','=','riwayat_karyawan.jabatan');
-        // dd($riwayat_karyawan);
+        $riwayatkaryawan=Riwayatkaryawan::where('id_master',$id_master)
+        ->join('jabatan','jabatan.id','=','riwayat_karyawan.jabatan')
+        ->get();
+        // $riwayatkaryawan=DB::select("SELECT riwayat_karyawan.*,nama_jabatan from riwayat_karyawan
+        // join jabatan on jabatan.id=riwayat_karyawan.jabatan where id_master=$id_master");
+        // dd($riwayatkaryawan);
 
-        return view('DetailMaster.print',compact('master','pendidikanterakhir','id_master','jabatan','bataspensiun','pendidikan','historykerja','bpjskes','bpjstk','riwayat_karyawan'));
+        return view('DetailMaster.print',compact('master','pendidikanterakhir','id_master','jabatan','bataspensiun','pendidikan','historykerja','bpjskes','bpjstk','riwayatkaryawan'));
     }
     /**
      * Show the form for creating a new resource.
@@ -160,14 +163,16 @@ class MasterController extends Controller
             $name="";
             echo "Gagal upload gambar";
         }
-        $id_master=DB::select('SELECT * from master order by id DESC limit 1');
-        if(isset($id_master)){
-           foreach ($id_master as $idm) {
-                echo $idne=$idm->id;
+        $cek=Master::count();
+        // dd($cek);
+        $id_master=DB::select('SELECT id from master order by id DESC limit 1');
+        if($cek==0){
+            $id=0;
+        }else{
+            foreach ($id_master as $idm) {
+                $idne=$idm->id;
             }
             $id=$idne;
-        }else{
-            echo $id=0;
         }
         // dd($id);
         $data1=[
@@ -299,13 +304,33 @@ class MasterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
-    {
+    public function destroy(Request $request){
     $id_master = $request->id_master;
+    $tanggal=date('Y-m-d');
+    $jabatanlama=DB::select("SELECT id_jabatan,nama_jabatan,nama_departemen from master
+    join jabatan on jabatan.id=master.id_jabatan
+    left join departemen on jabatan.departemen=departemen.id
+    where master.id = $id_master");
+
+    foreach($jabatanlama as $jl){
+    }
+    $data=[
+        'id_master'=>$id_master,
+        'tanggal'=>date('Y-m-d'),
+        'jenis'=>'Non Aktif',
+        'jabatan'=>$jl->id_jabatan,
+        'deskripsi'=>'Status menjadi Non Aktif ',
+        'keterangan'=>'',
+    ];
+    // dd($data);
+    DB::beginTransaction();
     try{
         master::where(['id'=>$id_master])->update(['status'=>'Non Aktif']);
+        Riwayatkaryawan::insert($data);
+        DB::commit();
         return back()->with('success','Data berhasil dihapus!');
     }catch(Exception $e){
+        DB::rollBack();
         return back()->with('failed','Data gagal dihapus!');
     }
 }

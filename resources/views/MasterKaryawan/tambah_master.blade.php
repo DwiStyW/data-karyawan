@@ -75,9 +75,10 @@
                                 </select>
                             </div>
                             <div class="col-lg-6 mt-3">
-                                <label for="">Golongan</label>
+                                <label for="">Status</label>
                                 <select name="golongan" class="form-select" required>
-                                    <option value="" selected disabled>Pilih Golongan</option>
+                                    <option value="" selected disabled>Pilih Status</option>
+                                    <option value="Staff Trainee">Staff Trainee</option>
                                     <option value="Golongan I">Golongan I</option>
                                     <option value="Golongan II">Golongan II</option>
                                     <option value="Golongan III">Golongan III</option>

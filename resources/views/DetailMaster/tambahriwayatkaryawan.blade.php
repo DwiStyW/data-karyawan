@@ -30,6 +30,8 @@
                                     <option value="Demosi">Demosi</option>
                                     <option value="Rotasi">Rotasi</option>
                                     <option value="Promosi">Promosi</option>
+                                    <option value="Kontrak">Kontrak</option>
+                                    <option value="Tetap">Tetap</option>
                                     <option value="SP 1">SP 1</option>
                                     <option value="SP 2">SP 2</option>
                                     <option value="SP 3">SP 3</option>
@@ -63,7 +65,7 @@
                                 <label for="">Keterangan</label>
                             </div>
                             <div class="col-lg-9">
-                                <textarea type="text" rows="3" class="form-control" required name="keterangan"></textarea>
+                                <textarea type="text" rows="3" class="form-control" name="keterangan"></textarea>
                             </div>
                         </div>
                         <input type="hidden" class="form-control" name="id_master" value="{{ $id_master }}">

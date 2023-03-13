@@ -40,7 +40,11 @@ class RiwayatKaryawanController extends Controller
     {
         $idm=$request->id_master;
         $idj=$request->id_jabatan;
-
+        if($request->keterangan==''){
+            $keterangan='';
+        }else{
+            $keterangan=$request->keterangan;
+        }
         $jenis=$request->jenis;
         if($jenis=='Demosi' or $jenis=='Rotasi' or $jenis=='Promosi'){
             $jabatanlama=DB::select("SELECT id_jabatan,nama_jabatan,nama_departemen from master
@@ -60,7 +64,7 @@ class RiwayatKaryawanController extends Controller
                 'jenis'=>$request->jenis,
                 'jabatan'=>$request->id_jabatan,
                 'deskripsi'=>'Jenis mutasi '.$jenis.' dari Departemen '.$jl->nama_departemen.'bagian jabatan '.$jl->nama_jabatan.' menjadi Departemen '.$jb->nama_departemen.'bagian jabatan '.$jb->nama_jabatan,
-                'keterangan'=>$request->keterangan,
+                'keterangan'=>$keterangan,
             ];
             $data2=[
                 'id_jabatan'=>$request->id_jabatan,
@@ -82,7 +86,7 @@ class RiwayatKaryawanController extends Controller
                     //alert gagal
                     return back()->with('failed','Data gagal ditambahkan!');
                 }
-        }else{
+        }elseif($jenis=='Kontrak' || $jenis=='Tetap'){
             $jabatanlama=DB::select("SELECT id_jabatan,nama_jabatan,nama_departemen from master
             join jabatan on jabatan.id=master.id_jabatan
             left join departemen on jabatan.departemen=departemen.id
@@ -94,8 +98,43 @@ class RiwayatKaryawanController extends Controller
                 'tanggal'=>$request->tanggal,
                 'jenis'=>$request->jenis,
                 'jabatan'=>$jl->id_jabatan,
-                'deskripsi'=>'sanksi '.$request->jenis,
-                'keterangan'=>$request->keterangan,
+                'deskripsi'=>'Status Karyawan menjadi '.$request->jenis,
+                'keterangan'=>$keterangan,
+            ];
+            $data2=[
+                'golongan'=>$request->jenis,
+            ];
+            $where=[
+                'id'=>$request->id_master,
+            ];
+             DB::beginTransaction();
+                try{
+                    Master::where($where)->update($data2);
+                    Riwayatkaryawan::insert($data1);
+
+                    DB::commit();
+                    //alert berhasil
+                    return back()->with('success','Data berhasil ditambahkan!');
+                }catch(Exception $e){
+                    // dd($e);
+                    DB::rollback();
+                    //alert gagal
+                    return back()->with('failed','Data gagal ditambahkan!');
+                }
+        }elseif($jenis=='SP 1' || $jenis=='SP 2' || $jenis=='SP 3'){
+            $jabatanlama=DB::select("SELECT id_jabatan,nama_jabatan,nama_departemen from master
+            join jabatan on jabatan.id=master.id_jabatan
+            left join departemen on jabatan.departemen=departemen.id
+            where master.id = $idm");
+            foreach($jabatanlama as $jl){
+            }
+            $data1=[
+                'id_master'=>$request->id_master,
+                'tanggal'=>$request->tanggal,
+                'jenis'=>$request->jenis,
+                'jabatan'=>$jl->id_jabatan,
+                'deskripsi'=>'Sanksi '.$request->jenis,
+                'keterangan'=>$keterangan,
             ];
             try{
                 Riwayatkaryawan::insert($data1);

@@ -18,7 +18,7 @@ class BpjskesController extends Controller
     public function index()
     {
         $bpjskes=DB::select('SELECT bpjs_kes.*, master.nama as nama_master from bpjs_kes join master on master.id=bpjs_kes.id_master order by id_master ASC');
-        $master=Master::get();
+        $master=Master::where('status','Aktif')->get();
         // dd($bpjstk);
         return view('bpjskes.bpjskes',compact('bpjskes','master'));
     }

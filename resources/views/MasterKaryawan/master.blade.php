@@ -49,7 +49,7 @@
                             <th data-priority="3">No Hp</th>
                             <th data-priority="3">Agama</th>
                             <th data-priority="3">Jabatan</th>
-                            <th data-priority="3">Golongan</th>
+                            <th data-priority="3">Status</th>
                             <th data-priority="2" class="text-center">Aksi</th>
                         </tr>
                     </thead>

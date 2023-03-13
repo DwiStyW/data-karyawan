@@ -106,7 +106,7 @@
                             <div class="col-md-9">
                                 <label class="form-control" style="min-height: 35px">
                                     @foreach ($pendidikanterakhir as $pt)
-                                        {{ $pt->nama_sekolah }}
+                                        {{ $pt->tingkat_pendidikan }}
                                     @endforeach
                                 </label>
                             </div>

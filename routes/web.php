@@ -10,8 +10,10 @@ use App\Http\Controllers\HistoryPekerjaanController;
 use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\PendidikanController;
+use App\Http\Controllers\RiwayatController;
 use App\Http\Controllers\RiwayatKaryawanController;
 use App\Http\Controllers\SimpleController;
+use App\Http\Controllers\StrukturController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -76,3 +78,7 @@ Route::get('/getJabatan', [JabatanController::class, 'getJabatan'])->name('getJa
 Route::post('/postJabatan', [JabatanController::class, 'store']);
 Route::post('/updatejabatan', [JabatanController::class, 'update']);
 Route::post('/hapusJabatan', [JabatanController::class, 'destroy']);
+
+Route::get('test', [StrukturController::class, 'index']);
+
+Route::get('riwayatbpjstk', [RiwayatController::class, 'riwayatbpjstk']);

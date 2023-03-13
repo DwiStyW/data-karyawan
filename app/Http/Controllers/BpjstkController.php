@@ -18,7 +18,7 @@ class BpjstkController extends Controller
     public function index()
     {
         $bpjstk=DB::select('SELECT bpjs_tk.*,nama FROM bpjs_tk JOIN master ON master.id=bpjs_tk.id_master order by id_master asc');
-         $master=Master::get();
+         $master=Master::where('status','Aktif')->get();
         // dd($bpjstk);
         return view('bpjstk.bpjstk',compact('bpjstk','master'));
     }

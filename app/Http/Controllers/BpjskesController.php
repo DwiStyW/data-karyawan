@@ -17,7 +17,7 @@ class BpjskesController extends Controller
      */
     public function index()
     {
-        $bpjskes=DB::select('SELECT bpjs_kes.*, master.nama as nama_master from bpjs_kes join master on master.id=bpjs_kes.id_master order by id_master ASC');
+        $bpjskes=DB::select('SELECT bpjs_kes.*, master.nama as nama_master from bpjs_kes join master on master.id=bpjs_kes.id_master where bpjs_kes.status="Aktif" order by id_master ASC');
         $master=Master::where('status','Aktif')->get();
         // dd($bpjstk);
         return view('bpjskes.bpjskes',compact('bpjskes','master'));
@@ -47,6 +47,8 @@ class BpjskesController extends Controller
             'kelas'=>$request->kelas,
             'iuran'=>$request->iuran,
             'id_master'=>$request->id_master,
+            'status'=>'Aktif',
+            'alasan_nonaktif'=>'',
         ];
         // dd($data);
          if($request->id_master!=0) {
@@ -115,11 +117,15 @@ class BpjskesController extends Controller
     public function destroy(Request $request)
     {
         $id = $request->id;
+        $data=[
+            'status'=>'Pengajuan',
+            'alasan_nonaktif'=>$request->alasan,
+        ];
         try{
-            Bpjskes::where(['id'=>$id])->delete();
-            return back()->with('success','Data berhasil dihapus!');
+           Bpjskes::where('id',$id)->update($data);
+            return back()->with('success','Data berhasil dinonaktifkan!');
         }catch(Exception $e){
-            return back()->with('failed','Data gagal dihapus!');
+            return back()->with('failed','Data gagal dinonaktifkan!');
         }
     }
 }

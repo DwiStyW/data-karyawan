@@ -43,7 +43,7 @@
                         <div class="row">
                             <div class="col-lg-6 mt-3">
                                 <label for="">Jenis Kelamin</label>
-                                <select type="select" class="form-select" required name="jenis_kelamin">
+                                <select type="select" class="form-select select2" required name="jenis_kelamin">
                                     <option value disabled selected>Pilih Jenis Kelamin</option>
                                     <option value="laki-laki">Laki-laki</option>
                                     <option value="perempuan">Perempuan</option>
@@ -51,7 +51,7 @@
                             </div>
                             <div class="col-lg-6 mt-3">
                                 <label for="">Agama</label>
-                                <select name="agama" id="agama" class="form-select" required>
+                                <select name="agama" id="agama" class="form-select select2" required>
                                     <option value="" selected>Pilih Agama</option>
                                     <option value="Islam">Islam</option>
                                     <option value="Protestan">Protestan</option>
@@ -67,7 +67,7 @@
                             <div class="col-lg-6 mt-3">
                                 <label for="">Jabatan</label>
                                 {{-- <input type="number" class="form-control" required name="id_jabatan"> --}}
-                                <select name="id_jabatan" id="id_jabatan" class="form-select" required>
+                                <select name="id_jabatan" id="id_jabatan" class="form-select select2" required>
                                     <option value="" selected>Pilih Jabatan</option>
                                     @foreach ($jabatan as $j)
                                         <option value="{{ $j->id }}">{{ $j->nama_jabatan }}</option>
@@ -76,16 +76,16 @@
                             </div>
                             <div class="col-lg-6 mt-3">
                                 <label for="">Status</label>
-                                <select name="golongan" class="form-select" required>
+                                <select name="golongan" class="form-select select2" required>
                                     <option value="" selected disabled>Pilih Status</option>
-                                    <option value="Staff Trainee">Staff Trainee</option>
-                                    <option value="Golongan I">Golongan I</option>
-                                    <option value="Golongan II">Golongan II</option>
-                                    <option value="Golongan III">Golongan III</option>
-                                    <option value="Golongan IV">Golongan IV</option>
-                                    <option value="Kontrak">Kontrak</option>
                                     <option value="Tetap">Tetap</option>
-                                    <option value="Harian Lepas">Harian Lepas</option>
+                                    <option value="Kontrak Trainee">Kontrak Trainee</option>
+                                    <option value="HL">HL</option>
+                                    <option value="HL Magang">Hl Magang</option>
+                                    <option value="HL Pekerja Luar">HL Pekerja Luar</option>
+                                    {{-- <option value="HL Pensiun">Kontrak</option>
+                                    <option value="Tetap">Tetap</option>
+                                    <option value="Harian Lepas">Harian Lepas</option> --}}
                                 </select>
                             </div>
                         </div>

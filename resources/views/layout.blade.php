@@ -33,8 +33,12 @@
         }
 
         [fill="#039BE5"] {
-            fill: #D5EEBB;
+            fill: #5F7A61;
         }
+
+        /* [fill="#039BE5"] {
+            fill: #D5EEBB;
+        } */
 
         [stroke="#F57C00"] {
             fill: #cab249 !important;
@@ -122,8 +126,9 @@
                 mouseScrool: OrgChart.action.ctrlZoom,
                 scaleInitial: 0.8,
                 mode: 'light',
-                template: 'isla',
+                template: 'ana',
                 enableSearch: false,
+                // nodeMenu: false,
                 menu: {
                     export_pdf: {
                         text: "Export PDF",
@@ -140,17 +145,18 @@
                     level: 2,
                     allChildren: true
                 },
-                editForm: {
-                    buttons: {
-                        edit: null,
-                        share: null,
-                        pdf: null,
-                        remove: null
-                    }
-                },
+                editForm: false,
+                // editForm: {
+                //     buttons: {
+                //         edit: null,
+                //         share: null,
+                //         pdf: null,
+                //         remove: null
+                //     }
+                // },
 
                 nodeBinding: {
-                    field_0: "nama",
+                    // field_0: "nama",
                     field_1: "jabatan"
                 },
                 tags: {

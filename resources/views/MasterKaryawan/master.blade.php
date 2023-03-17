@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="../assets/ui/bootstrap-5.2.1-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/ui/bootstrap-icons-1.10.2/bootstrap-icons.css">
     <link rel="stylesheet" href="../assets/ui/css/global.css">
-
+    <link rel="stylesheet" href="../assets/js/select2-master/dist/css/select2.min.css" />
 
 </head>
 
@@ -95,7 +95,20 @@
     @include('partials.navdown')
 
 </body>
-<script src="../assets/ui/jquery-3.6.1/jquery-3.6.1.min.js"></script>
+@include('MasterKaryawan.tambah_master')
+@include('MasterKaryawan.edit_master')
+@include('MasterKaryawan.hapus_master')
+<script src="../assets/js/jquery-1.11.3.min.js"></script>
+{{-- <script src="../assets/ui/jquery-3.6.1/jquery-3.6.1.min.js"></script> --}}
+<script src="../assets/js/select2-master/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.select2').select2({
+            placeholder: "Please Select",
+        });
+    });
+</script>
+
 <script src="../assets/ui/bootstrap-5.2.1-dist/js/bootstrap.bundle.min.js"></script>
 <script>
     $(document).on("scroll", function() {
@@ -109,7 +122,7 @@
         $(this).select();
     });
 </script>
-<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+{{-- <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script> --}}
 <script type="text/javascript" src="../assets/DataTables/datatables.min.js"></script>
 <!-- Script -->
 <script type="text/javascript">
@@ -150,8 +163,5 @@
 
     });
 </script>
-@include('MasterKaryawan.tambah_master')
-@include('MasterKaryawan.edit_master')
-@include('MasterKaryawan.hapus_master')
 
 </html>

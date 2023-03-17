@@ -52,7 +52,7 @@ class MasterController extends Controller
         ");
         $pendidikan=Pendidikan::where('pendidikan.id_master',$id_master)//echo data pendidikan
         ->leftJoin('batas_pensiun','pendidikan.tingkat_pendidikan','=','batas_pensiun.tingkatan_pendidikan')
-        ->orderby('batas_pensiun.id','ASC')
+        ->orderby('batas_pensiun.id','DESC')
         ->get();
         if($jsekolah!=0){
         foreach($sekolah as $s){
@@ -67,7 +67,7 @@ class MasterController extends Controller
             $bataspensiun=DB::select("SELECT * FROM batas_pensiun");
         }
 
-        $historykerja=Historypekerjaan::where('history_pekerjaan.id_master',$id_master)->get();//history pekerjaan
+        $historykerja=Historypekerjaan::where('history_pekerjaan.id_master',$id_master)->orderby('id','DESC')->get();//history pekerjaan
         $bpjskes=Bpjskes::where('id_master',$id_master)->get();//bpjskes
         $bpjstk=Bpjstk::where('id_master',$id_master)->get();//bpjstk
         $pendidikanterakhir=Pendidikan::where('pendidikan.id_master',$id_master)//pendidikan terakhir
@@ -77,7 +77,7 @@ class MasterController extends Controller
         ->get();
         // dd($bataspensiun);
         $riwayatkaryawan=DB::select("SELECT riwayat_karyawan.*,nama_jabatan from riwayat_karyawan
-        join jabatan on jabatan.id=riwayat_karyawan.jabatan where id_master=$id_master");
+        join jabatan on jabatan.id=riwayat_karyawan.jabatan where id_master=$id_master order by riwayat_karyawan.id DESC");
         // dd($riwayatkaryawan);
 
         return view('DetailMaster.detailmaster',compact('master','pendidikanterakhir','id_master','jabatan','bataspensiun','pendidikan','historykerja','bpjskes','bpjstk','riwayatkaryawan'));
@@ -102,7 +102,7 @@ class MasterController extends Controller
         ");
         $pendidikan=Pendidikan::where('pendidikan.id_master',$id_master)//echo data pendidikan
         ->leftJoin('batas_pensiun','pendidikan.tingkat_pendidikan','=','batas_pensiun.tingkatan_pendidikan')
-        ->orderby('batas_pensiun.id','ASC')
+        ->orderby('batas_pensiun.id','DESC')
         ->get();
         if($jsekolah!=0){
         foreach($sekolah as $s){
@@ -117,7 +117,7 @@ class MasterController extends Controller
             $bataspensiun=DB::select("SELECT * FROM batas_pensiun");
         }
 
-        $historykerja=Historypekerjaan::where('history_pekerjaan.id_master',$id_master)->get();//history pekerjaan
+        $historykerja=Historypekerjaan::where('history_pekerjaan.id_master',$id_master)->orderby('id','DESC')->get();//history pekerjaan
         $bpjskes=Bpjskes::where('id_master',$id_master)->get();//bpjskes
         $bpjstk=Bpjstk::where('id_master',$id_master)->get();//bpjstk
         $pendidikanterakhir=Pendidikan::where('pendidikan.id_master',$id_master)//pendidikan terakhir
@@ -128,6 +128,7 @@ class MasterController extends Controller
         // dd($bataspensiun);
         $riwayatkaryawan=Riwayatkaryawan::where('id_master',$id_master)
         ->join('jabatan','jabatan.id','=','riwayat_karyawan.jabatan')
+        ->orderby('riwayat_karyawan.id','DESC')
         ->get();
         // $riwayatkaryawan=DB::select("SELECT riwayat_karyawan.*,nama_jabatan from riwayat_karyawan
         // join jabatan on jabatan.id=riwayat_karyawan.jabatan where id_master=$id_master");
@@ -260,7 +261,6 @@ class MasterController extends Controller
         ];
         $id=$request->id_master;
         // dd($id);
-
         try {
             master::where('id',$id)->update($data);
             return back()->with('success','Data berhasil diedit!');
@@ -326,10 +326,13 @@ class MasterController extends Controller
     DB::beginTransaction();
     try{
         master::where(['id'=>$id_master])->update(['status'=>'Non Aktif']);
+        Bpjstk::where(['id_master'=>$id_master])->update(['status'=>'Non Aktif']);
+        Bpjskes::where(['id_master'=>$id_master])->update(['status'=>'Pengajuan','alasan_nonaktif'=>'master dinonaktifkan']);
         Riwayatkaryawan::insert($data);
         DB::commit();
         return back()->with('success','Data berhasil dihapus!');
     }catch(Exception $e){
+        // dd($e);
         DB::rollBack();
         return back()->with('failed','Data gagal dihapus!');
     }

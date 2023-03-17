@@ -16,5 +16,7 @@ class Bpjskes extends Model
         'kelas',
         'iuran',
         'id_master',
+        'status',
+        'alasan_nonaktif',
     ];
 }

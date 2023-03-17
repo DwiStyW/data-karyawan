@@ -82,3 +82,5 @@ Route::post('/hapusJabatan', [JabatanController::class, 'destroy']);
 Route::get('test', [StrukturController::class, 'index']);
 
 Route::get('riwayatbpjstk', [RiwayatController::class, 'riwayatbpjstk']);
+Route::get('printtk/{date}', [RiwayatController::class, 'printriwayatbpjstk']);
+Route::get('simpandatabpjstk', [RiwayatController::class, 'simpandatabpjstk']);

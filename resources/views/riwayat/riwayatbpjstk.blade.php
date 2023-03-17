@@ -14,43 +14,81 @@
 <body>
     @include('partials.sidebar')
     @include('partials.navbar')
+    @php
+        $date = date('F-Y');
+    @endphp
     <main class="wrapper">
         <div class="container-custome">
+            @include('alert')
             <header class="mb-3 d-flex justify-content-between">
                 <img src="../assets/img/logo/BPJStk.png" style="height:60px" alt="">
-                <h6 class="mt-3"><b>Preiode :</b>
-                    <select name="" id="">
-                        <option value="">{{ date('F-Y') }}</option>
-                    </select>
-                </h6>
+                <div>
+                    <h6 class="mt-2"><b>Preiode :</b>
+                        <select name="period" id="period" onchange="periode()">
+                            @foreach ($period as $p)
+                                @if ($p->date == $date)
+                                    <option value="{{ $p->date }}" selected>{{ $p->date }}</option>
+                                @else
+                                    <option value="{{ $p->date }}">{{ $p->date }}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                    </h6>
+                    <div class="d-flex float-end">
+                        <div style="margin-right: 7px">
+                            <a class="btn btn-sm btn-secondary" href="/simpandatabpjstk">
+                                <img src="../assets/img/logo/simpan.png" style="margin:-3px;" width="20"
+                                    alt="">
+                            </a>
+                        </div>
+                        <div id="printlink">
+                            <a target="_blank" class="btn btn-sm btn-secondary" href="/printtk/{{ $date }}">
+                                <i class="bi bi-printer"></i>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
             </header>
-            <table class="table table-striped table-bordered ">
-                <thead>
-                    <tr style="background-color:#5F7A61;color:#ddd;font-weight:bold">
-                        <th>No.</th>
-                        <th>Nomor Referensi</th>
-                        <th>Nomor Induk Kependudukan (NIK)</th>
-                        <th>Nama</th>
-                        <th>Tanggal Lahir</th>
-                        <th>Tanggal Kepesertaan</th>
-                        <th>Iuran</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @php
-                        $no = 1;
-                    @endphp
-                    @foreach ($data as $dt)
-                        <td>{{ $no++ }}</td>
-                        <td>{{ $dt->no_bpjs_tk }}</td>
-                        <td>{{ $dt->nik }}</td>
-                        <td>{{ $dt->nama }}</td>
-                        <td>{{ $dt->tanggal_lahir }}</td>
-                        <td>{{ $dt->tgl_kepesertaan }}</td>
-                        <td>{{ $dt->iuran }}</td>
-                    @endforeach
-                </tbody>
-            </table>
+            <div id="tabelriwayat">
+                <table class="table table-striped table-bordered ">
+                    <thead>
+                        <tr style="background-color:#5F7A61;color:#ddd;font-weight:bold">
+                            <th>No.</th>
+                            <th>Nomor Referensi</th>
+                            <th>Nomor Induk Kependudukan (NIK)</th>
+                            <th>Nama</th>
+                            <th>Tanggal Lahir</th>
+                            <th>Tanggal Kepesertaan</th>
+                            <th>Iuran</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php
+                            $no = 1;
+                        @endphp
+                        @foreach ($data as $dt)
+                            <tr>
+                                <td>{{ $no++ }}</td>
+                                <td>{{ $dt->no_bpjs_tk }}</td>
+                                <td>{{ $dt->nik }}</td>
+                                <td>{{ $dt->nama }}</td>
+                                <td>{{ $dt->tanggal_lahir }}</td>
+                                <td>{{ $dt->tgl_kepesertaan }}</td>
+                                <td>{{ $dt->iuran }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                    <tfoot>
+                        @foreach ($totaliuran as $t)
+                            <tr>
+                                <th colspan="6">Total Iuran</th>
+                                <th>{{ $t->total }}</th>
+                            </tr>
+                        @endforeach
+                    </tfoot>
+                </table>
+            </div>
         </div>
         @include('partials.footer')
     </main>
@@ -69,6 +107,57 @@
     $('input').hover(function() {
         $(this).select();
     });
+
+    function periode() {
+        var date = document.getElementById('period').value;
+        var riwayat = @json($riwayat);
+        var total = @json($period);
+        var filterdate = riwayat.filter(r => r.date == date);
+        var filtertotal = total.filter(t => t.date == date);
+
+        console.log(filterdate);
+        str = '<table class="table table-striped table-bordered ">';
+        str += '    <thead>';
+        str += '        <tr style="background-color:#5F7A61;color:#ddd;">';
+        str += '            <th>No.</th>';
+        str += '            <th>Nomor Referensi</th>';
+        str += '            <th>Nomor Induk Kependudukan (NIK)</th>';
+        str += '            <th>Nama</th>';
+        str += '            <th>Tanggal Lahir</th>';
+        str += '            <th>Tanggal Kepesertaan</th>';
+        str += '            <th>Iuran</th>';
+        str += '        </tr>';
+        str += '    </thead>';
+        str += '    <tbody>';
+        for (let index = 0; index < filterdate.length; index++) {
+            str += '        <tr>';
+            str += '            <td>' + (index + 1) + '</td>';
+            str += '            <td>' + filterdate[index].no_bpjs_tk + '</td>';
+            str += '            <td>' + filterdate[index].nik + '</td>';
+            str += '            <td>' + filterdate[index].nama + '</td>';
+            str += '            <td>' + filterdate[index].tanggal_lahir + '</td>';
+            str += '            <td>' + filterdate[index].tgl_kepesertaan + '</td>';
+            str += '            <td>' + filterdate[index].iuran + '</td>';
+            str += '        </tr>';
+        }
+        str += '    </tbody>';
+        str += '    <tfoot>';
+        for (let index = 0; index < filtertotal.length; index++) {
+            str += '        <tr>';
+            str += '            <th colspan="6">Total Iuran</th>';
+            str += '            <th>' + filtertotal[index].total + '</th>';
+            str += '        </tr>';
+        }
+        str += '    </tfoot>';
+        str += '</table>';
+        document.getElementById('tabelriwayat').innerHTML = str;
+
+        a = '<a target="_blank" class="btn btn-sm btn-secondary" href="/printtk/' + date + '">';
+        a += '<i class="bi bi-printer"></i>';
+        a += '</a>';
+
+        document.getElementById('printlink').innerHTML = a;
+    }
 </script>
 
 </html>

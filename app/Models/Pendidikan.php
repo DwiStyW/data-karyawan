@@ -10,6 +10,6 @@ class Pendidikan extends Model
     use HasFactory;
     protected $table="pendidikan";
     protected $fillable=[
-        'userid','tingkatan','namasek','jurusan','tahunmsk','tahunklr','ket'
+        'tingkatan_pendidikan','nama_sekolah','jurusan','tgl_awal','tgl_akhir','id_master'
     ];
 }

@@ -19,7 +19,7 @@
                     </a>
                 </div>
                 <div class="col-auto">
-                    <a href="/" class="btn lh-1">
+                    <a href="/struktur" class="btn lh-1">
                         <i class="bi bi-diagram-3 fs-5"></i>
                         <br>
                         <small>Struktur</small>

@@ -10,6 +10,6 @@ class Master extends Model
     use HasFactory;
     protected $table="master";
     protected $fillable=[
-        'nama','nik','tempat_lahir','tanggal_lahir','jenis_kelamin','alamat','no_hp','agama','id_jabatan','golongan','awal_kerja','id_bpjs_tk','status_pensiun'
+        'nama','foto','nik','tempat_lahir','tanggal_lahir','jenis_kelamin','alamat','no_hp','agama','id_jabatan','golongan','awal_kerja','id_bpjs_tk','status_pensiun'
     ];
 }

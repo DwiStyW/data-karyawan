@@ -33,7 +33,42 @@
             <header class="mb-3">
                 <h3 class="title-pages fw-bold">Dashboard</h3>
             </header>
-            <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="card text-white" style="background-color:darkblue;height: 20rem; width:22rem">
+                            <div class="card-body text-center">
+                                <h3 class="card-title text-white">Jumlah Karyawan</h3>
+                                <p class="card-text mb-5">Tanggal : {{ date('d-m-Y') }}</p>
+                                <h1 class="text-center text-white mt-5 mb-5"><b>{{ $jumkar }}</b></h3>
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#jumkar"
+                                        class="btn btn-primary mt-4">Detail</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card" style="background-color:grey;height: 20rem; width:22rem">
+                            <div class="card-body text-center">
+                                <h3 class="card-title">Jumlah Apoteker Aktif</h3>
+                                <p class="card-text mb-5">Tanggal : {{ date('d-m-Y') }}</p>
+                                <h1 class="text-center mt-5 mb-5"><b>999</b></h3>
+                                    <a href="#" class="btn btn-primary mt-4">Detail</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card" style="background-color:gainsboro;height: 20rem; width:22rem">
+                            <div class="card-body text-center">
+                                <h3 class="card-title">Jumlah Karyawan Pensiun</h3>
+                                <p class="card-text mb-5">Tahun : {{ date('Y') }}</p>
+                                <h1 class="text-center mt-5 mb-5"><b>999</b></h3>
+                                    <a href="#" class="btn btn-primary">Detail</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3">
                 <div class="col-lg-6 col-md-6 col-12" id="column-pend">
                 </div>
                 <div class="col-lg-6 col-md-6 col-12" id="pie-gender">
@@ -149,23 +184,58 @@
 
 <!-- Modal tambah bpjskes -->
 {{-- data-bs-toggle="modal" data-bs-target="#pendidikan" --}}
-{{-- <div class="modal fade" id="pendidikan" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+<div class="modal fade" id="jumkar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">Tambah BPJS Ketenagakerjaan</h1>
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Detail Karyawan</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-
+                <table id='mTable' width='100%' class="table table-striped table-bordered ">
+                    <thead>
+                        <tr style="background-color:#5F7A61;color:#ddd;font-weight:bold">
+                            <th data-priority="1">No</th>
+                            <th data-priority="1">Nama</th>
+                            <th data-priority="3">No KTP</th>
+                            <th data-priority="3">Tempat Lahir</th>
+                            <th data-priority="3">Tanggal Lahir</th>
+                            <th data-priority="3">Jenis Kelamin</th>
+                            <th data-priority="3">Alamat</th>
+                            <th data-priority="3">No Hp</th>
+                            <th data-priority="3">Agama</th>
+                            <th data-priority="3">Jabatan</th>
+                            <th data-priority="3">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php
+                            $no = 1;
+                        @endphp
+                        @foreach ($Tmaster as $Tm)
+                            <tr>
+                                <td>{{ $no++ }}</td>
+                                <td><a href="detailmaster/{{ $Tm->id }}">{{ $Tm->nama }}</a></td>
+                                <td>{{ $Tm->nik }}</td>
+                                <td>{{ $Tm->tempat_lahir }}</td>
+                                <td>{{ $Tm->tanggal_lahir }}</td>
+                                <td>{{ $Tm->jenis_kelamin }}</td>
+                                <td>{{ $Tm->alamat }}</td>
+                                <td>{{ $Tm->no_hp }}</td>
+                                <td>{{ $Tm->agama }}</td>
+                                <td>{{ $Tm->nama_jabatan }}</td>
+                                <td>{{ $Tm->golongan }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
             </div>
         </div>
     </div>
-</div> --}}
+</div>
 
 </html>

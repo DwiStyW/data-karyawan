@@ -71,8 +71,14 @@ class DashboardController extends Controller
                 'y'=>$dp['jumlah']
             ];
         }
+
+        //jumlah karyawan
+        $jumkar = DB::table('master')->where('status','Aktif')->count();
+        //detail karyawan
+        $Tmaster=DB::select('SELECT master.*, nama_jabatan from master join jabatan on jabatan.id=master.id_jabatan where status="Aktif" order by id DESC');
+
         // dd($datapend);
-        return view('dashboard',compact('datagender','datapend'));
+        return view('dashboard',compact('datagender','datapend','jumkar','Tmaster'));
     }
     function cari($data, $data2)
     {

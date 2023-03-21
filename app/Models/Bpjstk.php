@@ -14,6 +14,5 @@ class Bpjstk extends Model
         'tgl_kepesertaan',
         'iuran',
         'id_master',
-        'status',
     ];
 }

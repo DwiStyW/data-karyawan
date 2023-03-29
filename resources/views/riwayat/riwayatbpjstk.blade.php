@@ -75,7 +75,7 @@
                                 <td>{{ $dt->nama }}</td>
                                 <td>{{ $dt->tanggal_lahir }}</td>
                                 <td>{{ $dt->tgl_kepesertaan }}</td>
-                                <td>{{ $dt->iuran }}</td>
+                                <td style="text-align: right;">Rp. {{ number_format($dt->iuran, 0, ',', '.') }}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -83,7 +83,7 @@
                         @foreach ($totaliuran as $t)
                             <tr>
                                 <th colspan="6">Total Iuran</th>
-                                <th>{{ $t->total }}</th>
+                                <th style="text-align: right;">Rp. {{ number_format($t->total, 0, ',', '.') }}</th>
                             </tr>
                         @endforeach
                     </tfoot>
@@ -137,7 +137,7 @@
             str += '            <td>' + filterdate[index].nama + '</td>';
             str += '            <td>' + filterdate[index].tanggal_lahir + '</td>';
             str += '            <td>' + filterdate[index].tgl_kepesertaan + '</td>';
-            str += '            <td>' + filterdate[index].iuran + '</td>';
+            str += '            <td> Rp. ' + filterdate[index].iuran + '</td>';
             str += '        </tr>';
         }
         str += '    </tbody>';
@@ -145,7 +145,7 @@
         for (let index = 0; index < filtertotal.length; index++) {
             str += '        <tr>';
             str += '            <th colspan="6">Total Iuran</th>';
-            str += '            <th>' + filtertotal[index].total + '</th>';
+            str += '            <th>Rp. ' + filtertotal[index].total + '</th>';
             str += '        </tr>';
         }
         str += '    </tfoot>';

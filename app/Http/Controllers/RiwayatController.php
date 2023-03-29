@@ -36,12 +36,12 @@ class RiwayatController extends Controller
         $riwayat=Riwayatbpjstk::join('bpjs_tk','bpjs_tk.id','=','riwayat_bpjs_tk.id_bpjs')
         ->leftjoin('master','master.id','=','riwayat_bpjs_tk.id_master')
         ->get();
-        $period=DB::select('SELECT date,sum(iuran) as total from riwayat_bpjs_tk group by date order by id DESC');
+        $period=DB::select('SELECT date,sum(iuran) as total from riwayat_bpjs_tk group by date');
         $data=Riwayatbpjstk::where('date',$date)
         ->join('bpjs_tk','bpjs_tk.id','=','riwayat_bpjs_tk.id_bpjs')
         ->leftjoin('master','master.id','=','riwayat_bpjs_tk.id_master')
         ->get();
-        $totaliuran=DB::select("SELECT date,sum(iuran) as total from riwayat_bpjs_tk where date='$date' group by date order by id DESC");
+        $totaliuran=DB::select("SELECT date,sum(iuran) as total from riwayat_bpjs_tk where date='$date' group by date");
         return view('riwayat.riwayatbpjstk',compact('data','period','riwayat','totaliuran'));
     }
 
@@ -50,12 +50,12 @@ class RiwayatController extends Controller
         ->join('bpjs_tk','bpjs_tk.id','=','riwayat_bpjs_tk.id_bpjs')
         ->leftjoin('master','master.id','=','riwayat_bpjs_tk.id_master')
         ->get();
-        $totaliuran=DB::select("SELECT date,sum(iuran) as total from riwayat_bpjs_tk where date='$date' group by date order by id DESC");
+        $totaliuran=DB::select("SELECT date,sum(iuran) as total from riwayat_bpjs_tk where date='$date' group by date");
         return view('riwayat.printbpjstk',compact('data','date','totaliuran'));
     }
 
     public function simpandatabpjstk(){
-        $date=date('F-Y', strtotime(date('F-Y') . '- 1 month'));
+        $date=date('F-Y', strtotime(date('F-Y')));
         // dd($date);
         $bpjstk=Bpjstk::where('status','Aktif')->get();
         foreach($bpjstk as $tk){
@@ -66,8 +66,8 @@ class RiwayatController extends Controller
                 'date'=>date('F-Y'),
             ];
         }
-        $cek=Riwayatbpjstk::where('date',$date)->get();
-        if(count($cek)==0){
+        $cek=Riwayatbpjstk::where('date',$date)->count();
+        if($cek==0){
             try{
                 Riwayatbpjstk::insert($value);
                 return back()->with('success','Data berhasil ditambahkan!');

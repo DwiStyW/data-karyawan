@@ -53,8 +53,8 @@
                                 <td>{{ $no++ }}</td>
                                 <td>{{ $btk->nama }}</td>
                                 <td>{{ $btk->no_bpjs_tk }}</td>
-                                <td>{{ $btk->tgl_kepesertaan }}</td>
-                                <td>{{ $btk->iuran }}</td>
+                                <td>{{ date('d-m-Y', strtotime($btk->tgl_kepesertaan)) }}</td>
+                                <td>Rp. {{ number_format($btk->iuran, 0, ',', '.') }}</td>
                                 <td>
                                     <div class="row justify-content-center" style="min-width:110px;">
                                         <div style="max-width:60px"><button type="button"

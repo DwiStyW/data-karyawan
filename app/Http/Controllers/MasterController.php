@@ -48,7 +48,7 @@ class MasterController extends Controller
         join jabatan on jabatan.id = master.id_jabatan
         left join departemen on departemen.id = jabatan.departemen
         join riwayat_karyawan on riwayat_karyawan.id_master = master.id
-        where riwayat_karyawan.jenis = 'masuk' and master.id = $id_master
+        where riwayat_karyawan.jenis = 'masuk' and master.id = $id_master order by tanggal ASC limit 1
         ");
         $pendidikan=Pendidikan::where('pendidikan.id_master',$id_master)//echo data pendidikan
         ->leftJoin('batas_pensiun','pendidikan.tingkat_pendidikan','=','batas_pensiun.tingkatan_pendidikan')
@@ -77,7 +77,7 @@ class MasterController extends Controller
         ->get();
         // dd($bataspensiun);
         $riwayatkaryawan=DB::select("SELECT riwayat_karyawan.*,nama_jabatan from riwayat_karyawan
-        join jabatan on jabatan.id=riwayat_karyawan.jabatan where id_master=$id_master order by riwayat_karyawan.id DESC");
+        join jabatan on jabatan.id=riwayat_karyawan.jabatan where id_master=$id_master order by riwayat_karyawan.tanggal DESC");
         // dd($riwayatkaryawan);
 
         return view('DetailMaster.detailmaster',compact('master','pendidikanterakhir','id_master','jabatan','bataspensiun','pendidikan','historykerja','bpjskes','bpjstk','riwayatkaryawan'));
@@ -98,7 +98,7 @@ class MasterController extends Controller
         join jabatan on jabatan.id = master.id_jabatan
         left join departemen on departemen.id = jabatan.departemen
         join riwayat_karyawan on riwayat_karyawan.id_master = master.id
-        where riwayat_karyawan.jenis = 'masuk' and master.id = $id_master
+        where riwayat_karyawan.jenis = 'masuk' and master.id = $id_master order by tanggal ASC limit 1
         ");
         $pendidikan=Pendidikan::where('pendidikan.id_master',$id_master)//echo data pendidikan
         ->leftJoin('batas_pensiun','pendidikan.tingkat_pendidikan','=','batas_pensiun.tingkatan_pendidikan')

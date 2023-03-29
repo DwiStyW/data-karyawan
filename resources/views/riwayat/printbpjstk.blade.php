@@ -47,7 +47,7 @@
                                 <td>{{ $dt->nama }}</td>
                                 <td>{{ $dt->tanggal_lahir }}</td>
                                 <td>{{ $dt->tgl_kepesertaan }}</td>
-                                <td>{{ $dt->iuran }}</td>
+                                <td style="text-align: right;">Rp. {{ number_format($dt->iuran, 0, ',', '.') }}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -55,7 +55,7 @@
                         @foreach ($totaliuran as $t)
                             <tr>
                                 <th colspan="6">Total Iuran</th>
-                                <th>{{ $t->total }}</th>
+                                <th style="text-align: right;">Rp. {{ number_format($t->total, 0, ',', '.') }}</th>
                             </tr>
                         @endforeach
                     </tfoot>

@@ -13,17 +13,26 @@
                         @csrf
                         @foreach ($bataspensiun as $bp)
                             <div class="card bordered mb-4 pt-3"style="padding-left:20px;padding-right:20px">
+                                @if ($bp->tingkatan_pendidikan == 'Lainnya')
+                                    <div class="mt-2 mb-2">
+                                        <h6 class="text-center">
+                                            Pendidikan Profesi
+                                        </h6>
+                                    </div>
+                                @endif
                                 <div class="row">
-                                    <div class="col-lg-2">
+                                    <div class="col-lg-3">
                                         <label for="">
                                             @if ($bp->tingkatan_pendidikan == 'SMA')
                                                 {{ 'SMA/SMK' }}
+                                            @elseif ($bp->tingkatan_pendidikan == 'Lainnya')
+                                                {{ 'Nama Intansi' }}
                                             @else
                                                 {{ $bp->tingkatan_pendidikan }}
                                             @endif
                                         </label>
                                     </div>
-                                    <div class="col-lg-10 mb-3">
+                                    <div class="col-lg-9 mb-3">
                                         <input type="text" class="form-control" placeholder="nama sekolah"
                                             id="pendidikan{{ $bp->tingkatan_pendidikan }}"
                                             name="pendidikan{{ $bp->tingkatan_pendidikan }}">
@@ -31,23 +40,40 @@
                                 </div>
                                 @if (
                                     $bp->tingkatan_pendidikan == 'SMA' or
+                                        $bp->tingkatan_pendidikan == 'Diploma' or
                                         $bp->tingkatan_pendidikan == 'S1' or
                                         $bp->tingkatan_pendidikan == 'S2' or
-                                        $bp->tingkatan_pendidikan == 'Lainnya')
+                                        $bp->tingkatan_pendidikan == 'S3')
                                     <div class="row">
-                                        <div class="col-lg-2">
+                                        <div class="col-lg-3">
                                             <label for="">Jurusan</label>
                                         </div>
-                                        <div class="col-lg-10 mb-3">
+                                        <div class="col-lg-9 mb-3">
                                             <input type="text" class="form-control" placeholder="nama jurusan"
                                                 id="jurusan{{ $bp->tingkatan_pendidikan }}"
                                                 name="jurusan{{ $bp->tingkatan_pendidikan }}">
                                         </div>
                                     </div>
                                 @endif
-
+                                @if ($bp->tingkatan_pendidikan == 'Lainnya')
+                                    <div class="row">
+                                        <div class="col-lg-3">
+                                            <label for="">Profesi</label>
+                                        </div>
+                                        <div class="col-lg-9 mb-3">
+                                            <select class="form-select" name="jurusan{{ $bp->tingkatan_pendidikan }}"
+                                                id="jurusan{{ $bp->tingkatan_pendidikan }}">
+                                                <option value="" selected disabled>Pilih Profesi</option>
+                                                <option value="Apoteker">Apoteker</option>
+                                                <option value="Guru">Guru</option>
+                                                <option value="Insinyur">Insinyur</option>
+                                                <option value="Akuntan">Akuntan</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                @endif
                                 <div class="row">
-                                    <div class="col-lg-2">
+                                    <div class="col-lg-3">
                                         <label for="">Masuk</label>
                                     </div>
                                     <div class="col-lg-4 mb-3">
@@ -55,7 +81,7 @@
                                             id="masuk{{ $bp->tingkatan_pendidikan }}"
                                             name="masuk{{ $bp->tingkatan_pendidikan }}">
                                     </div>
-                                    <div class="col-lg-2">
+                                    <div class="col-lg-1">
                                         <label for="">Keluar</label>
                                     </div>
                                     <div class="col-lg-4 mb-3">

@@ -12,6 +12,7 @@ class Bpjskes extends Model
     protected $fillable=[
         'no_bpjs_kes',
         'nama',
+        'nik',
         'tanggungan',
         'kelas',
         'iuran',

@@ -84,3 +84,7 @@ Route::get('test', [StrukturController::class, 'index']);
 Route::get('riwayatbpjstk', [RiwayatController::class, 'riwayatbpjstk']);
 Route::get('printtk/{date}', [RiwayatController::class, 'printriwayatbpjstk']);
 Route::get('simpandatabpjstk', [RiwayatController::class, 'simpandatabpjstk']);
+
+Route::get('riwayatbpjskes', [RiwayatController::class, 'riwayatbpjskes']);
+Route::get('printkes/{date}', [RiwayatController::class, 'printriwayatbpjskes']);
+Route::get('simpandatabpjskes', [RiwayatController::class, 'simpandatabpjskes']);

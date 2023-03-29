@@ -21,7 +21,7 @@
         <div class="container-custome">
             @include('alert')
             <header class="mb-3 d-flex justify-content-between">
-                <img src="../assets/img/logo/BPJStk.png" style="height:50px" alt="">
+                <img src="../assets/img/logo/BPJSkes.png" style="height:40px;margin-top:10px" alt="">
 
                 <div>
                     @if (count($period) != 0)
@@ -38,20 +38,21 @@
                         </h6>
                         <div class="d-flex float-end">
                             <div style="margin-right: 7px">
-                                <a class="btn btn-sm btn-secondary" href="/simpandatabpjstk">
+                                <a class="btn btn-sm btn-secondary" href="/simpandatabpjskes">
                                     <img src="../assets/img/logo/simpan.png" style="margin:-3px;" width="18"
                                         alt="">
                                 </a>
                             </div>
                             <div id="printlink">
-                                <a target="_blank" class="btn btn-sm btn-secondary" href="/printtk/{{ $p->date }}">
+                                <a target="_blank" class="btn btn-sm btn-secondary"
+                                    href="/printkes/{{ $p->date }}">
                                     <i class="bi bi-printer"></i>
                                 </a>
                             </div>
                         </div>
                     @else
                         <div class="mt-3">
-                            <a class="btn btn-sm btn-secondary" href="/simpandatabpjstk">
+                            <a class="btn btn-sm btn-secondary" href="/simpandatabpjskes">
                                 <img src="../assets/img/logo/simpan.png" style="margin:-3px;" width="18"
                                     alt="">
                             </a>
@@ -68,8 +69,8 @@
                             <th>Nomor Referensi</th>
                             <th>Nomor Induk Kependudukan (NIK)</th>
                             <th>Nama</th>
-                            <th>Tanggal Lahir</th>
-                            <th>Tanggal Kepesertaan</th>
+                            <th>Nama Penanggung</th>
+                            <th>Kelas</th>
                             <th>Iuran</th>
                         </tr>
                     </thead>
@@ -80,12 +81,18 @@
                         @foreach ($data as $dt)
                             <tr>
                                 <td>{{ $no++ }}</td>
-                                <td>{{ $dt->no_bpjs_tk }}</td>
+                                <td>{{ $dt->no_bpjs_kes }}</td>
                                 <td>{{ $dt->nik }}</td>
                                 <td>{{ $dt->nama }}</td>
-                                <td>{{ $dt->tanggal_lahir }}</td>
-                                <td>{{ $dt->tgl_kepesertaan }}</td>
-                                <td style="text-align: right;">Rp. {{ number_format($dt->iuran, 0, ',', '.') }}</td>
+                                <td>{{ $dt->nama_master }}</td>
+                                <td>{{ $dt->kelas }}</td>
+                                @if ($dt->iuran != 0)
+                                    <td style="text-align: right;">Rp. {{ number_format($dt->iuran, 0, ',', '.') }}
+                                    </td>
+                                @else
+                                    <td></td>
+                                @endif
+
                             </tr>
                         @endforeach
                     </tbody>
@@ -140,17 +147,6 @@
         str += '    </thead>';
         str += '    <tbody>';
         for (let index = 0; index < filterdate.length; index++) {
-            var bilangan = filterdate[index].iuran;
-
-            var number_string = bilangan.toString(),
-                sisa = number_string.length % 3,
-                rupiah = number_string.substr(0, sisa),
-                ribuan = number_string.substr(sisa).match(/\d{3}/g);
-
-            if (ribuan) {
-                separator = sisa ? '.' : '';
-                rupiah += separator + ribuan.join('.');
-            }
             str += '        <tr>';
             str += '            <td>' + (index + 1) + '</td>';
             str += '            <td>' + filterdate[index].no_bpjs_tk + '</td>';
@@ -158,26 +154,15 @@
             str += '            <td>' + filterdate[index].nama + '</td>';
             str += '            <td>' + filterdate[index].tanggal_lahir + '</td>';
             str += '            <td>' + filterdate[index].tgl_kepesertaan + '</td>';
-            str += '            <td style="text-align: right;">Rp. ' + rupiah + '</td>';
+            str += '            <td>' + filterdate[index].iuran + '</td>';
             str += '        </tr>';
         }
         str += '    </tbody>';
         str += '    <tfoot>';
         for (let index = 0; index < filtertotal.length; index++) {
-            var bilangan = filtertotal[index].total;
-
-            var number_string = bilangan.toString(),
-                sisa = number_string.length % 3,
-                rupiah = number_string.substr(0, sisa),
-                ribuan = number_string.substr(sisa).match(/\d{3}/g);
-
-            if (ribuan) {
-                separator = sisa ? '.' : '';
-                rupiah += separator + ribuan.join('.');
-            }
             str += '        <tr>';
             str += '            <th colspan="6">Total Iuran</th>';
-            str += '            <th style="text-align: right;">Rp. ' + rupiah + '</th>';
+            str += '            <th>' + filtertotal[index].total + '</th>';
             str += '        </tr>';
         }
         str += '    </tfoot>';

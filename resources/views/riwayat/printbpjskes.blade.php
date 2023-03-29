@@ -30,8 +30,8 @@
                             <th>Nomor Referensi</th>
                             <th>Nomor Induk Kependudukan (NIK)</th>
                             <th>Nama</th>
-                            <th>Tanggal Lahir</th>
-                            <th>Tanggal Kepesertaan</th>
+                            <th>Nama Penanggung</th>
+                            <th>Kelas</th>
                             <th>Iuran</th>
                         </tr>
                     </thead>
@@ -42,12 +42,18 @@
                         @foreach ($data as $dt)
                             <tr>
                                 <td>{{ $no++ }}</td>
-                                <td>{{ $dt->no_bpjs_tk }}</td>
+                                <td>{{ $dt->no_bpjs_kes }}</td>
                                 <td>{{ $dt->nik }}</td>
                                 <td>{{ $dt->nama }}</td>
-                                <td>{{ $dt->tanggal_lahir }}</td>
-                                <td>{{ $dt->tgl_kepesertaan }}</td>
-                                <td style="text-align: right;">Rp. {{ number_format($dt->iuran, 0, ',', '.') }}</td>
+                                <td>{{ $dt->nama_master }}</td>
+                                <td>{{ $dt->kelas }}</td>
+                                @if ($dt->iuran != 0)
+                                    <td style="text-align: right;">Rp. {{ number_format($dt->iuran, 0, ',', '.') }}
+                                    </td>
+                                @else
+                                    <td></td>
+                                @endif
+
                             </tr>
                         @endforeach
                     </tbody>

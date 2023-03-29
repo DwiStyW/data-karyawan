@@ -34,6 +34,38 @@
                 <h3 class="title-pages fw-bold">Dashboard</h3>
             </header>
             <div class="row">
+                <div class="col-lg-4 col-md-4 col-12 mb-3">
+                    <div class="card text-white" style="background-color:darkblue;height: 20rem;">
+                        <div class="card-body text-center">
+                            <h3 class="card-title text-white">Jumlah Karyawan</h3>
+                            <p class="card-text mb-5">Tanggal : {{ date('d-m-Y') }}</p>
+                            <h1 class="text-center text-white mt-5 mb-5"><b>{{ $jumkar }}</b></h1>
+                            <a href="/master" class="btn btn-primary mt-4">Detail</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-12 mb-3">
+                    <div class="card text-white" style="background-color:grey;height: 20rem;">
+                        <div class="card-body text-center">
+                            <h3 class="card-title text-white">Jumlah Apoteker Aktif</h3>
+                            <p class="card-text mb-5">Tanggal : {{ date('d-m-Y') }}</p>
+                            <h1 class="text-center mt-5 mb-5 text-white"><b>{{ count($apoteker) }}</b></h1>
+                            <a href="#" class="btn btn-primary mt-4">Detail</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-12 mb-3">
+                    <div class="card" style="background-color:gainsboro;height: 20rem;">
+                        <div class="card-body text-center">
+                            <h3 class="card-title">Karyawan Pensiun</h3>
+                            <p class="card-text mb-5">Tahun : {{ date('Y') }}</p>
+                            <h1 class="text-center mt-5 mb-5"><b>999</b></h1>
+                            <a href="#" class="btn btn-primary mt-4">Detail</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3">
                 <div class="col-lg-6 col-md-6 col-12" id="column-pend">
                 </div>
                 <div class="col-lg-6 col-md-6 col-12" id="pie-gender">
@@ -146,26 +178,5 @@
         }]
     });
 </script>
-
-<!-- Modal tambah bpjskes -->
-{{-- data-bs-toggle="modal" data-bs-target="#pendidikan" --}}
-{{-- <div class="modal fade" id="pendidikan" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">Tambah BPJS Ketenagakerjaan</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-        </div>
-    </div>
-</div> --}}
 
 </html>

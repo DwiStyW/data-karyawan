@@ -73,6 +73,16 @@ class PendidikanController extends Controller
             'updated_at'=>date("Y-m-d H:i:s")
         ];
 
+        $dataDiploma=[
+            'tingkat_pendidikan'=>"Diploma",
+            'nama_sekolah'=>$request->pendidikanDiploma,
+            'jurusan'=>$request->jurusanDiploma,
+            'tgl_awal'=>$request->masukDiploma,
+            'tgl_akhir'=>$request->keluarDiploma,
+            'id_master'=>$request->id_master,
+            'updated_at'=>date("Y-m-d H:i:s")
+        ];
+
         $dataS1=[
             'tingkat_pendidikan'=>"S1",
             'nama_sekolah'=>$request->pendidikanS1,

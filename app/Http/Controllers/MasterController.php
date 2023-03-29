@@ -34,12 +34,12 @@ class MasterController extends Controller
 
      public function detailmaster($id_master){
         $jabatan=Jabatan::get(); //untuk select option jabatan
-        $sekolah=Pendidikan::where('pendidikan.id_master',$id_master) //untuk perulangan insert pendidikan all
+        $sekolah=Pendidikan::where('pendidikan.id_master',$id_master)->where('pendidikan.tingkat_pendidikan','!=','Lainnya') //untuk perulangan insert pendidikan all
         ->join('batas_pensiun','pendidikan.tingkat_pendidikan','=','batas_pensiun.tingkatan_pendidikan')
         ->join('master','pendidikan.id_master','=','master.id')
         ->orderby('batas_pensiun.id','ASC')
         ->get();
-        $jsekolah=Pendidikan::where('pendidikan.id_master',$id_master) //untuk numrow perulangan insert pendidikan sebagian
+        $jsekolah=Pendidikan::where('pendidikan.id_master',$id_master)->where('pendidikan.tingkat_pendidikan','!=','Lainnya') //untuk numrow perulangan insert pendidikan sebagian
         ->join('batas_pensiun','pendidikan.tingkat_pendidikan','=','batas_pensiun.tingkatan_pendidikan')
         ->join('master','pendidikan.id_master','=','master.id')
         ->orderby('batas_pensiun.id','ASC')
@@ -62,7 +62,7 @@ class MasterController extends Controller
             $where[]='tingkatan_pendidikan != "' .$sklh[$i].'"';
         }
         $kalimat = implode(" and ",$where);//where sekolah yang belum diinput
-        $bataspensiun=DB::select("SELECT * FROM batas_pensiun where $kalimat");
+        $bataspensiun=DB::select("SELECT * FROM batas_pensiun where $kalimat ");
         }else{
             $bataspensiun=DB::select("SELECT * FROM batas_pensiun");
         }
@@ -70,18 +70,20 @@ class MasterController extends Controller
         $historykerja=Historypekerjaan::where('history_pekerjaan.id_master',$id_master)->orderby('id','DESC')->get();//history pekerjaan
         $bpjskes=Bpjskes::where('id_master',$id_master)->get();//bpjskes
         $bpjstk=Bpjstk::where('id_master',$id_master)->get();//bpjstk
-        $pendidikanterakhir=Pendidikan::where('pendidikan.id_master',$id_master)//pendidikan terakhir
+        $pendidikanterakhir=Pendidikan::where('pendidikan.id_master',$id_master)->where('pendidikan.tingkat_pendidikan','!=','Lainnya')//pendidikan terakhir
         ->leftJoin('batas_pensiun','pendidikan.tingkat_pendidikan','=','batas_pensiun.tingkatan_pendidikan')
         ->orderby('batas_pensiun.id','DESC')
         ->take(1)
         ->get();
-        // dd($bataspensiun);
+        // dd($kalimat);
         $riwayatkaryawan=DB::select("SELECT riwayat_karyawan.*,nama_jabatan from riwayat_karyawan
         join jabatan on jabatan.id=riwayat_karyawan.jabatan where id_master=$id_master order by riwayat_karyawan.id DESC");
         // dd($riwayatkaryawan);
 
         return view('DetailMaster.detailmaster',compact('master','pendidikanterakhir','id_master','jabatan','bataspensiun','pendidikan','historykerja','bpjskes','bpjstk','riwayatkaryawan'));
     }
+
+
     public function print($id_master){
          $jabatan=Jabatan::get(); //untuk select option jabatan
         $sekolah=Pendidikan::where('pendidikan.id_master',$id_master) //untuk perulangan insert pendidikan all
@@ -120,7 +122,7 @@ class MasterController extends Controller
         $historykerja=Historypekerjaan::where('history_pekerjaan.id_master',$id_master)->orderby('id','DESC')->get();//history pekerjaan
         $bpjskes=Bpjskes::where('id_master',$id_master)->get();//bpjskes
         $bpjstk=Bpjstk::where('id_master',$id_master)->get();//bpjstk
-        $pendidikanterakhir=Pendidikan::where('pendidikan.id_master',$id_master)//pendidikan terakhir
+        $pendidikanterakhir=Pendidikan::where('pendidikan.id_master',$id_master)->where('pendidikan.tingkat_pendidikan','!=','Lainnya')//pendidikan terakhir
         ->leftJoin('batas_pensiun','pendidikan.tingkat_pendidikan','=','batas_pensiun.tingkatan_pendidikan')
         ->orderby('batas_pensiun.id','DESC')
         ->take(1)

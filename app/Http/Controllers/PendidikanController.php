@@ -41,6 +41,7 @@ class PendidikanController extends Controller
         $SMA=$request->pendidikanSMA;
         $S1=$request->pendidikanS1;
         $S2=$request->pendidikanS2;
+        $Lainnya=$request->pendidikanLainnya;
 
         $dataSD=[
             'tingkat_pendidikan'=>"SD",
@@ -92,7 +93,18 @@ class PendidikanController extends Controller
             'updated_at'=>date("Y-m-d H:i:s")
         ];
 
-        if($SD!='' && $SMP!='' && $SMA!='' && $S1!='' && $S2!=''){
+         $dataLainnya=[
+            'tingkat_pendidikan'=>"Lainnya",
+            'nama_sekolah'=>$request->pendidikanLainnya,
+            'jurusan'=>$request->jurusanLainnya,
+            'tgl_awal'=>$request->masukLainnya,
+            'tgl_akhir'=>$request->keluarLainnya,
+            'id_master'=>$request->id_master,
+            'updated_at'=>date("Y-m-d H:i:s")
+        ];
+        if($SD!='' && $SMP!='' && $SMA!='' && $S1!='' && $S2!='' && $Lainnya!=''){
+            $data=[$dataSD,$dataSMP,$dataSMA,$dataS1,$dataS2,$Lainnya];
+        }elseif($SD!='' && $SMP!='' && $SMA!='' && $S1!='' && $S2!=''){
             $data=[$dataSD,$dataSMP,$dataSMA,$dataS1,$dataS2];
         }else if($SD!='' && $SMP!=''&& $SMA!='' && $S1!=''){
             $data=[$dataSD,$dataSMP,$dataSMA,$dataS1];
@@ -148,8 +160,9 @@ class PendidikanController extends Controller
             $data=[$dataS1];
         }else if($S2!=''){
             $data=[$dataS2];
+        }else if($Lainnya!=''){
+            $data=[$dataLainnya];
         }
-
         // $data=[$dataSD,$dataSMP,$dataSMA,$dataS1];
         try{
             Pendidikan::insert($data);
@@ -189,9 +202,27 @@ class PendidikanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $where=[
+            'id_pendidikan'=>$request->id_pendidikan
+        ];
+
+        $data=[
+            'tingkat_pendidikan'=>$request->tingkat_pendidikan,
+            'nama_sekolah'=>$request->nama_sekolah,
+            'jurusan'=>$request->jurusan,
+            'tgl_awal'=>$request->tglawal,
+            'tgl_akhir'=>$request->tglakhir,
+            'id_master'=>$request->id_master,
+        ];
+        try {
+            Pendidikan::where($where)->update($data);
+            return back()->with('success','Data berhasil diedit!');
+        }catch(Exception $e){
+            return back()->with('failed','Data gagal diedit!');
+        }
+
     }
 
     /**
@@ -202,6 +233,11 @@ class PendidikanController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try{
+        Pendidikan::where(['id_pendidikan'=>$id])->delete();
+        return back()->with('success','Data berhasil dihapus!');
+    }catch(Exception $e){
+        return back()->with('failed','Data gagal dihapus!');
+    }
     }
 }

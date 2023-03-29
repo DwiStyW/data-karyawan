@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Jabatan;
 use App\Models\Struktur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,33 +17,29 @@ class StrukturController extends Controller
      */
     public function index()
     {
-        $data=Struktur::all();
-        // $parentid=Struktur::getPid();
-        // foreach($parentid as $p){
-        //     $pid=$p->pid;
-        //     $data[]=DB::connection('mysql')->select("select id,tags from struktur where id=$pid");
+        // $data=Jabatan::get();
+        // $data=DB::select("SELECT * from jabatan");
+        // foreach($data as $datalist){
+
+        //     $datas[]=['id'=>$datalist['id'],
+        //             'nama'=>$datalist['nama_jabatan'],
+        //             'level'=>$datalist['level'],
+        //             'pid'=>$datalist['pid'],
+        //             'tags'=>["subLevels".$datalist['tags']]];
         // }
+        // return $datas;
+        $data=DB::select("SELECT jabatan.*, nama from jabatan left join master on master.id_jabatan=jabatan.id  order by jabatan.id ASC");
+        // $data=Jabatan::get();
+        // dd($data);
 
         foreach($data as $datalist){
-            // if($datalist['tags']=='1'){
-            //     $tags="";
-            // }else if($datalist['tags']=='2'){
-            //     $tags="subLevels1";
-            // }else if($datalist['tags']=='3'){
-            //     $tags="subLevels2";
-            // }else if($datalist['tags']=='4'){
-            //     $tags="subLevels3";
-            // }else if($datalist['tags']=='5'){
-            //     $tags="subLevels4";
-            // }else if($datalist['tags']=='6'){
-            //     $tags="subLevels0";
-            // }
 
-            $datas[]=['id'=>$datalist['id'],
-                    'nama'=>$datalist['nama'],
-                    'level'=>$datalist['level'],
-                    'pid'=>$datalist['pid'],
-                    'tags'=>["subLevels".$datalist['tags']]];
+            $datas[]=['id'=>$datalist->id,
+                    'jabatan'=>$datalist->nama_jabatan,
+                    'nama'=>$datalist->nama,
+                    'level'=>$datalist->level,
+                    'pid'=>$datalist->pid,
+                    'tags'=>["subLevels".$datalist->tags]];
         }
         return $datas;
     }

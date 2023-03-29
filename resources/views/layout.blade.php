@@ -16,22 +16,54 @@
         }
 
         .field_0 {
-            font-family: cursive;
             text-transform: uppercase;
-            fill: #ddd;
+            fill: #354236ca;
         }
 
         .field_1 {
             fill: #cfcfcf;
         }
 
-        /*
-        #tree>svg {
-            background-color: #ddd;
-        } */
-        [data-id='search'] {
-            display: block !important;
+        [filter="url(#isla-shadow)"] {
+            fill: #5F7A61 !important;
         }
+
+        [stroke="#039BE5"] {
+            stroke: #35423677;
+        }
+
+        [fill="#039BE5"] {
+            fill: #5F7A61;
+        }
+
+        /* [fill="#039BE5"] {
+            fill: #D5EEBB;
+        } */
+
+        [stroke="#F57C00"] {
+            fill: #cab249 !important;
+            stroke: #cab249 !important;
+        }
+
+        [stroke="#FFCA28"] {
+            stroke: #cab249 !important;
+        }
+
+        [data-ctrl-menu] {
+            background-color: #ddd;
+            border-radius: 5px;
+            height: 30px !important;
+            top: 200px;
+            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 3px 10px 0 rgba(0, 0, 0, 0.10);
+        }
+
+        hr {
+            margin: 5px;
+        }
+
+        /* [data-id='search'] {
+            display: block !important;
+        } */
     </style>
 </head>
 
@@ -40,7 +72,7 @@
     @include('partials.navbar')
     <main class="wrapper">
         <div class="container">
-            <header class="mb-3">
+            <header style="position: fixed; top:10%; z-index:1">
                 <h3 class="title-pages fw-bold">Struktur</h3>
             </header>
             <div id="tree"></div>
@@ -67,15 +99,15 @@
 <script src="../assets/js/orgchart.js"></script>
 <script>
     window.onload = function() {
-        OrgChart.templates.ana.field_0 =
-            '<text width="230" style="font-size: 18px;" fill="#ffffff" x="125" y="95" text-anchor="middle" class="field_0">{val}</text>';
-        OrgChart.templates.ana.field_1 =
-            '<text width="130" text-overflow="multiline" style="font-size: 14px;" fill="#ffffff" x="230" y="30" text-anchor="end" class="field_1">{val}</text>';
+        OrgChart.templates.isla.field_0 =
+            '<text width="230" style="font-size: 18px;" x="90" y="92" text-anchor="middle" class="field_0">{val}</text>';
+        OrgChart.templates.isla.field_1 =
+            '<text width="130" text-overflow="multiline" style="font-size: 14px;" fill="#ffffff" x="90" y="60" text-anchor="middle" class="field_1">{val}</text>';
 
         $(document).ready(function() {
             $.ajax({
                 type: "GET",
-                url: "http://127.0.0.1:8000/api/getStruktur",
+                url: "/api/getStruktur",
                 methode: "get",
                 dataType: "json",
                 success: function(data) {
@@ -86,10 +118,7 @@
         });
 
         function getData(data) {
-
-
             var data = data;
-            // console.log(data);
             //JavaScript
             var chart = new OrgChart(document.getElementById("tree"), {
                 showXScroll: OrgChart.scroll.visible,
@@ -97,8 +126,9 @@
                 mouseScrool: OrgChart.action.ctrlZoom,
                 scaleInitial: 0.8,
                 mode: 'light',
-                template: 'isla',
+                template: 'ana',
                 enableSearch: false,
+                // nodeMenu: false,
                 menu: {
                     export_pdf: {
                         text: "Export PDF",
@@ -115,18 +145,19 @@
                     level: 2,
                     allChildren: true
                 },
-                editForm: {
-                    buttons: {
-                        edit: null,
-                        share: null,
-                        pdf: null,
-                        remove: null
-                    }
-                },
+                editForm: false,
+                // editForm: {
+                //     buttons: {
+                //         edit: null,
+                //         share: null,
+                //         pdf: null,
+                //         remove: null
+                //     }
+                // },
 
                 nodeBinding: {
-                    field_0: "id",
-                    field_1: "nama"
+                    // field_0: "nama",
+                    field_1: "jabatan"
                 },
                 tags: {
                     "subLevels0": {

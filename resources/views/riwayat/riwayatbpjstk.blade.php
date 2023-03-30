@@ -21,34 +21,45 @@
         <div class="container-custome">
             @include('alert')
             <header class="mb-3 d-flex justify-content-between">
-                <img src="../assets/img/logo/BPJStk.png" style="height:60px" alt="">
+                <img src="../assets/img/logo/BPJStk.png" style="height:50px" alt="">
+
                 <div>
-                    <h6 class="mt-2"><b>Preiode :</b>
-                        <select name="period" id="period" onchange="periode()">
-                            @foreach ($period as $p)
-                                @if ($p->date == $date)
-                                    <option value="{{ $p->date }}" selected>{{ $p->date }}</option>
-                                @else
-                                    <option value="{{ $p->date }}">{{ $p->date }}</option>
-                                @endif
-                            @endforeach
-                        </select>
-                    </h6>
-                    <div class="d-flex float-end">
-                        <div style="margin-right: 7px">
+                    @if (count($period) != 0)
+                        <h6 class="mt-2"><b>Preiode :</b>
+                            <select name="period" id="period" onchange="periode()">
+                                @foreach ($period as $p)
+                                    @if ($p->date == $date)
+                                        <option value="{{ $p->date }}" selected>{{ $p->date }}</option>
+                                    @else
+                                        <option value="{{ $p->date }}">{{ $p->date }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </h6>
+                        <div class="d-flex float-end">
+                            <div style="margin-right: 7px">
+                                <a class="btn btn-sm btn-secondary" href="/simpandatabpjstk">
+                                    <img src="../assets/img/logo/simpan.png" style="margin:-3px;" width="18"
+                                        alt="">
+                                </a>
+                            </div>
+                            <div id="printlink">
+                                <a target="_blank" class="btn btn-sm btn-secondary" href="/printtk/{{ $p->date }}">
+                                    <i class="bi bi-printer"></i>
+                                </a>
+                            </div>
+
+                        </div>
+                    @else
+                        <div class="mt-3">
                             <a class="btn btn-sm btn-secondary" href="/simpandatabpjstk">
-                                <img src="../assets/img/logo/simpan.png" style="margin:-3px;" width="20"
+                                <img src="../assets/img/logo/simpan.png" style="margin:-3px;" width="18"
                                     alt="">
                             </a>
                         </div>
-                        <div id="printlink">
-                            <a target="_blank" class="btn btn-sm btn-secondary" href="/printtk/{{ $date }}">
-                                <i class="bi bi-printer"></i>
-                            </a>
-                        </div>
-
-                    </div>
+                    @endif
                 </div>
+
             </header>
             <div id="tabelriwayat">
                 <table class="table table-striped table-bordered ">
@@ -130,6 +141,17 @@
         str += '    </thead>';
         str += '    <tbody>';
         for (let index = 0; index < filterdate.length; index++) {
+            var bilangan = filterdate[index].iuran;
+
+            var number_string = bilangan.toString(),
+                sisa = number_string.length % 3,
+                rupiah = number_string.substr(0, sisa),
+                ribuan = number_string.substr(sisa).match(/\d{3}/g);
+
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
             str += '        <tr>';
             str += '            <td>' + (index + 1) + '</td>';
             str += '            <td>' + filterdate[index].no_bpjs_tk + '</td>';
@@ -143,6 +165,17 @@
         str += '    </tbody>';
         str += '    <tfoot>';
         for (let index = 0; index < filtertotal.length; index++) {
+            var bilangan = filtertotal[index].total;
+
+            var number_string = bilangan.toString(),
+                sisa = number_string.length % 3,
+                rupiah = number_string.substr(0, sisa),
+                ribuan = number_string.substr(sisa).match(/\d{3}/g);
+
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
             str += '        <tr>';
             str += '            <th colspan="6">Total Iuran</th>';
             str += '            <th>Rp. ' + filtertotal[index].total + '</th>';

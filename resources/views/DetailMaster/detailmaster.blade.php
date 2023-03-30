@@ -203,7 +203,13 @@
                                 <tbody>
                                     @foreach ($pendidikan as $p)
                                         <tr>
-                                            <td>{{ $p->tingkat_pendidikan }}</td>
+                                            <td>
+                                                @if ($p->tingkat_pendidikan == 'Lainnya')
+                                                    {{ 'Profesi' }}
+                                                @else
+                                                    {{ $p->tingkat_pendidikan }}
+                                                @endif
+                                            </td>
                                             <td>{{ $p->nama_sekolah }}</td>
                                             <td>{{ $p->jurusan }}</td>
                                             <td>{{ $p->tgl_awal }}</td>

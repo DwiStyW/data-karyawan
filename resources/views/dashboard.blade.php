@@ -37,32 +37,32 @@
                 <div class="col-lg-4 col-md-4 col-12 mb-3">
                     <div class="card text-white" style="background-color:darkblue;height: 20rem;">
                         <div class="card-body text-center">
-                          <h3 class="card-title text-white">Jumlah Karyawan</h3>
-                          <p class="card-text mb-5">Tanggal : {{date("d-m-Y")}}</p>
-                          <h1 class="text-center text-white mt-5 mb-5"><b>{{ $jumkar }}</b></h1>
-                          <a href="/master" class="btn btn-primary mt-4">Detail</a>
+                            <h3 class="card-title text-white">Jumlah Karyawan</h3>
+                            <p class="card-text mb-5">Tanggal : {{date("d-m-Y")}}</p>
+                            <h1 class="text-center text-white mt-5 mb-5"><b>{{ $jumkar }}</b></h1>
+                            <a href="/master" class="btn btn-primary mt-4">Detail</a>
                         </div>
-                      </div>
+                    </div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-12 mb-3">
                     <div class="card text-white" style="background-color:grey;height: 20rem;">
                         <div class="card-body text-center">
-                          <h3 class="card-title text-white">Jumlah Apoteker Aktif</h3>
-                          <p class="card-text mb-5">Tanggal : {{date("d-m-Y")}}</p>
-                          <h1 class="text-center mt-5 mb-5 text-white"><b>999</b></h1>
-                          <a href="#" class="btn btn-primary mt-4">Detail</a>
+                            <h3 class="card-title text-white">Jumlah Apoteker Aktif</h3>
+                            <p class="card-text mb-5">Tanggal : {{date("d-m-Y")}}</p>
+                            <h1 class="text-center mt-5 mb-5 text-white"><b>{{ count($apoteker) }}</b></h1>
+                            <a href="#" class="btn btn-primary mt-4">Detail</a>
                         </div>
-                      </div>
+                    </div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-12 mb-3">
                     <div class="card" style="background-color:gainsboro;height: 20rem;">
                         <div class="card-body text-center">
-                          <h3 class="card-title">Karyawan Pensiun</h3>
-                          <p class="card-text mb-5">Tahun : {{date("Y")}}</p>
-                          <h1 class="text-center mt-5 mb-5"><b>999</b></h1>
-                          <a href="#" class="btn btn-primary mt-4">Detail</a>
+                            <h3 class="card-title">Karyawan Pensiun</h3>
+                            <p class="card-text mb-5">Tahun : {{date("Y")}}</p>
+                            <h1 class="text-center mt-5 mb-5"><b>999</b></h1>
+                            <a href="#" class="btn btn-primary mt-4">Detail</a>
                         </div>
-                      </div>
+                    </div>
                 </div>
             </div>
             <div class="row mt-3">

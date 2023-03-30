@@ -97,6 +97,7 @@
     });
 </script>
 <script src="../assets/js/orgchart.js"></script>
+{{-- <script src="https://balkan.app/js/OrgChart.js"></script> --}}
 <script>
     window.onload = function() {
         OrgChart.templates.isla.field_0 =

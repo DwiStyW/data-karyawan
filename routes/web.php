@@ -87,3 +87,7 @@ Route::get('simpandatabpjstk', [RiwayatController::class, 'simpandatabpjstk']);
 
 Route::get('/setting',[AuthController::class, 'setting']);
 Route::post('/edituser',[AuthController::class, 'edituser']);
+
+Route::get('riwayatbpjskes', [RiwayatController::class, 'riwayatbpjskes']);
+Route::get('printkes/{date}', [RiwayatController::class, 'printriwayatbpjskes']);
+Route::get('simpandatabpjskes', [RiwayatController::class, 'simpandatabpjskes']);

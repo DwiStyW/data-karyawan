@@ -14,6 +14,7 @@ use App\Http\Controllers\RiwayatController;
 use App\Http\Controllers\RiwayatKaryawanController;
 use App\Http\Controllers\SimpleController;
 use App\Http\Controllers\StrukturController;
+use App\Http\Controllers\RiwkaryawanController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -71,6 +72,8 @@ Route::post('/hapusbpjstk', [BpjstkController::class, 'destroy']);
 Route::get('departement', [DepartementController::class, 'index'])->middleware('auth');
 Route::get('golongan', [GolonganController::class, 'index']);
 
+Route::get('/riwkaryawan', [RiwkaryawanController::class, 'index'])->middleware('auth');
+Route::get('/riwayatkaryawan', [RiwayatkaryawanController::class, 'index'])->middleware('auth');
 Route::post('/postriwayatkaryawan', [RiwayatKaryawanController::class, 'store'])->middleware('auth');
 
 Route::get('jabatan', [JabatanController::class, 'index']);

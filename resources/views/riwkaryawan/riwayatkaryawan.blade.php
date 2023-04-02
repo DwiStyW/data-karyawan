@@ -19,17 +19,15 @@
     <main class="wrapper">
         <div class="container-custome">
             <header class="mb-3">
-                <h3 class="title-pages fw-bold">Data BPJS TK</h3>
+                <h3 class="title-pages fw-bold">Data Riwayat Karyawan</h3>
             </header>
             @include('alert')
             <div class="pb-3">
-                <button data-bs-toggle="modal" data-bs-target="#tambahbpjstk" class="btn btn-sm btn-secondary">
+                <button data-bs-toggle="modal" data-bs-target="#tambahriwayatkaryawan" onclick="tambahriwayatkaryawan"
+                    class="btn btn-sm btn-secondary">
                     <i class="bi bi-plus-square-fill"></i>
-                    BPJS TK
+                    Riwayat Karyawan
                 </button>
-                <a href="/riwayatbpjstk" class="btn btn-sm btn-secondary">
-                    Report
-                </a>
             </div>
 
             <div>
@@ -38,37 +36,37 @@
                         <tr style="background-color:#5F7A61;color:#ddd;font-weight:bold">
                             <th data-priority="1">No</th>
                             <th data-priority="1">Nama</th>
-                            <th data-priority="3">Nomor BPJS</th>
-                            <th data-priority="3">Tanggal Kepesertaan</th>
-                            <th data-priority="3">Iuran</th>
-                            <th data-priority="2" class="text-center">Aksi</th>
+                            <th data-priority="1">Tanggal</th>
+                            <th data-priority="3">Jenis</th>
+                            <th data-priority="3">Deskripsi</th>
+                            {{-- <th data-priority="2" class="text-center">Aksi</th> --}}
                         </tr>
                     </thead>
                     <tbody>
                         @php
                             $no = 1;
                         @endphp
-                        @foreach ($bpjstk as $btk)
+                        @foreach ($riwkaryawan as $riwkary)
                             <tr>
                                 <td>{{ $no++ }}</td>
-                                <td>{{ $btk->nama }}</td>
-                                <td>{{ $btk->no_bpjs_tk }}</td>
-                                <td>{{ date('d-m-Y', strtotime($btk->tgl_kepesertaan)) }}</td>
-                                <td>Rp. {{ number_format($btk->iuran, 0, ',', '.') }}</td>
-                                <td>
+                                <td>{{ $riwkary->nama_master }}</td>
+                                <td>{{ date('d-m-Y', strtotime($riwkary->tanggal)) }}</td>
+                                <td>{{ $riwkary->jenis }}</td>
+                                <td>{{ $riwkary->deskripsi }}</td>
+                                {{-- <td>
                                     <div class="row justify-content-center" style="min-width:110px;">
                                         <div style="max-width:60px"><button type="button"
                                                 class="btn btn-sm btn-primary btn-block" data-bs-toggle="modal"
-                                                data-bs-target="#editbpjstk"
-                                                onclick="editbpjstk({{ $btk->id }},'{{ $btk->id_master }}','{{ $btk->no_bpjs_tk }}','{{ $btk->tgl_kepesertaan }}','{{ $btk->iuran }}')">
+                                                data-bs-target="#editriwayatkaryawan"
+                                                onclick="editriwayatkaryawan({{ $riwkary->id }},'{{ $riwkary->id_master }}')">
                                                 <i class="bi bi-pencil-square"></i></button></div>
                                         <div style="max-width:60px"><button type="button"
                                                 class="btn btn-sm btn-danger btn-block" data-bs-toggle="modal"
-                                                data-bs-target="#hapusbpjstk"
-                                                onclick="hapusbpjstk({{ $btk->id }},'{{ $btk->no_bpjs_tk }}')"><i
+                                                data-bs-target="#hapusriwayatkaryawan"
+                                                onclick="hapusriwayatkaryawan({{ $riwkary->id }},'{{ $riwkary->id_master }}')"><i
                                                     class="bi bi-trash3-fill"></i></button></div>
                                     </div>
-                                </td>
+                                </td> --}}
                             </tr>
                         @endforeach
                     </tbody>
@@ -83,6 +81,7 @@
 <script src="../assets/ui/jquery-3.6.1/jquery-3.6.1.min.js"></script>
 <script src="../assets/ui/bootstrap-5.2.1-dist/js/bootstrap.bundle.min.js"></script>
 <script>
+    console.log(@json($riwkaryawan))
     $(document).on("scroll", function() {
         if ($(document).scrollTop() > 100) {
             $(".navbar").addClass("border-bottom");
@@ -133,8 +132,9 @@
         });
     });
 </script>
-@include('bpjstk.tambahbpjstk')
-@include('bpjstk.editbpjstk')
-@include('bpjstk.hapusbpjstk')
+{{-- @include('bpjskes.tambahbpjskes')
+@include('bpjskes.editbpjskes')
+@include('bpjskes.hapusbpjskes') --}}
+@include('riwkaryawan.tambahriwayatkaryawan')
 
 </html>

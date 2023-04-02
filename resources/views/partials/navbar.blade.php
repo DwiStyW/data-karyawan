@@ -12,6 +12,10 @@
                         <b>&nbsp;{{ auth()->user()->name }}</b>
                     </div>
                     <div class="dropdown-content text-center">
+                        <a href="/setting" class="btn">
+                            <i class="bi bi-gear"></i>
+                            &nbsp; setting
+                        </a><br>
                         <a href="/logout" class="btn">
                             <i class="bi bi-box-arrow-left"></i>
                             &nbsp; logout

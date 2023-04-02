@@ -56,7 +56,7 @@
                                 <td>{{ $bkes->nama_master }}</td>
                                 <td>{{ $bkes->no_bpjs_kes }}</td>
                                 <td>{{ $bkes->kelas }}</td>
-                                <td>{{ $bkes->iuran }}</td>
+                                <td>Rp. {{ number_format($bkes->iuran, 0, ',', '.') }}</td>
                                 <td>
                                     <div class="row justify-content-center" style="min-width:110px;">
                                         <div style="max-width:60px"><button type="button"

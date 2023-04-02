@@ -21,7 +21,7 @@
         <div class="container-custome">
             @include('alert')
             <header class="mb-3 d-flex justify-content-between">
-                <img src="../assets/img/logo/BPJSkes.png" style="height:40px;margin-top:10px" alt="">
+                <img src="../assets/img/logo/BPJSKes.png" style="height:40px;margin-top:10px" alt="">
 
                 <div>
                     @if (count($period) != 0)

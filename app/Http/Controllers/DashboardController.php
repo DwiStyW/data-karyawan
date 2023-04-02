@@ -40,8 +40,8 @@ class DashboardController extends Controller
                 foreach($tingkat as $t){
                     $tingkatan[]=$t->id;
                 }
+                
             }
-
             $jenis[]=null;
             $cek="";
             $i=0;

@@ -39,12 +39,12 @@ class RiwayatController extends Controller
         $riwayat=Riwayatbpjstk::join('bpjs_tk','bpjs_tk.id','=','riwayat_bpjs_tk.id_bpjs')
         ->leftjoin('master','master.id','=','riwayat_bpjs_tk.id_master')
         ->get();
-        $period=DB::select('SELECT date,sum(iuran) as total from riwayat_bpjs_tk group by date order by id DESC');
+        $period=DB::select('SELECT date,sum(iuran) as total from riwayat_bpjs_tk group by date');
         $data=Riwayatbpjstk::where('date',$datewingi)
         ->join('bpjs_tk','bpjs_tk.id','=','riwayat_bpjs_tk.id_bpjs')
         ->leftjoin('master','master.id','=','riwayat_bpjs_tk.id_master')
         ->get();
-        $totaliuran=DB::select("SELECT date,sum(iuran) as total from riwayat_bpjs_tk where date='$datewingi' group by date order by id DESC");
+        $totaliuran=DB::select("SELECT date,sum(iuran) as total from riwayat_bpjs_tk where date='$datewingi' group by date");
         return view('riwayat.riwayatbpjstk',compact('data','period','riwayat','totaliuran'));
     }
 
@@ -53,7 +53,7 @@ class RiwayatController extends Controller
         ->join('bpjs_tk','bpjs_tk.id','=','riwayat_bpjs_tk.id_bpjs')
         ->leftjoin('master','master.id','=','riwayat_bpjs_tk.id_master')
         ->get();
-        $totaliuran=DB::select("SELECT date,sum(iuran) as total from riwayat_bpjs_tk where date='$date' group by date order by id DESC");
+        $totaliuran=DB::select("SELECT date,sum(iuran) as total from riwayat_bpjs_tk where date='$date' group by date");
         return view('riwayat.printbpjstk',compact('data','date','totaliuran'));
     }
 
@@ -104,7 +104,7 @@ class RiwayatController extends Controller
         $riwayat=Riwayatbpjskes::join('bpjs_kes','bpjs_kes.id','=','riwayat_bpjs_kes.id_bpjs')
         ->leftjoin('master','master.id','=','riwayat_bpjs_kes.id_master')
         ->get();
-        $period=DB::select('SELECT date,sum(iuran) as total from riwayat_bpjs_kes group by date order by id DESC');
+        $period=DB::select('SELECT date,sum(iuran) as total from riwayat_bpjs_kes group by date');
         $data=Riwayatbpjskes::where('date',$datewingi)
         ->join('bpjs_kes','bpjs_kes.id','=','riwayat_bpjs_kes.id_bpjs')
         ->leftjoin('master','master.id','=','riwayat_bpjs_kes.id_master')
@@ -112,7 +112,7 @@ class RiwayatController extends Controller
         ->get();
         // $data=DB::select('SELECT bpjs_kes.*, master.nama as nama_master from bpjs_kes join master on master.id=bpjs_kes.id_master where bpjs_kes.status="Aktif" order by id_master ASC');
 
-        $totaliuran=DB::select("SELECT date,sum(iuran) as total from riwayat_bpjs_kes where date='$datewingi' group by date order by id DESC");
+        $totaliuran=DB::select("SELECT date,sum(iuran) as total from riwayat_bpjs_kes where date='$datewingi' group by date");
 
         $primer=DB::select('SELECT id_master,master.nama as nama,sum(iuran) as tiuran from bpjs_kes join master on master.id=bpjs_kes.id_master group by id_master,master.nama');
         $rowspan=DB::select('SELECT count(*) as row from bpjs_kes group by id_master');
@@ -126,7 +126,7 @@ class RiwayatController extends Controller
         ->leftjoin('master','master.id','=','riwayat_bpjs_kes.id_master')
         ->select('no_bpjs_kes','bpjs_kes.nik as nik','bpjs_kes.nama as nama','kelas','riwayat_bpjs_kes.iuran as iuran','master.nama as nama_master')
         ->get();
-       $totaliuran=DB::select("SELECT date,sum(iuran) as total from riwayat_bpjs_kes where date='$date' group by date order by id DESC");
+       $totaliuran=DB::select("SELECT date,sum(iuran) as total from riwayat_bpjs_kes where date='$date' group by date");
         return view('riwayat.printbpjskes',compact('data','date','totaliuran'));
     }
 

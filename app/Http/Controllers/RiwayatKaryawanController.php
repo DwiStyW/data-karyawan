@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Master;
+use App\Models\Jabatan;
 use App\Models\Riwayatkaryawan;
 use Exception;
 use Illuminate\Http\Request;
@@ -17,7 +18,11 @@ class RiwayatKaryawanController extends Controller
      */
     public function index()
     {
-        //
+        $riwkaryawan=DB::select('SELECT riwayat_karyawan.*, master.nama as nama_master from riwayat_karyawan join master on master.id=riwayat_karyawan.id_master order by id ASC');
+        $master=Master::where('status','Aktif')->get();
+        $jabatan=Jabatan::get();
+        // dd($bpjstk);
+        return view('riwkaryawan.riwayatkaryawan',compact('riwkaryawan','master','jabatan'));
     }
 
     /**
@@ -134,6 +139,30 @@ class RiwayatKaryawanController extends Controller
                 'jenis'=>$request->jenis,
                 'jabatan'=>$jl->id_jabatan,
                 'deskripsi'=>'Sanksi '.$request->jenis,
+                'keterangan'=>$keterangan,
+            ];
+            try{
+                Riwayatkaryawan::insert($data1);
+                //alert berhasil
+                return back()->with('success','Data berhasil ditambahkan!');
+            }catch(Exception $e){
+                // dd($e);
+                //alert gagal
+                return back()->with('failed','Data gagal ditambahkan!');
+            }
+        }elseif($jenis=='Kesehatan' || $jenis=='Pelatihan' || $jenis=='Penghargaan'){
+            $jabatanlama=DB::select("SELECT id_jabatan,nama_jabatan,nama_departemen from master
+            join jabatan on jabatan.id=master.id_jabatan
+            left join departemen on jabatan.departemen=departemen.id
+            where master.id = $idm");
+            foreach($jabatanlama as $jl){
+            }
+            $data1=[
+                'id_master'=>$request->id_master,
+                'tanggal'=>$request->tanggal,
+                'jenis'=>$request->jenis,
+                'jabatan'=>$jl->id_jabatan,
+                'deskripsi'=>$request->deskripsi,
                 'keterangan'=>$keterangan,
             ];
             try{

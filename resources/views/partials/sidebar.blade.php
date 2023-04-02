@@ -74,22 +74,12 @@
                     </a>
                 </li>
                 <li class="list-group-item">
-                    <a class="btn" href="/keluarmasuk" id="navDAR">
+                    <a class="btn" href="/riwayatkaryawan" id="navDAR">
                         <div class="btn-header me-3">
                             <i class="bi bi-arrow-left-right"></i>
                         </div>
                         <div class="btn-body">
-                            Keluar Masuk
-                        </div>
-                    </a>
-                </li>
-                <li class="list-group-item">
-                    <a class="btn" href="/mutasi" id="navDAR">
-                        <div class="btn-header me-3">
-                            <i class="bi bi-shuffle"></i>
-                        </div>
-                        <div class="btn-body">
-                            Mutasi
+                            Riwayat Karyawan
                         </div>
                     </a>
                 </li>

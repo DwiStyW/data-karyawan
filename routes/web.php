@@ -14,6 +14,7 @@ use App\Http\Controllers\RiwayatController;
 use App\Http\Controllers\RiwayatKaryawanController;
 use App\Http\Controllers\SimpleController;
 use App\Http\Controllers\StrukturController;
+use App\Http\Controllers\RiwkaryawanController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -71,6 +72,8 @@ Route::post('/hapusbpjstk', [BpjstkController::class, 'destroy']);
 Route::get('departement', [DepartementController::class, 'index'])->middleware('auth');
 Route::get('golongan', [GolonganController::class, 'index']);
 
+Route::get('/riwkaryawan', [RiwkaryawanController::class, 'index'])->middleware('auth');
+Route::get('/riwayatkaryawan', [RiwayatkaryawanController::class, 'index'])->middleware('auth');
 Route::post('/postriwayatkaryawan', [RiwayatKaryawanController::class, 'store'])->middleware('auth');
 
 Route::get('jabatan', [JabatanController::class, 'index']);
@@ -84,6 +87,9 @@ Route::get('test', [StrukturController::class, 'index']);
 Route::get('riwayatbpjstk', [RiwayatController::class, 'riwayatbpjstk']);
 Route::get('printtk/{date}', [RiwayatController::class, 'printriwayatbpjstk']);
 Route::get('simpandatabpjstk', [RiwayatController::class, 'simpandatabpjstk']);
+
+Route::get('/setting',[AuthController::class, 'setting']);
+Route::post('/edituser',[AuthController::class, 'edituser']);
 
 Route::get('riwayatbpjskes', [RiwayatController::class, 'riwayatbpjskes']);
 Route::get('printkes/{date}', [RiwayatController::class, 'printriwayatbpjskes']);

@@ -48,6 +48,7 @@
                                     <i class="bi bi-printer"></i>
                                 </a>
                             </div>
+
                         </div>
                     @else
                         <div class="mt-3">
@@ -158,7 +159,7 @@
             str += '            <td>' + filterdate[index].nama + '</td>';
             str += '            <td>' + filterdate[index].tanggal_lahir + '</td>';
             str += '            <td>' + filterdate[index].tgl_kepesertaan + '</td>';
-            str += '            <td style="text-align: right;">Rp. ' + rupiah + '</td>';
+            str += '            <td> Rp. ' + filterdate[index].iuran + '</td>';
             str += '        </tr>';
         }
         str += '    </tbody>';
@@ -177,7 +178,7 @@
             }
             str += '        <tr>';
             str += '            <th colspan="6">Total Iuran</th>';
-            str += '            <th style="text-align: right;">Rp. ' + rupiah + '</th>';
+            str += '            <th>Rp. ' + filtertotal[index].total + '</th>';
             str += '        </tr>';
         }
         str += '    </tfoot>';

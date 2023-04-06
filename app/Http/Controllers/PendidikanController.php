@@ -39,6 +39,7 @@ class PendidikanController extends Controller
         $SD=$request->pendidikanSD;
         $SMP=$request->pendidikanSMP;
         $SMA=$request->pendidikanSMA;
+        $Diploma=$request->pendidikanDiploma;
         $S1=$request->pendidikanS1;
         $S2=$request->pendidikanS2;
         $Lainnya=$request->pendidikanLainnya;
@@ -112,7 +113,9 @@ class PendidikanController extends Controller
             'id_master'=>$request->id_master,
             'updated_at'=>date("Y-m-d H:i:s")
         ];
-        if($SD!='' && $SMP!='' && $SMA!='' && $S1!='' && $S2!='' && $Lainnya!=''){
+        if($SD!='' && $SMP!='' && $SMA!='' && $Diploma!='' && $S1!='' && $S2!='' && $Lainnya!=''){
+            $data=[$dataSD,$dataSMP,$dataSMA,$dataDiploma,$dataS1,$dataS2,$Lainnya];
+        }else if($SD!='' && $SMP!='' && $SMA!='' && $S1!='' && $S2!='' && $Lainnya!=''){
             $data=[$dataSD,$dataSMP,$dataSMA,$dataS1,$dataS2,$Lainnya];
         }elseif($SD!='' && $SMP!='' && $SMA!='' && $S1!='' && $S2!=''){
             $data=[$dataSD,$dataSMP,$dataSMA,$dataS1,$dataS2];
@@ -166,6 +169,8 @@ class PendidikanController extends Controller
             $data=[$dataSMP];
         }else if($SMA!=''){
             $data=[$dataSMA];
+        }else if($Diploma!=''){
+            $data=[$dataDiploma];
         }else if($S1!=''){
             $data=[$dataS1];
         }else if($S2!=''){

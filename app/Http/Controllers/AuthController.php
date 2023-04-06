@@ -60,7 +60,7 @@ class AuthController extends Controller
         }
 
         $cek = DB::table('users')->where('name',$request->name)->count();
-        if ($cek>0) {
+        if ($cek==0) {
             try {
                 DB::table('users')->where('id', $request->id)->update($user);
                 return back()->with('success', 'Update pengguna berhasil!');

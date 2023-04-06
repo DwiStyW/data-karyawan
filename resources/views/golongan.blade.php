@@ -33,77 +33,74 @@
             </header>
             <div class="col-lg-12">
                 <div class="row">
-                    <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+                    {{-- <div class="col-lg-2 col-md-3 col-sm-4 col-6">
                         <div class="box">
                             <div class="text-center">
                                 <i class="bi bi-person" style="font-size: 40px;"></i>
                                 <h6 class="text-white">Staff Tetap</h6>
                             </div>
                         </div>
+                    </div> --}}
+                    <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+                        <a href="pergolongan/Kontrak" style="text-decoration:none">
+                            <div class="box">
+                                <div class="text-center">
+                                    <i class="bi bi-person" style="font-size: 40px;"></i>
+                                    <h6 class="text-white">Staff Kontrak</h6>
+                                </div>
+                            </div>
+                        </a>
                     </div>
                     <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                        <div class="box">
-                            <div class="text-center">
-                                <i class="bi bi-person" style="font-size: 40px;"></i>
-                                <h6 class="text-white">Staff Kontrak</h6>
+                        <a href="pergolongan/I" style="text-decoration:none">
+                            <div class="box">
+                                <div class="text-center">
+                                    <i class="bi bi-person" style="font-size: 40px;"></i>
+                                    <h6 class="text-white">Gol 1</h6>
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                     <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                        <div class="box">
-                            <div class="text-center">
-                                <i class="bi bi-person" style="font-size: 40px;"></i>
-                                <h6 class="text-white">Gol 1</h6>
+                        <a href="pergolongan/II" style="text-decoration:none">
+                            <div class="box">
+                                <div class="text-center">
+                                    <i class="bi bi-person" style="font-size: 40px;"></i>
+                                    <h6 class="text-white">Gol 2</h6>
+                                </div>
                             </div>
-                        </div>
+                        </a>
+                    </div>
+
+                    <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+                        <a href="pergolongan/III" style="text-decoration:none">
+                            <div class="box">
+                                <div class="text-center">
+                                    <i class="bi bi-person" style="font-size: 40px;"></i>
+                                    <h6 class="text-white">Gol 3</h6>
+                                </div>
+                            </div>
+                        </a>
                     </div>
                     <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                        <div class="box">
-                            <div class="text-center">
-                                <i class="bi bi-person" style="font-size: 40px;"></i>
-                                <h6 class="text-white">Gol 2</h6>
+                        <a href="pergolongan/IV" style="text-decoration:none">
+                            <div class="box">
+                                <div class="text-center">
+                                    <i class="bi bi-person" style="font-size: 40px;"></i>
+                                    <h6 class="text-white">Gol 4</h6>
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                     <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                        <div class="box">
-                            <div class="text-center">
-                                <i class="bi bi-person" style="font-size: 40px;"></i>
-                                <h6 class="text-white">Gol 3</h6>
+                        <a href="pergolongan/HL" style="text-decoration:none">
+                            <div class="box">
+                                <div class="text-center">
+                                    <i class="bi bi-person" style="font-size: 40px;"></i>
+                                    <h6 class="text-white">HL</h6>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                        <div class="box">
-                            <div class="text-center">
-                                <i class="bi bi-person" style="font-size: 40px;"></i>
-                                <h6 class="text-white">Gol 4</h6>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                        <div class="box">
-                            <div class="text-center">
-                                <i class="bi bi-person" style="font-size: 40px;"></i>
-                                <h6 class="text-white">Satpam</h6>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                        <div class="box">
-                            <div class="text-center">
-                                <i class="bi bi-person" style="font-size: 40px;"></i>
-                                <h6 class="text-white">Supir</h6>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                        <div class="box">
-                            <div class="text-center">
-                                <i class="bi bi-person" style="font-size: 40px;"></i>
-                                <h6 class="text-white">HL</h6>
-                            </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
             </div>

@@ -135,6 +135,6 @@
 {{-- @include('bpjskes.tambahbpjskes')
 @include('bpjskes.editbpjskes')
 @include('bpjskes.hapusbpjskes') --}}
-@include('Riwkaryawan.tambahriwayatkaryawan')
+@include('riwkaryawan.tambahriwayatkaryawan')
 
 </html>

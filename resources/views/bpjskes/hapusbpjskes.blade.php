@@ -18,7 +18,7 @@
                     dengan nomor <b><span id="nomor"></span></b> !
                     <form action="/hapusbpjskes" method="post">
                         @csrf
-                        
+
                         <label class="mt-5" for="alasan">Alasan menonaktifkan</label>
                         <textarea class="form-control" rows="3" type="text" name="alasan"></textarea>
                         <input type="hidden" id="id" name="id">

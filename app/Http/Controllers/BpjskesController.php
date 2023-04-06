@@ -19,7 +19,7 @@ class BpjskesController extends Controller
     {
         $bpjskes=DB::select('SELECT bpjs_kes.*, master.nama as nama_master from bpjs_kes join master on master.id=bpjs_kes.id_master where bpjs_kes.status="Aktif" order by id_master ASC');
         $master=Master::where('status','Aktif')->get();
-        // dd($bpjstk);
+
         return view('bpjskes.bpjskes',compact('bpjskes','master'));
     }
 

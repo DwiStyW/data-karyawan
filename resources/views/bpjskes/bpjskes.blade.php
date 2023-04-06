@@ -27,6 +27,9 @@
                     <i class="bi bi-plus-square-fill"></i>
                     BPJS KES
                 </button>
+                <a href="/riwayatbpjskes" class="btn btn-sm btn-secondary">
+                    Report
+                </a>
             </div>
 
             <div>

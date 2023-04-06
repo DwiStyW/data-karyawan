@@ -58,12 +58,18 @@ class AuthController extends Controller
                 'updated_at'=>date("Y-m-d H:i:s")
             ];
         }
-        
-        try{
-            DB::table('users')->where('id',$request->id)->update($user);
-            return back()->with('success', 'Update pengguna berhasil!');
-        }catch(Exception $e){
-            return back()->with('failed', 'Update pengguna gagal!');
+
+        $cek = DB::table('users')->where('name',$request->name)->count();
+        if ($cek==0) {
+            try {
+                DB::table('users')->where('id', $request->id)->update($user);
+                return back()->with('success', 'Update pengguna berhasil!');
+            } catch(Exception $e) {
+                return back()->with('failed', 'Update pengguna gagal!');
+            }
+        }
+        else{
+            return back()->with('failed', 'Username telah dipakai!');
         }
     }
 }

@@ -39,7 +39,7 @@
                             <th data-priority="1">Tanggal</th>
                             <th data-priority="3">Jenis</th>
                             <th data-priority="3">Deskripsi</th>
-                            <th data-priority="2" class="text-center">Aksi</th>
+                            {{-- <th data-priority="2" class="text-center">Aksi</th> --}}
                         </tr>
                     </thead>
                     <tbody>
@@ -53,7 +53,7 @@
                                 <td>{{ date('d-m-Y', strtotime($riwkary->tanggal)) }}</td>
                                 <td>{{ $riwkary->jenis }}</td>
                                 <td>{{ $riwkary->deskripsi }}</td>
-                                <td>
+                                {{-- <td>
                                     <div class="row justify-content-center" style="min-width:110px;">
                                         <div style="max-width:60px"><button type="button"
                                                 class="btn btn-sm btn-primary btn-block" data-bs-toggle="modal"
@@ -66,7 +66,7 @@
                                                 onclick="hapusriwayatkaryawan({{ $riwkary->id }},'{{ $riwkary->id_master }}')"><i
                                                     class="bi bi-trash3-fill"></i></button></div>
                                     </div>
-                                </td>
+                                </td> --}}
                             </tr>
                         @endforeach
                     </tbody>
@@ -135,6 +135,6 @@
 {{-- @include('bpjskes.tambahbpjskes')
 @include('bpjskes.editbpjskes')
 @include('bpjskes.hapusbpjskes') --}}
-@include('Riwkaryawan.tambahriwayatkaryawan')
+@include('riwkaryawan.tambahriwayatkaryawan')
 
 </html>

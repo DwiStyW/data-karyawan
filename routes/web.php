@@ -39,6 +39,13 @@ Route::post('/auth', [AuthController::class, 'auth']);
 Route::get('/logout', [AuthController::class, 'logout']);
 
 Route::get('dashboard', [DashboardController::class, 'index'])->middleware('auth');
+
+//Filter perdepartemen&bagian
+Route::get('perdepart/{id}', [MasterController::class, 'perdepartemen'])->middleware('auth');
+Route::get('perbagian/{id}', [MasterController::class, 'perbagian'])->middleware('auth');
+//Filter pergolongan
+Route::get('pergolongan/{gol}', [MasterController::class, 'pergolongan'])->middleware('auth');
+
 //master
 Route::get('master', [MasterController::class, 'index'])->middleware('auth');
 Route::get('/getMaster', [MasterController::class, 'getMaster'])->name('getMaster');
@@ -90,3 +97,7 @@ Route::get('simpandatabpjstk', [RiwayatController::class, 'simpandatabpjstk']);
 
 Route::get('/setting',[AuthController::class, 'setting']);
 Route::post('/edituser',[AuthController::class, 'edituser']);
+
+Route::get('riwayatbpjskes', [RiwayatController::class, 'riwayatbpjskes']);
+Route::get('printkes/{date}', [RiwayatController::class, 'printriwayatbpjskes']);
+Route::get('simpandatabpjskes', [RiwayatController::class, 'simpandatabpjskes']);

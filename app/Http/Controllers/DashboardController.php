@@ -32,15 +32,21 @@ class DashboardController extends Controller
             $datagender=[];
         }
         // pendidikan
-        $pend=DB::select("SELECT id_master from pendidikan where tingkat_pendidikan!='Lainnya' group by id_master");
+        $pend=DB::select("SELECT id_master,tanggal_lahir from pendidikan left join master on master.id=pendidikan.id_master where tingkat_pendidikan!='Lainnya' group by id_master,tanggal_lahir");
         if(count($pend)!=0){
             foreach($pend as $p){
                 $idm=$p->id_master;
-                $tingkat=DB::select("SELECT batas_pensiun.id from pendidikan left join batas_pensiun on batas_pensiun.tingkatan_pendidikan=pendidikan.tingkat_pendidikan where id_master='$idm' and batas_pensiun.tingkatan_pendidikan !='Lainnya' order by batas_pensiun.id DESC limit 1");
+                $tingkat=DB::select("SELECT batas_pensiun.*,id_master from pendidikan left join batas_pensiun on batas_pensiun.tingkatan_pendidikan=pendidikan.tingkat_pendidikan where id_master='$idm' and batas_pensiun.tingkatan_pendidikan !='Lainnya' order by batas_pensiun.id DESC limit 1");
                 foreach($tingkat as $t){
                     $tingkatan[]=$t->id;
+                    $upensiun[]=[ 'id_master'=>$p->id_master,
+                                  'tanggal_lahir'=>$p->tanggal_lahir,
+                                  'id_tingkatpend'=>$t->id,
+                                  'tingkatpend'=>$t->tingkatan_pendidikan,
+                                  'usia_max'=>$t->usia_max,
+                                ];
                 }
-                
+
             }
             $jenis[]=null;
             $cek="";
@@ -83,11 +89,89 @@ class DashboardController extends Controller
         }
         //jumlah karyawan
         $jumkar = DB::table('master')->where('status','Aktif')->count();
-        //detail karyawan
-        $Tmaster=DB::select('SELECT master.*, nama_jabatan from master join jabatan on jabatan.id=master.id_jabatan where status="Aktif" order by id DESC');
+        //karyawan apoteker
         $apoteker=DB::select("SELECT * from pendidikan where tingkat_pendidikan = 'Lainnya' and jurusan='Apoteker'");
-        // dd($datapend);
-        return view('dashboard',compact('datagender','datapend','jumkar','Tmaster','apoteker'));
+        if(count($apoteker)!=0){
+            foreach($apoteker as $ap){
+                $idmaster=$ap->id_master;
+                $masterap=DB::select("SELECT master.*, nama_jabatan from master join jabatan on jabatan.id=master.id_jabatan where master.id = $idmaster");
+                    foreach($masterap as $map){
+                        $dataap[]=[
+                            'id'=>$map->id,
+                            'nama'=>$map->nama,
+                            'nik'=>$map->nik,
+                            'tempat_lahir'=>$map->tempat_lahir,
+                            'tanggal_lahir'=>$map->tanggal_lahir,
+                            'jenis_kelamin'=>$map->jenis_kelamin,
+                            'alamat'=>$map->alamat,
+                            'no_hp'=>$map->no_hp,
+                            'agama'=>$map->agama,
+                            'nama_jabatan'=>$map->nama_jabatan,
+                            'golongan'=>$map->golongan,
+                        ];
+                    }
+            }
+        }else{
+            $dataap=[];
+        }
+        // dd($dataap);
+        // dd($datap);
+        //pensiun
+        $datamp=[];
+        foreach($upensiun as $pen){
+            $sekarang = strtotime(date('Y-m-d'));
+            $tgl_lahir = strtotime($pen['tanggal_lahir']);
+            $umur = $sekarang - $tgl_lahir;
+            $age=floor($umur / (3600 * 24 * 365));
+
+            $umax=$pen['usia_max'];
+            $jp=$umax-$age;
+            $jarak[]=['jarak'=>(int)$jp,'id'=>$pen['id_master']];
+
+            if($jp==0){
+                $id= $pen['id_master'];
+                $masterp=DB::select("SELECT master.*, nama_jabatan from master join jabatan on jabatan.id=master.id_jabatan where master.id = $id");
+                    foreach($masterp as $m){
+                        $datamp[]=[
+                            'id'=>$m->id,
+                            'nama'=>$m->nama,
+                            'nik'=>$m->nik,
+                            'tempat_lahir'=>$m->tempat_lahir,
+                            'tanggal_lahir'=>$m->tanggal_lahir,
+                            'jenis_kelamin'=>$m->jenis_kelamin,
+                            'alamat'=>$m->alamat,
+                            'no_hp'=>$m->no_hp,
+                            'agama'=>$m->agama,
+                            'nama_jabatan'=>$m->nama_jabatan,
+                            'golongan'=>$m->golongan,
+                        ];
+                    }
+            }
+        }
+        // dd($jarak);
+        $mapjarak=function($jarak) {return $jarak['jarak'];};
+        // $mapid=function($jarak) {return $jarak['id'];};
+        $pensiun = array_count_values(array_map($mapjarak,$jarak));
+        // $dat = array_values(array_map($mapjarak,$jarak));
+        // echo $hitung[0];
+        // dd($datamp);
+
+        // turn over karyawan
+        // pertahun
+        $riwmasuk=DB::select("SELECT year(tanggal) as tahun,count(tanggal) as jumlah from riwayat_karyawan WHERE jenis='masuk' GROUP BY year(tanggal) ORDER BY tanggal asc");
+        foreach($riwmasuk as $rm){
+            $tahunm[]=$rm->tahun;
+            $countm[]=$rm->jumlah;
+        }
+        // dd(strtotime(now()));
+        $test=DB::select("SELECT tanggal,count(tanggal) as jumlah from riwayat_karyawan WHERE jenis='masuk' group by tanggal ORDER BY tanggal asc");
+        foreach($test as $t){
+            $datatest[]=[
+                strtotime($t->tanggal)*1000,$t->jumlah
+            ];
+        }
+        // dd($datatest);
+        return view('dashboard',compact('datagender','datapend','jumkar','apoteker','pensiun','dataap','datamp','datatest'));
     }
     function cari($data, $data2)
     {

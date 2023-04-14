@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bagian;
 use App\Models\Departemen;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,8 @@ class DepartementController extends Controller
     public function index()
     {
         $departemen=Departemen::get();
-         return view('departement',compact('departemen'));
+        $bagian=Bagian::get();
+         return view('departement',compact('departemen','bagian'));
     }
 
     /**

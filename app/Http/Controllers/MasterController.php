@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Bagian;
 use App\Models\Bataspensiun;
 use App\Models\Bpjskes;
 use App\Models\Bpjstk;
@@ -31,6 +32,36 @@ class MasterController extends Controller
          return view('MasterKaryawan.master',compact('jabatan','Tmaster'));
      }
 
+     public function perdepartemen($id){
+        $jabatan=Jabatan::get();
+        $fil = DB::table('departemen')->where('id',$id)->get();
+        foreach($fil as $fil):
+            $namafilter = $fil->nama_departemen;
+        endforeach;
+        $Tmaster=DB::select("SELECT master.*, nama_jabatan from master join jabatan on jabatan.id=master.id_jabatan where status='Aktif' AND jabatan.departemen='$id' order by id DESC");
+        // dd($Tmaster);
+         // Load index view
+         return view('MasterKaryawan.masterfilter',compact('jabatan','Tmaster','namafilter'));
+     }
+     public function perbagian($id){
+        $jabatan=Jabatan::get();
+        $fil = DB::table('bagian')->where('id',$id)->get();
+        foreach($fil as $fil):
+            $namafilter = $fil->nama_bagian;
+        endforeach;
+        $Tmaster=DB::select("SELECT master.*, nama_jabatan from master join jabatan on jabatan.id=master.id_jabatan where status='Aktif' AND jabatan.bagian='$id' order by id DESC");
+        // dd($Tmaster);
+         // Load index view
+         return view('MasterKaryawan.masterfilter',compact('jabatan','Tmaster','namafilter'));
+     }
+     public function pergolongan($gol){
+        $jabatan=Jabatan::get();
+        $namafilter = 'Golongan '.$gol;
+        $Tmaster=DB::select("SELECT master.*, nama_jabatan from master join jabatan on jabatan.id=master.id_jabatan where status='Aktif' AND master.golongan='$gol' order by id DESC");
+        // dd($Tmaster);
+         // Load index view
+         return view('MasterKaryawan.masterfilter',compact('jabatan','Tmaster','namafilter'));
+     }
 
      public function detailmaster($id_master){
         $jabatan=Jabatan::get(); //untuk select option jabatan

@@ -51,6 +51,7 @@
                                     <option value="Kesehatan">Kesehatan</option>
                                     <option value="Pelatihan">Pelatihan</option>
                                     <option value="Penghargaan">Penghargaan</option>
+                                    <option value="Peringatan">Peringatan</option>
                                 </select>
                             </div>
                         </div>
@@ -136,7 +137,7 @@
                 jabatanlama + '">';
         }
         document.getElementById('non-sp').innerHTML = str;
-        if (jenis == 'Kesehatan' || jenis == 'Pelatihan' || jenis == 'Penghargaan') {
+        if (jenis == 'Kesehatan' || jenis == 'Pelatihan' || jenis == 'Penghargaan' || jenis == 'Peringatan') {
             text += '<div class="row mb-3">';
             text += '    <div class="col-lg-3">';
             text += '        <label for="">Deskripsi</label>';

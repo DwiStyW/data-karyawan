@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\DashboardController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\MasterController;
@@ -26,3 +27,7 @@ Route::get('getMaster',[MasterController::class,'index']);
 Route::get('getPendidikan',[PendidikanController::class,'index']);
 Route::get('getRiwayat',[RiwayatController::class,'index']);
 Route::get('getStruktur',[StrukturController::class,'index']);
+
+//untuk chart turn over
+Route::get('masuk',[DashboardController::class,'getmasuk']);
+Route::get('keluar',[DashboardController::class,'getkeluar']);

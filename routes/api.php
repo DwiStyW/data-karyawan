@@ -31,3 +31,6 @@ Route::get('getStruktur',[StrukturController::class,'index']);
 //untuk chart turn over
 Route::get('masuk',[DashboardController::class,'getmasuk']);
 Route::get('keluar',[DashboardController::class,'getkeluar']);
+Route::get('promosi',[DashboardController::class,'getpromosi']);
+Route::get('demosi',[DashboardController::class,'getdemosi']);
+Route::get('rotasi',[DashboardController::class,'getrotasi']);

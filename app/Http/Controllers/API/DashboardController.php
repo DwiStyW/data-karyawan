@@ -54,4 +54,73 @@ class DashboardController extends Controller
         }
         return $datakk;
     }
+    public function getpromosi(){
+        $all=DB::select("SELECT tanggal,count(tanggal) as jumlah from riwayat_karyawan WHERE jenis='Promosi' or jenis='Demosi' or jenis='Rotasi' group by tanggal ORDER BY tanggal ASC");
+        foreach($all as $tall){
+            $stall[]=$tall->tanggal;
+        }
+        for($i=0;$i<count($all);$i++){
+            $tanggal=$stall[$i];
+
+            $kpromosi=DB::select("SELECT tanggal,count(tanggal) as jumlah from riwayat_karyawan WHERE jenis='Promosi' and tanggal='$tanggal' group by tanggal ORDER BY tanggal asc");
+            if(count($kpromosi)!=0){
+                foreach($kpromosi as $kp){
+                }
+                $tglp=strtotime($kp->tanggal)*1000;
+                $jup=$kp->jumlah;
+            }else{
+                $tglp=strtotime($tanggal)*1000;
+                $jup=0;
+            }
+            $datakp[]=[$tglp,$jup];
+        }
+        // dd($datakp);
+        return $datakp;
+    }
+    public function getdemosi(){
+        $all=DB::select("SELECT tanggal,count(tanggal) as jumlah from riwayat_karyawan WHERE jenis='Promosi' or jenis='Demosi' or jenis='Rotasi' group by tanggal ORDER BY tanggal ASC");
+        foreach($all as $tall){
+            $stall[]=$tall->tanggal;
+        }
+        for($i=0;$i<count($all);$i++){
+            $tanggal=$stall[$i];
+
+            $kpromosi=DB::select("SELECT tanggal,count(tanggal) as jumlah from riwayat_karyawan WHERE jenis='Demosi' and tanggal='$tanggal' group by tanggal ORDER BY tanggal asc");
+            if(count($kpromosi)!=0){
+                foreach($kpromosi as $kp){
+                }
+                $tglp=strtotime($kp->tanggal)*1000;
+                $jup=$kp->jumlah;
+            }else{
+                $tglp=strtotime($tanggal)*1000;
+                $jup=0;
+            }
+            $datakp[]=[$tglp,$jup];
+        }
+        // dd($datakp);
+        return $datakp;
+    }
+    public function getrotasi(){
+        $all=DB::select("SELECT tanggal,count(tanggal) as jumlah from riwayat_karyawan WHERE jenis='Promosi' or jenis='Demosi' or jenis='Rotasi' group by tanggal ORDER BY tanggal ASC");
+        foreach($all as $tall){
+            $stall[]=$tall->tanggal;
+        }
+        for($i=0;$i<count($all);$i++){
+            $tanggal=$stall[$i];
+
+            $kpromosi=DB::select("SELECT tanggal,count(tanggal) as jumlah from riwayat_karyawan WHERE jenis='Rotasi' and tanggal='$tanggal' group by tanggal ORDER BY tanggal asc");
+            if(count($kpromosi)!=0){
+                foreach($kpromosi as $kp){
+                }
+                $tglp=strtotime($kp->tanggal)*1000;
+                $jup=$kp->jumlah;
+            }else{
+                $tglp=strtotime($tanggal)*1000;
+                $jup=0;
+            }
+            $datakp[]=[$tglp,$jup];
+        }
+        // dd($datakp);
+        return $datakp;
+    }
 }

@@ -71,9 +71,9 @@
                     <div style="width:95%">
                         <div class="p-3 bg-warning rounded shadow" style="--bs-bg-opacity: .6;">
                             <div class="card-body text-center position-relative">
-                                <h3 class="card-title mb-1">Jumlah Apoteker Aktif</h3>
+                                <h3 class="card-title mb-1">Apoteker Aktif</h3>
                                 <h6 class="card-text mb-2">Tanggal : {{ date('d-m-Y') }}</h6>
-                                <h1 class="text-center mt-2 mb-2 "><b>{{ count($apoteker) }}</b></h1>
+                                <h1 class="text-center mt-2 mb-2 "><b>{{ count($masterap) }}</b></h1>
                                 <svg class="position-absolute icon-dashboard" xmlns="http://www.w3.org/2000/svg"
                                     width="90" height="90" fill="#866500" class="bi bi-capsule"
                                     viewBox="0 0 16 16">
@@ -92,11 +92,7 @@
                                 <h3 class="card-title mb-1">Karyawan Pensiun</h3>
                                 <h6 class="card-text mb-2">Tahun : {{ date('Y') }}</h6>
                                 <h1 class="text-center mt-2 mb-2"><b>
-                                        @if (isset($pensiun[0]))
-                                            {{ $pensiun[0] }}
-                                        @else
-                                            {{ 0 }}
-                                        @endif
+                                        {{ array_sum($totalpensiun) }}
                                     </b></h1>
                                 <svg class="position-absolute icon-dashboard" xmlns="http://www.w3.org/2000/svg"
                                     width="90" height="90" fill="#866500" class="bi bi-person-fill-exclamation"
@@ -111,13 +107,17 @@
                     </div>
                 </a>
             </div>
-            <div class="row mt-4">
-                <div id="turnover"></div>
+            <div class="row mt-4" style="position: relative">
+                <select style="max-width:200px;z-index:10;position:absolute;left:20px"class="form-select" name=""
+                    id="selectchart" onchange="changechart()">
+                    <option value="karyawan">Turn Over Karyawan</option>
+                    <option value="mutasi">Turn Over Mutasi</option>
+                </select>
+                <div id="turnover">
+                    <div id="karyawan"></div>
+                </div>
             </div>
-            <div class="row mt-4">
-                <div id="container"></div>
-            </div>
-            <div class="row mt-4">
+            <div class="row mt-4" style="z-index:100">
                 <div class="col-lg-6 col-md-6 col-12" id="column-pend">
                 </div>
                 <div class="col-lg-6 col-md-6 col-12" id="pie-gender">
@@ -138,7 +138,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="table-responsive">
-                        <table id="table" width="100%" class="table table-striped table-bordered ">
+                        <table id="tableapoteker" width="100%" class="table table-striped table-bordered ">
                             <thead>
                                 <tr style="background-color:#5F7A61;color:#ddd;font-weight:bold">
                                     <th data-priority="1">No</th>
@@ -152,6 +152,7 @@
                                     <th data-priority="3">Agama</th>
                                     <th data-priority="3">Jabatan</th>
                                     <th data-priority="3">Status</th>
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -194,7 +195,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="table-responsive">
-                        <table id="table" width="100%" class="table table-striped table-bordered ">
+                        <table id="tablepensiun" width="100%" class="table table-striped table-bordered ">
                             <thead>
                                 <tr style="background-color:#5F7A61;color:#ddd;font-weight:bold">
                                     <th data-priority="1">No</th>
@@ -208,6 +209,7 @@
                                     <th data-priority="3">Agama</th>
                                     <th data-priority="3">Jabatan</th>
                                     <th data-priority="3">Status</th>
+                                    <th data-priority="2">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -220,13 +222,22 @@
                                         <td><a href="/detailmaster/{{ $Tm['id'] }}">{{ $Tm['nama'] }}</a></td>
                                         <td>{{ $Tm['nik'] }}</td>
                                         <td>{{ $Tm['tempat_lahir'] }}</td>
-                                        <td>{{ $Tm['tanggal_lahir'] }}</td>
+                                        <td>{{ date('d/m/Y', strtotime($Tm['tanggal_lahir'])) }}</td>
                                         <td>{{ $Tm['jenis_kelamin'] }}</td>
                                         <td>{{ $Tm['alamat'] }}</td>
                                         <td>{{ $Tm['no_hp'] }}</td>
                                         <td>{{ $Tm['agama'] }}</td>
                                         <td>{{ $Tm['nama_jabatan'] }}</td>
                                         <td>{{ $Tm['golongan'] }}</td>
+                                        <td>
+                                            @if ($Tm['status'] == 'Aktif')
+                                                <div style="max-width:60px"><button type="button"
+                                                        class="btn btn-danger btn-block" data-bs-toggle="modal"
+                                                        data-bs-target="#hapus_master"
+                                                        onclick="hapus({{ $Tm['id'] }},'{{ $Tm['nama'] }}')"><i
+                                                            class="bi bi-trash3-fill"></i></button></div>
+                                            @endif
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -239,13 +250,78 @@
             </div>
         </div>
     </div>
+    <script>
+        function hapus(master_id, name) {
+            document.getElementById('master_id').value = master_id;
+            document.getElementById('name').innerHTML = name;
+        }
+    </script>
+    <div class="modal fade" id="hapus_master" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Konfirmasi!</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        Apakah anda yakin ingin menonaktifkan <b><span id="name"></span></b> !
+                        <form action="/hapusMasterPensiun" method="post">
+                            @csrf
+                            <input type="hidden" id="master_id" name="id_master">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a type="button" class="btn btn-secondary"
+                        href="javascript:window.location.reload(true)">Batal</a>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 </body>
 <script src="../assets/ui/jquery-3.6.1/jquery-3.6.1.min.js"></script>
 <script type="text/javascript" src="../assets/DataTables/datatables.min.js"></script>
 <!-- Script -->
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#table').DataTable({
+        $('#tableapoteker').DataTable({
+            processing: true,
+            deferRender: true,
+            "lengthMenu": [
+                [10, 25, 50, -1],
+                [10, 25, 50, "All"]
+            ],
+            buttons: [{
+                    extend: 'excelHtml5',
+                    title: 'Data export Karyawan'
+                },
+                {
+                    extend: 'pdfHtml5',
+                    title: 'Data export Karyawan'
+                }
+            ],
+            language: {
+                paginate: {
+                    previous: '‹',
+                    next: '›'
+                },
+                aria: {
+                    paginate: {
+                        previous: 'Previous',
+                        next: 'Next'
+                    }
+                }
+            },
+            pagingType: 'simple_numbers',
+            responsive: true,
+            dom: '<"rowt justify-content-between"<l><"rowt"<f><B>>>t<"rowt justify-content-between"ip>',
+        });
+
+        $('#tablepensiun').DataTable({
             processing: true,
             deferRender: true,
             "lengthMenu": [
@@ -379,7 +455,9 @@
             data: datapend
         }]
     });
-
+</script>
+{{-- turn over karyawan --}}
+<script>
     var seriesOptions = [],
         seriesCounter = 0,
         names = ['Karyawan masuk', 'Karyawan keluar'];
@@ -390,7 +468,7 @@
      */
     function createChart() {
 
-        Highcharts.stockChart('turnover', {
+        Highcharts.stockChart('karyawan', {
 
             chart: {
                 height: 400
@@ -415,12 +493,13 @@
 
             series: seriesOptions
         });
+
     }
 
     function success(data) {
         var name = 'Karyawan ' + this.url.match(/(masuk|keluar)/)[0];
         var i = names.indexOf(name);
-        console.log(i);
+        // console.log(data);
         seriesOptions[i] = {
             name: name,
             data: data
@@ -444,6 +523,82 @@
         success
     );
 </script>
+{{-- turn over mutasi --}}
+<script>
+    var seriesOptionsmutasi = [],
+        seriesCountermutasi = 0,
+        namesmutasi = ['Karyawan promosi', 'Karyawan demosi', 'Karyawan rotasi'];
 
+    function createChartmutasi() {
+
+        Highcharts.stockChart('mutasi', {
+
+            chart: {
+                height: 400
+            },
+
+            title: {
+                text: 'Turn Over Mutasi'
+            },
+            rangeSelector: {
+                selected: 4
+            },
+            yAxis: {
+                plotLines: [{
+                    width: 2,
+                    color: 'silver'
+                }]
+            },
+            tooltip: {
+                pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+                split: true
+            },
+
+            series: seriesOptionsmutasi
+        });
+    }
+
+    function berhasil(data) {
+        var name = 'Karyawan ' + this.url.match(/(promosi|demosi|rotasi)/)[0];
+        var i = namesmutasi.indexOf(name);
+        // console.log(data);
+        seriesOptionsmutasi[i] = {
+            name: name,
+            data: data
+        };
+        seriesCountermutasi += 1;
+
+        if (seriesCountermutasi === namesmutasi.length) {
+            createChartmutasi();
+        }
+    }
+
+    Highcharts.getJSON(
+        'http://127.0.0.1:8000/api/promosi',
+        berhasil
+    );
+    Highcharts.getJSON(
+        'http://127.0.0.1:8000/api/demosi',
+        berhasil
+    );
+    Highcharts.getJSON(
+        'http://127.0.0.1:8000/api/rotasi',
+        berhasil
+    );
+</script>
+<script>
+    function changechart() {
+        var val = document.getElementById("selectchart").value;
+        if (val == 'mutasi') {
+            str = '<div id="mutasi"></div>';
+            document.getElementById("turnover").innerHTML = str;
+            createChartmutasi();
+        } else {
+            str = '<div id="karyawan"></div>';
+            document.getElementById("turnover").innerHTML = str;
+            createChart();
+        }
+    }
+</script>
 
 </html>

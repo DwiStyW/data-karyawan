@@ -36,7 +36,7 @@
                             <th data-priority="3">No Hp</th>
                             <th data-priority="3">Agama</th>
                             <th data-priority="3">Jabatan</th>
-                            <th data-priority="3">Status</th>
+                            <th data-priority="3">Status/Golongan</th>
                             <th data-priority="2" class="text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -50,7 +50,7 @@
                                 <td><a href="/detailmaster/{{ $Tm->id }}">{{ $Tm->nama }}</a></td>
                                 <td>{{ $Tm->nik }}</td>
                                 <td>{{ $Tm->tempat_lahir }}</td>
-                                <td>{{ $Tm->tanggal_lahir }}</td>
+                                <td>{{ date('d/m/Y', strtotime($Tm->tanggal_lahir)) }}</td>
                                 <td>{{ $Tm->jenis_kelamin }}</td>
                                 <td>{{ $Tm->alamat }}</td>
                                 <td>{{ $Tm->no_hp }}</td>

@@ -72,10 +72,14 @@ class DashboardController extends Controller
                     }else if($dp['tingkatan']==3){
                         $t='SMA';
                     }else if($dp['tingkatan']==4){
-                        $t='S1';
+                        $t='Diploma';
                     }else if($dp['tingkatan']==5){
-                        $t='S2';
+                        $t='S1';
                     }else if($dp['tingkatan']==6){
+                        $t='S2';
+                    }else if($dp['tingkatan']==7){
+                        $t='S3';
+                    }else if($dp['tingkatan']==8){
                         $t='Lainnya';
                     }
                     $datapend[]=[
@@ -94,7 +98,8 @@ class DashboardController extends Controller
         if(count($apoteker)!=0){
             foreach($apoteker as $ap){
                 $idmaster=$ap->id_master;
-                $masterap=DB::select("SELECT master.*, nama_jabatan from master join jabatan on jabatan.id=master.id_jabatan where master.id = $idmaster");
+                $masterap=DB::select("SELECT master.*, nama_jabatan from master join jabatan on jabatan.id=master.id_jabatan where master.id = $idmaster and master.status='Aktif'");
+                if(count($masterap)){
                     foreach($masterap as $map){
                         $dataap[]=[
                             'id'=>$map->id,
@@ -110,16 +115,22 @@ class DashboardController extends Controller
                             'golongan'=>$map->golongan,
                         ];
                     }
+                }
+                else{
+                     $dataap=[];
+                }
             }
         }else{
             $dataap=[];
+            $masterap=[];
         }
         // dd($dataap);
         // dd($datap);
         //pensiun
         $datamp=[];
         foreach($upensiun as $pen){
-            $sekarang = strtotime(date('Y-m-d'));
+            // $tahun=date('Y-01-01',strtotime($pen['tanggal_lahir']));
+            $sekarang = strtotime(date('Y-12-31'));
             $tgl_lahir = strtotime($pen['tanggal_lahir']);
             $umur = $sekarang - $tgl_lahir;
             $age=floor($umur / (3600 * 24 * 365));
@@ -127,8 +138,9 @@ class DashboardController extends Controller
             $umax=$pen['usia_max'];
             $jp=$umax-$age;
             $jarak[]=['jarak'=>(int)$jp,'id'=>$pen['id_master']];
+            $jarakumur[]=(int)$jp;
 
-            if($jp==0){
+            if($jp<=0){
                 $id= $pen['id_master'];
                 $masterp=DB::select("SELECT master.*, nama_jabatan from master join jabatan on jabatan.id=master.id_jabatan where master.id = $id");
                     foreach($masterp as $m){
@@ -144,34 +156,22 @@ class DashboardController extends Controller
                             'agama'=>$m->agama,
                             'nama_jabatan'=>$m->nama_jabatan,
                             'golongan'=>$m->golongan,
+                            'status'=>$m->status,
                         ];
                     }
             }
         }
         // dd($jarak);
         $mapjarak=function($jarak) {return $jarak['jarak'];};
-        // $mapid=function($jarak) {return $jarak['id'];};
         $pensiun = array_count_values(array_map($mapjarak,$jarak));
-        // $dat = array_values(array_map($mapjarak,$jarak));
-        // echo $hitung[0];
-        // dd($datamp);
+        for($a=0;$a>=min($jarakumur);$a--){
+            if(isset($pensiun[$a])){
+                $totalpensiun[]=$pensiun[$a];
+            }
+        }
+// dd(array_sum($testing));
 
-        // turn over karyawan
-        // pertahun
-        $riwmasuk=DB::select("SELECT year(tanggal) as tahun,count(tanggal) as jumlah from riwayat_karyawan WHERE jenis='masuk' GROUP BY year(tanggal) ORDER BY tanggal asc");
-        foreach($riwmasuk as $rm){
-            $tahunm[]=$rm->tahun;
-            $countm[]=$rm->jumlah;
-        }
-        // dd(strtotime(now()));
-        $test=DB::select("SELECT tanggal,count(tanggal) as jumlah from riwayat_karyawan WHERE jenis='masuk' group by tanggal ORDER BY tanggal asc");
-        foreach($test as $t){
-            $datatest[]=[
-                strtotime($t->tanggal)*1000,$t->jumlah
-            ];
-        }
-        // dd($datatest);
-        return view('dashboard',compact('datagender','datapend','jumkar','apoteker','pensiun','dataap','datamp','datatest'));
+        return view('dashboard',compact('datagender','datapend','jumkar','apoteker','totalpensiun','dataap','datamp','masterap'));
     }
     function cari($data, $data2)
     {
@@ -202,64 +202,4 @@ class DashboardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

@@ -12,6 +12,20 @@
     <link rel="stylesheet" href="../assets/js/select2-master/dist/css/select2.min.css" />
 
 </head>
+<style>
+    @media (min-width:768px) {
+        .tabel-lg {
+            min-width: 2000px;
+        }
+    }
+
+
+    @media (min-width:1370px) {
+        .tabel-lg {
+            min-width: 2500px;
+        }
+    }
+</style>
 
 <body>
     @include('partials.sidebar')
@@ -49,7 +63,9 @@
                             <th data-priority="3">No Hp</th>
                             <th data-priority="3">Agama</th>
                             <th data-priority="3">Jabatan</th>
-                            <th data-priority="3">Status</th>
+                            <th data-priority="3">Status/Golongan</th>
+                            <th data-priority="2">BPJS Kes</th>
+                            <th data-priority="2">BPJS Tk</th>
                             <th data-priority="2" class="text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -60,27 +76,29 @@
                         @foreach ($Tmaster as $Tm)
                             <tr>
                                 <td>{{ $no++ }}</td>
-                                <td><a href="detailmaster/{{ $Tm->id }}">{{ $Tm->nama }}</a></td>
-                                <td>{{ $Tm->nik }}</td>
-                                <td>{{ $Tm->tempat_lahir }}</td>
-                                <td>{{ $Tm->tanggal_lahir }}</td>
-                                <td>{{ $Tm->jenis_kelamin }}</td>
-                                <td>{{ $Tm->alamat }}</td>
-                                <td>{{ $Tm->no_hp }}</td>
-                                <td>{{ $Tm->agama }}</td>
-                                <td>{{ $Tm->nama_jabatan }}</td>
-                                <td>{{ $Tm->golongan }}</td>
+                                <td><a href="detailmaster/{{ $Tm['id'] }}">{{ $Tm['nama'] }}</a></td>
+                                <td>{{ $Tm['nik'] }}</td>
+                                <td>{{ $Tm['tempat_lahir'] }}</td>
+                                <td>{{ date('d/m/Y', strtotime($Tm['tanggal_lahir'])) }}</td>
+                                <td>{{ $Tm['jenis_kelamin'] }}</td>
+                                <td>{{ $Tm['alamat'] }}</td>
+                                <td>{{ $Tm['no_hp'] }}</td>
+                                <td>{{ $Tm['agama'] }}</td>
+                                <td>{{ $Tm['nama_jabatan'] }}</td>
+                                <td>{{ $Tm['golongan'] }}</td>
+                                <td>{{ $Tm['bpjskes'] }}</td>
+                                <td>{{ $Tm['bpjstk'] }}</td>
                                 <td>
                                     <div class="row justify-content-center" style="min-width:110px;">
                                         <div style="max-width:60px"><button type="button"
                                                 class="btn btn-primary btn-block" data-bs-toggle="modal"
                                                 data-bs-target="#edit_master"
-                                                onclick="edit({{ $Tm->id }},'{{ $Tm->nama }}','{{ $Tm->nik }}','{{ $Tm->alamat }}','{{ $Tm->tempat_lahir }}','{{ $Tm->tanggal_lahir }}','{{ $Tm->jenis_kelamin }}','{{ $Tm->agama }}','{{ $Tm->no_hp }}')"><i
+                                                onclick="edit({{ $Tm['id'] }},'{{ $Tm['nama'] }}','{{ $Tm['nik'] }}','{{ $Tm['alamat'] }}','{{ $Tm['tempat_lahir'] }}','{{ $Tm['tanggal_lahir'] }}','{{ $Tm['jenis_kelamin'] }}','{{ $Tm['agama'] }}','{{ $Tm['no_hp'] }}')"><i
                                                     class="bi bi-pencil-square"></i></button></div>
                                         <div style="max-width:60px"><button type="button"
                                                 class="btn btn-danger btn-block" data-bs-toggle="modal"
                                                 data-bs-target="#hapus_master"
-                                                onclick="hapus({{ $Tm->id }},'{{ $Tm->nama }}')"><i
+                                                onclick="hapus({{ $Tm['id'] }},'{{ $Tm['nama'] }}')"><i
                                                     class="bi bi-trash3-fill"></i></button></div>
                                     </div>
                                 </td>

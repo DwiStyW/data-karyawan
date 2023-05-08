@@ -236,7 +236,8 @@ class MasterController extends Controller
         }else{
             $bataspensiun=DB::select("SELECT * FROM batas_pensiun");
         }
-
+        $cekriwtetap=Riwayatkaryawan::where('id_master',$id_master)->where('jenis','tetap')->get();
+        $cekriwkontrak=Riwayatkaryawan::where('id_master',$id_master)->where('jenis','kontrak')->get();
         $historykerja=Historypekerjaan::where('history_pekerjaan.id_master',$id_master)->orderby('id','DESC')->get();//history pekerjaan
         $bpjskes=Bpjskes::where('id_master',$id_master)->get();//bpjskes
         $bpjstk=Bpjstk::where('id_master',$id_master)->get();//bpjstk
@@ -254,7 +255,7 @@ class MasterController extends Controller
         // join jabatan on jabatan.id=riwayat_karyawan.jabatan where id_master=$id_master");
         // dd($riwayatkaryawan);
 
-        return view('DetailMaster.print',compact('master','pendidikanterakhir','id_master','jabatan','bataspensiun','pendidikan','historykerja','bpjskes','bpjstk','riwayatkaryawan'));
+        return view('DetailMaster.print',compact('master','pendidikanterakhir','id_master','jabatan','bataspensiun','pendidikan','historykerja','bpjskes','bpjstk','riwayatkaryawan','cekriwkontrak','cekriwtetap'));
     }
     /**
      * Show the form for creating a new resource.

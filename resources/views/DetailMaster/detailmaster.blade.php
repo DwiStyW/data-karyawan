@@ -180,6 +180,49 @@
                                 </div>
                             </div>
                         </div>
+                        @if (count($cekriwkontrak) != 0 && count($cekriwtetap) != 0)
+                            @foreach ($cekriwkontrak as $rk)
+                            @endforeach
+                            @foreach ($cekriwtetap as $rt)
+                            @endforeach
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <h6 class="form-label text-form"><b>Tanggal Kontrak</b></h6>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-control" style="min-height: 35px">
+                                                @if ($rk->tanggal != '0000-00-00')
+                                                    {{ date('d/m/Y', strtotime($rk->tanggal)) }}
+                                                @else
+                                                    {{ $rk->tanggal }}
+                                                @endif
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <h6 class="form-label text-form"><b>Masa Kerja Kontrak</b></h6>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <label class="form-control" style="min-height: 35px">
+                                                @php
+                                                    // $sekarang = strtotime(date('Y-m-d'));
+                                                    $tglgabung = strtotime($rk->tanggal);
+                                                    $awal = date_create($rk->tanggal);
+                                                    $akhir = date_create($rt->tanggal);
+                                                    $diff = date_diff($akhir, $awal);
+                                                    echo $hari = $diff->y . ' Tahun ' . $diff->m . ' Bulan';
+                                                @endphp
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
                         @if (count($cekriwkontrak) != 0 && count($cekriwtetap) == 0)
                             @foreach ($cekriwkontrak as $rk)
                             @endforeach
@@ -208,7 +251,7 @@
                                         <div class="col-md-8">
                                             <label class="form-control" style="min-height: 35px">
                                                 @php
-                                                    $sekarang = strtotime(date('Y-m-d'));
+                                                    // $sekarang = strtotime(date('Y-m-d'));
                                                     $tglgabung = strtotime($rk->tanggal);
                                                     $awal = date_create($rk->tanggal);
                                                     $akhir = date_create();

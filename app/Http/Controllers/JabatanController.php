@@ -50,11 +50,17 @@ class JabatanController extends Controller
     {
         $pid=$request->pid;
         $level=$request->level;
-        $levelpid=Jabatan::where('id',$pid)->get('level');
-        foreach ($levelpid as $lpid){
-            $lvpid=$lpid->level;
-        };
-        $tags=$level-$lvpid-1;
+        if($pid!=''||$level!=''){
+            $levelpid=Jabatan::where('id',$pid)->get('level');
+                    foreach ($levelpid as $lpid){
+                        $lvpid=$lpid->level;
+                    };
+            $tags=$level-$lvpid-1;
+        }else{
+            $tags=0;
+        }
+
+
         $data=[
             'nama_jabatan'=>$request->nama_jabatan,
             'departemen'=>$request->departemen,
@@ -107,11 +113,15 @@ class JabatanController extends Controller
     {
         $pid=$request->pid;
         $level=$request->level;
-        $levelpid=Jabatan::where('id',$pid)->get('level');
-        foreach ($levelpid as $lpid){
-            $lvpid=$lpid->level;
-        };
-        $tags=$level-$lvpid-1;
+        if($pid!=''||$level!=''){
+            $levelpid=Jabatan::where('id',$pid)->get('level');
+                    foreach ($levelpid as $lpid){
+                        $lvpid=$lpid->level;
+                    };
+            $tags=$level-$lvpid-1;
+        }else{
+            $tags=0;
+        }
         $data=[
             'nama_jabatan'=>$request->nama_jabatan,
             'departemen'=>$request->departemen,

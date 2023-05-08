@@ -48,6 +48,10 @@
                                     <option value="SP 1">SP 1</option>
                                     <option value="SP 2">SP 2</option>
                                     <option value="SP 3">SP 3</option>
+                                    <option value="Kesehatan">Kesehatan</option>
+                                    <option value="Pelatihan">Pelatihan</option>
+                                    <option value="Penghargaan">Penghargaan</option>
+                                    <option value="Peringatan">Peringatan</option>
                                 </select>
                             </div>
                         </div>
@@ -73,6 +77,7 @@
                                 </div>
                             </div>
                         </div>
+                        <div id="desk"></div>
                         <div class="row mb-3">
                             <div class="col-lg-3">
                                 <label for="">Keterangan</label>
@@ -101,6 +106,7 @@
         var jabatan = @json($jabatan);
         var jabatanlama = document.getElementById('namajabatan').value;
         var str = '';
+        var text = '';
         var jenis = document.getElementById('jenis').value;
         var filterjabatan = jabatan.filter(b => b.nama_jabatan != jabatanlama);
         if (jenis == 'Demosi' || jenis == 'Rotasi' || jenis == 'Promosi') {
@@ -131,5 +137,16 @@
                 jabatanlama + '">';
         }
         document.getElementById('non-sp').innerHTML = str;
+        if (jenis == 'Kesehatan' || jenis == 'Pelatihan' || jenis == 'Penghargaan' || jenis == 'Peringatan') {
+            text += '<div class="row mb-3">';
+            text += '    <div class="col-lg-3">';
+            text += '        <label for="">Deskripsi</label>';
+            text += '    </div>';
+            text += '    <div class="col-lg-9">';
+            text += '        <textarea type="text" rows="2" class="form-control" name="deskripsi"></textarea>';
+            text += '    </div>';
+            text += '</div>';
+        }
+        document.getElementById('desk').innerHTML = text;
     }
 </script>

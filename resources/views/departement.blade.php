@@ -33,16 +33,6 @@
             </header>
             <div class="col-lg-12">
                 <div class="row">
-                    {{-- <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                        <a href="perdepart/0" style="text-decoration:none">
-                            <div class="box">
-                                <div class="text-center">
-                                    <i class="bi bi-person" style="font-size: 40px;"></i>
-                                    <h6 class="text-white">GM</h6>
-                                </div>
-                            </div>
-                        </a>
-                    </div> --}}
                     @foreach ($departemen as $depart)
                         <div class="col-lg-2 col-md-3 col-sm-4 col-6">
                             <a href="perdepart/{{ $depart->id }}" style="text-decoration:none">
@@ -67,7 +57,6 @@
                             </a>
                         </div>
                     @endforeach
-
                 </div>
             </div>
         </div>

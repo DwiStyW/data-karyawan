@@ -51,7 +51,8 @@ Route::get('master', [MasterController::class, 'index'])->middleware('auth');
 Route::get('/getMaster', [MasterController::class, 'getMaster'])->name('getMaster');
 Route::post('/postMaster', [MasterController::class, 'store']);
 Route::post('/updateMaster', [MasterController::class, 'update']);
-Route::post('/hapusMaster', [MasterController::class, 'destroy']);
+Route::post('/hapusMasterResign', [MasterController::class, 'destroyresign']);
+Route::post('/hapusMasterPensiun', [MasterController::class, 'destroypensiun']);
 
 Route::get('detailmaster/{id_master}', [MasterController::class, 'detailmaster'])->middleware('auth');
 Route::get('print/{id_master}', [MasterController::class, 'print'])->middleware('auth');

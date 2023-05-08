@@ -26,7 +26,7 @@
                             </div>
                             <div class="col-lg-6 mt-3">
                                 <label for="">No. HP</label>
-                                <input type="text" class="form-control" required name="no_hp" placeholder="no hp">
+                                <input type="text" class="form-control" name="no_hp" placeholder="no hp">
                             </div>
                         </div>
                         <div class="row">

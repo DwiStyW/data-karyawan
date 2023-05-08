@@ -74,18 +74,18 @@
                                 @endif
                                 <div class="row">
                                     <div class="col-lg-3">
-                                        <label for="">Masuk</label>
+                                        <label for="">Tahun Masuk</label>
                                     </div>
-                                    <div class="col-lg-4 mb-3">
-                                        <input type="date" class="form-control"
+                                    <div class="col-lg-3 mb-3">
+                                        <input type="number" class="form-control"
                                             id="masuk{{ $bp->tingkatan_pendidikan }}"
                                             name="masuk{{ $bp->tingkatan_pendidikan }}">
                                     </div>
-                                    <div class="col-lg-1">
-                                        <label for="">Keluar</label>
+                                    <div class="col-lg-3">
+                                        <label for="">Tahun Keluar</label>
                                     </div>
-                                    <div class="col-lg-4 mb-3">
-                                        <input type="date" class="form-control"
+                                    <div class="col-lg-3 mb-3">
+                                        <input type="number" class="form-control"
                                             id="keluar{{ $bp->tingkatan_pendidikan }}"
                                             name="keluar{{ $bp->tingkatan_pendidikan }}">
                                     </div>

@@ -26,7 +26,82 @@ class MasterController extends Controller
      */
     public function index(){
         $jabatan=Jabatan::get();
-        $Tmaster=DB::select('SELECT master.*, nama_jabatan from master join jabatan on jabatan.id=master.id_jabatan where status="Aktif" order by id DESC');
+        $master=DB::select('SELECT master.*, nama_jabatan from master join jabatan on jabatan.id=master.id_jabatan where status="Aktif" order by id DESC');
+        foreach($master as $tm){
+            $idmaster=$tm->id;
+            $bpjskes=Bpjskes::where('id_master',$idmaster)->get();
+            $bpjstk=Bpjstk::where('id_master',$idmaster)->get();
+            if(count($bpjskes)!=0 && count($bpjstk)!=0){
+                $Tmaster[]=[
+                    'id'=>$tm->id,
+                    'nama'=>$tm->nama,
+                    'nik'=>$tm->nik,
+                    'tempat_lahir'=>$tm->tempat_lahir,
+                    'tanggal_lahir'=>$tm->tanggal_lahir,
+                    'jenis_kelamin'=>$tm->jenis_kelamin,
+                    'alamat'=>$tm->alamat,
+                    'no_hp'=>$tm->no_hp,
+                    'agama'=>$tm->agama,
+                    'nama_jabatan'=>$tm->nama_jabatan,
+                    'golongan'=>$tm->golongan,
+                    'bpjskes'=>'Terdaftar',
+                    'bpjstk'=>'Terdaftar',
+                ];
+            }elseif(count($bpjskes)!=0){
+                $Tmaster[]=[
+                    'id'=>$tm->id,
+                    'nama'=>$tm->nama,
+                    'nik'=>$tm->nik,
+                    'tempat_lahir'=>$tm->tempat_lahir,
+                    'tanggal_lahir'=>$tm->tanggal_lahir,
+                    'jenis_kelamin'=>$tm->jenis_kelamin,
+                    'alamat'=>$tm->alamat,
+                    'no_hp'=>$tm->no_hp,
+                    'agama'=>$tm->agama,
+                    'nama_jabatan'=>$tm->nama_jabatan,
+                    'golongan'=>$tm->golongan,
+                    'bpjskes'=>'Terdaftar',
+                    'bpjstk'=>'Belum Terdaftar',
+                ];
+            }elseif(count($bpjstk)!=0){
+                $Tmaster[]=[
+                    'id'=>$tm->id,
+                    'nama'=>$tm->nama,
+                    'nik'=>$tm->nik,
+                    'tempat_lahir'=>$tm->tempat_lahir,
+                    'tanggal_lahir'=>$tm->tanggal_lahir,
+                    'jenis_kelamin'=>$tm->jenis_kelamin,
+                    'alamat'=>$tm->alamat,
+                    'no_hp'=>$tm->no_hp,
+                    'agama'=>$tm->agama,
+                    'nama_jabatan'=>$tm->nama_jabatan,
+                    'golongan'=>$tm->golongan,
+                    'bpjskes'=>'Belum Terdaftar',
+                    'bpjstk'=>'Terdaftar',
+                ];
+            }else{
+                $Tmaster[]=[
+                    'id'=>$tm->id,
+                    'nama'=>$tm->nama,
+                    'nik'=>$tm->nik,
+                    'tempat_lahir'=>$tm->tempat_lahir,
+                    'tanggal_lahir'=>$tm->tanggal_lahir,
+                    'jenis_kelamin'=>$tm->jenis_kelamin,
+                    'alamat'=>$tm->alamat,
+                    'no_hp'=>$tm->no_hp,
+                    'agama'=>$tm->agama,
+                    'nama_jabatan'=>$tm->nama_jabatan,
+                    'golongan'=>$tm->golongan,
+                    'bpjskes'=>'Belum Terdaftar',
+                    'bpjstk'=>'Belum Terdaftar',
+                ];
+            }
+            // $cekriw=Riwayatkaryawan::where('id_master',$idmaster)->where('jenis','masuk')->get();
+            // if(count($cekriw)==0){
+            //     $test[]=$idmaster;
+            // }
+
+        }
         // dd($Tmaster);
          // Load index view
          return view('MasterKaryawan.master',compact('jabatan','Tmaster'));
@@ -75,12 +150,24 @@ class MasterController extends Controller
         ->join('master','pendidikan.id_master','=','master.id')
         ->orderby('batas_pensiun.id','ASC')
         ->count();
-        $master=DB::select("SELECT master.*,nama_jabatan,nama_departemen,tanggal from master
-        join jabatan on jabatan.id = master.id_jabatan
-        left join departemen on departemen.id = jabatan.departemen
-        join riwayat_karyawan on riwayat_karyawan.id_master = master.id
-        where riwayat_karyawan.jenis = 'masuk' and master.id = $id_master order by tanggal ASC limit 1
-        ");
+        $cekriwmasuk=Riwayatkaryawan::where('id_master',$id_master)->where('jenis','masuk')->get();
+        if(count($cekriwmasuk)!=0){
+            $master=DB::select("SELECT master.*,nama_jabatan,nama_departemen,tanggal from master
+            join jabatan on jabatan.id = master.id_jabatan
+            left join departemen on departemen.id = jabatan.departemen
+            join riwayat_karyawan on riwayat_karyawan.id_master = master.id
+            where riwayat_karyawan.jenis = 'masuk' and master.id = $id_master order by tanggal ASC limit 1
+            ");
+        }else{
+            $master=DB::select("SELECT master.*,nama_jabatan,nama_departemen,'0000-00-00' as tanggal from master
+            join jabatan on jabatan.id = master.id_jabatan
+            left join departemen on departemen.id = jabatan.departemen
+            where master.id = $id_master order by tanggal ASC limit 1");
+        }
+        $cekriwtetap=Riwayatkaryawan::where('id_master',$id_master)->where('jenis','tetap')->get();
+        $cekriwkontrak=Riwayatkaryawan::where('id_master',$id_master)->where('jenis','kontrak')->get();
+        // dd(count($cekriwtetap));
+        // dd($cekriw);
         $pendidikan=Pendidikan::where('pendidikan.id_master',$id_master)//echo data pendidikan
         ->leftJoin('batas_pensiun','pendidikan.tingkat_pendidikan','=','batas_pensiun.tingkatan_pendidikan')
         ->orderby('batas_pensiun.id','DESC')
@@ -111,12 +198,12 @@ class MasterController extends Controller
         join jabatan on jabatan.id=riwayat_karyawan.jabatan where id_master=$id_master order by riwayat_karyawan.tanggal DESC");
         // dd($riwayatkaryawan);
 
-        return view('DetailMaster.detailmaster',compact('master','pendidikanterakhir','id_master','jabatan','bataspensiun','pendidikan','historykerja','bpjskes','bpjstk','riwayatkaryawan'));
+        return view('DetailMaster.detailmaster',compact('master','pendidikanterakhir','id_master','jabatan','bataspensiun','pendidikan','historykerja','bpjskes','bpjstk','riwayatkaryawan','cekriwtetap','cekriwkontrak'));
     }
 
 
     public function print($id_master){
-         $jabatan=Jabatan::get(); //untuk select option jabatan
+        $jabatan=Jabatan::get(); //untuk select option jabatan
         $sekolah=Pendidikan::where('pendidikan.id_master',$id_master) //untuk perulangan insert pendidikan all
         ->join('batas_pensiun','pendidikan.tingkat_pendidikan','=','batas_pensiun.tingkatan_pendidikan')
         ->join('master','pendidikan.id_master','=','master.id')
@@ -149,7 +236,8 @@ class MasterController extends Controller
         }else{
             $bataspensiun=DB::select("SELECT * FROM batas_pensiun");
         }
-
+        $cekriwtetap=Riwayatkaryawan::where('id_master',$id_master)->where('jenis','tetap')->get();
+        $cekriwkontrak=Riwayatkaryawan::where('id_master',$id_master)->where('jenis','kontrak')->get();
         $historykerja=Historypekerjaan::where('history_pekerjaan.id_master',$id_master)->orderby('id','DESC')->get();//history pekerjaan
         $bpjskes=Bpjskes::where('id_master',$id_master)->get();//bpjskes
         $bpjstk=Bpjstk::where('id_master',$id_master)->get();//bpjstk
@@ -167,7 +255,7 @@ class MasterController extends Controller
         // join jabatan on jabatan.id=riwayat_karyawan.jabatan where id_master=$id_master");
         // dd($riwayatkaryawan);
 
-        return view('DetailMaster.print',compact('master','pendidikanterakhir','id_master','jabatan','bataspensiun','pendidikan','historykerja','bpjskes','bpjstk','riwayatkaryawan'));
+        return view('DetailMaster.print',compact('master','pendidikanterakhir','id_master','jabatan','bataspensiun','pendidikan','historykerja','bpjskes','bpjstk','riwayatkaryawan','cekriwkontrak','cekriwtetap'));
     }
     /**
      * Show the form for creating a new resource.
@@ -244,7 +332,7 @@ class MasterController extends Controller
             //alert berhasil
             return back()->with('success','Data berhasil ditambahkan!');
         }catch(Exception $e){
-            // dd($e);
+            dd($e);
             DB::rollback();
             //alert gagal
             return back()->with('failed','Data gagal ditambahkan!');
@@ -337,7 +425,7 @@ class MasterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request){
+    public function destroyresign(Request $request){
     $id_master = $request->id_master;
     $tanggal=date('Y-m-d');
     $jabatanlama=DB::select("SELECT id_jabatan,nama_jabatan,nama_departemen from master
@@ -352,7 +440,7 @@ class MasterController extends Controller
         'tanggal'=>date('Y-m-d'),
         'jenis'=>'Non Aktif',
         'jabatan'=>$jl->id_jabatan,
-        'deskripsi'=>'Status menjadi Non Aktif ',
+        'deskripsi'=>'Keluar karena resign',
         'keterangan'=>'',
     ];
     // dd($data);
@@ -360,7 +448,7 @@ class MasterController extends Controller
     try{
         master::where(['id'=>$id_master])->update(['status'=>'Non Aktif']);
         Bpjstk::where(['id_master'=>$id_master])->update(['status'=>'Non Aktif']);
-        Bpjskes::where(['id_master'=>$id_master])->update(['status'=>'Pengajuan','alasan_nonaktif'=>'master dinonaktifkan']);
+        Bpjskes::where(['id_master'=>$id_master])->update(['status'=>'Pengajuan','alasan_nonaktif'=>'master dinonaktifkan karena resign']);
         Riwayatkaryawan::insert($data);
         DB::commit();
         return back()->with('success','Data berhasil dihapus!');
@@ -369,5 +457,39 @@ class MasterController extends Controller
         DB::rollBack();
         return back()->with('failed','Data gagal dihapus!');
     }
-}
+    }
+
+    public function destroypensiun(Request $request){
+    $id_master = $request->id_master;
+    $tanggal=date('Y-m-d');
+    $jabatanlama=DB::select("SELECT id_jabatan,nama_jabatan,nama_departemen from master
+    join jabatan on jabatan.id=master.id_jabatan
+    left join departemen on jabatan.departemen=departemen.id
+    where master.id = $id_master");
+
+    foreach($jabatanlama as $jl){
+    }
+    $data=[
+        'id_master'=>$id_master,
+        'tanggal'=>date('Y-m-d'),
+        'jenis'=>'Non Aktif',
+        'jabatan'=>$jl->id_jabatan,
+        'deskripsi'=>'Keluar karena pensiun',
+        'keterangan'=>'',
+    ];
+    // dd($data);
+    DB::beginTransaction();
+    try{
+        master::where(['id'=>$id_master])->update(['status'=>'Non Aktif']);
+        Bpjstk::where(['id_master'=>$id_master])->update(['status'=>'Non Aktif']);
+        Bpjskes::where(['id_master'=>$id_master])->update(['status'=>'Pengajuan','alasan_nonaktif'=>'master dinonaktifkan karena pensiun']);
+        Riwayatkaryawan::insert($data);
+        DB::commit();
+        return back()->with('success','Data berhasil dihapus!');
+    }catch(Exception $e){
+        // dd($e);
+        DB::rollBack();
+        return back()->with('failed','Data gagal dihapus!');
+    }
+    }
 }

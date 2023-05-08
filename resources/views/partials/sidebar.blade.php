@@ -39,7 +39,7 @@
                             <i class="bi bi-building"></i>
                         </div>
                         <div class="btn-body">
-                            Departemen
+                            Departemen/Bagian
                         </div>
                     </a>
                 </li>

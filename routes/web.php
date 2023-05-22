@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BpjskesController;
 use App\Http\Controllers\BpjstkController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\HistoryPekerjaanController;
 use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\PendidikanController;
+use App\Http\Controllers\PengajuanController;
 use App\Http\Controllers\RiwayatController;
 use App\Http\Controllers\RiwayatKaryawanController;
 use App\Http\Controllers\SimpleController;
@@ -102,3 +104,11 @@ Route::post('/edituser',[AuthController::class, 'edituser']);
 Route::get('riwayatbpjskes', [RiwayatController::class, 'riwayatbpjskes']);
 Route::get('printkes/{date}', [RiwayatController::class, 'printriwayatbpjskes']);
 Route::get('simpandatabpjskes', [RiwayatController::class, 'simpandatabpjskes']);
+
+Route::get('/absensi', [AbsensiController::class, 'index'])->middleware('auth');
+Route::post('/postabsensi', [AbsensiController::class, 'store'])->middleware('auth');
+Route::post('/updateabsensi', [AbsensiController::class, 'update']);
+Route::post('/hapusabsensi', [AbsensiController::class, 'destroy']);
+
+Route::get('pengajuan', [PengajuanController::class, 'index']);
+Route::get('pengajuan/add', [PengajuanController::class, 'create']);

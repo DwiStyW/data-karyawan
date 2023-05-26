@@ -126,4 +126,10 @@ class AbsensiController extends Controller
 
         return view('absensi.rekapabsensi',compact('master','absensi'));
     }
+    public function rekapabsensipermaster($id){
+        $master=master::where('id',$id)->get();
+        $absensi=Absen::leftjoin('master','master.id','=','absen.id_master')->select('absen.*','master.nama')->orderby('id_master','asc','tanggal','desc')->get();
+
+        return view('DetailMaster.rekapabsensipermaster',compact('master','absensi'));
+    }
 }

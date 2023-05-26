@@ -110,6 +110,7 @@ Route::post('/postabsensi', [AbsensiController::class, 'store'])->middleware('au
 Route::post('/updateabsensi', [AbsensiController::class, 'update']);
 Route::post('/hapusabsensi', [AbsensiController::class, 'destroy']);
 Route::get('/rekapabsensi', [AbsensiController::class, 'rekap']);
+Route::get('/rekapabsensi/{id}', [AbsensiController::class, 'rekapabsensipermaster']);
 
 Route::get('pengajuan', [PengajuanController::class, 'index']);
 Route::get('pengajuan/add', [PengajuanController::class, 'create']);

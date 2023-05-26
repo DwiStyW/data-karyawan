@@ -93,7 +93,7 @@
                         </div>
                     </a>
                 </li>
-                <li class="list-group-item">
+                {{-- <li class="list-group-item">
                     <a class="btn" href="/pengajuan" id="navDAR">
                         <div class="btn-header me-3">
                             <i class="bi bi-person-add"></i>
@@ -102,7 +102,7 @@
                             Pengajuan Karyawan
                         </div>
                     </a>
-                </li>
+                </li> --}}
                 <li class="list-group-item mobile">
                     <a class="btn" href="/logout" id="navDAR">
                         <div class="btn-header me-3">

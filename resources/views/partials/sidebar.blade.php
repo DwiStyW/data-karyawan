@@ -39,7 +39,37 @@
                             <i class="bi bi-building"></i>
                         </div>
                         <div class="btn-body">
-                            Departemen/Bagian
+                            Departemen
+                        </div>
+                    </a>
+                </li>
+                <li class="list-group-item">
+                    <a class="btn" href="/bagian" id="navDAR">
+                        <div class="btn-header me-3">
+                            <i class="bi bi-building"></i>
+                        </div>
+                        <div class="btn-body">
+                            Bagian
+                        </div>
+                    </a>
+                </li>
+                <li class="list-group-item">
+                    <a class="btn" href="/section" id="navDAR">
+                        <div class="btn-header me-3">
+                            <i class="bi bi-building"></i>
+                        </div>
+                        <div class="btn-body">
+                            Section
+                        </div>
+                    </a>
+                </li>
+                <li class="list-group-item">
+                    <a class="btn" href="/jabatan" id="navDAR">
+                        <div class="btn-header me-3">
+                            <i class="bi bi-building"></i>
+                        </div>
+                        <div class="btn-body">
+                            Jabatan
                         </div>
                     </a>
                 </li>
@@ -93,6 +123,16 @@
                         </div>
                     </a>
                 </li>
+                {{-- <li class="list-group-item">
+                    <a class="btn" href="/pengajuan" id="navDAR">
+                        <div class="btn-header me-3">
+                            <i class="bi bi-person-add"></i>
+                        </div>
+                        <div class="btn-body">
+                            Pengajuan Karyawan
+                        </div>
+                    </a>
+                </li> --}}
                 <li class="list-group-item mobile">
                     <a class="btn" href="/logout" id="navDAR">
                         <div class="btn-header me-3">

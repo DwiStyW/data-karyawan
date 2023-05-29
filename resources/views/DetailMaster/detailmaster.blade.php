@@ -308,6 +308,13 @@
 
                     </div>
                 </div>
+                <div class="float-lg-end">
+                    <a href="/rekapabsensi/{{ $id_master }}">
+                        <button class="btn btn-sm btn-secondary">
+                            <i class="bi bi-card-heading"></i>
+                            Rekap Absensi</button>
+                    </a>
+                </div>
                 <div class="row col-lg-12 pt-3" style="margin-right: 0px !important">
                     <div class="col-lg-6 col-md-12">
                         <div class="float-end">

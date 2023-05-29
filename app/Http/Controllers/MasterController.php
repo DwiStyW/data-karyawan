@@ -10,6 +10,7 @@ use App\Models\Bpjstk;
 use App\Models\Historypekerjaan;
 use App\Models\Jabatan;
 use App\Models\Master;
+use App\Models\Sie;
 use App\Models\Pendidikan;
 use App\Models\Riwayatkaryawan;
 use Exception;
@@ -133,6 +134,17 @@ class MasterController extends Controller
         $jabatan=Jabatan::get();
         $namafilter = 'Golongan '.$gol;
         $Tmaster=DB::select("SELECT master.*, nama_jabatan from master join jabatan on jabatan.id=master.id_jabatan where status='Aktif' AND master.golongan='$gol' order by id DESC");
+        // dd($Tmaster);
+         // Load index view
+         return view('MasterKaryawan.masterfilter',compact('jabatan','Tmaster','namafilter'));
+     }
+     public function persie($id){
+        $jabatan=Jabatan::get();
+        $fil = DB::table('sie')->where('id',$id)->get();
+        foreach($fil as $fil):
+            $namafilter = $fil->nama_sie;
+        endforeach;
+        $Tmaster=DB::select("SELECT master.*, nama_jabatan from master join jabatan on jabatan.id=master.id_jabatan where status='Aktif' AND jabatan.sie='$id' order by id DESC");
         // dd($Tmaster);
          // Load index view
          return view('MasterKaryawan.masterfilter',compact('jabatan','Tmaster','namafilter'));

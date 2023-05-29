@@ -9,8 +9,7 @@
     <link rel="stylesheet" href="../assets/ui/bootstrap-5.2.1-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/ui/bootstrap-icons-1.10.2/bootstrap-icons.css">
     <link rel="stylesheet" href="../assets/ui/css/global.css">
-
-
+    <link rel="stylesheet" href="../assets/js/select2-master/dist/css/select2.min.css" />
 </head>
 
 <body>
@@ -19,57 +18,50 @@
     <main class="wrapper">
         <div class="container-custome">
             <header class="mb-3">
-                <h3 class="title-pages fw-bold">Data Jabatan</h3>
+                <h3 class="title-pages fw-bold">Data Absensi Karyawan</h3>
             </header>
             @include('alert')
             <div class="pb-3">
-                <button data-bs-toggle="modal" data-bs-target="#tambah_Jabatan" class="btn btn-sm btn-secondary">
+                <button data-bs-toggle="modal" data-bs-target="#tambahabsensi" class="btn btn-sm btn-secondary">
                     <i class="bi bi-plus-square-fill"></i>
-                    Jabatan
+                    Absensi
                 </button>
-
-                <a href="/struktur" class="btn btn-sm btn-secondary">
-                    Struktur
-                </a>
-                <a href="master" class="btn btn-sm btn-secondary">
-                    Karyawan
-                </a>
+                <a href="/rekapabsensi" class="btn btn-sm btn-secondary">Rekap Absensi</a>
             </div>
-
             <div>
-                <table id='table' width='100%' class="table table-striped table-bordered ">
+                <table id='mTable' width='100%' class="table table-striped table-bordered ">
                     <thead>
                         <tr style="background-color:#5F7A61;color:#ddd;font-weight:bold">
                             <th data-priority="1">No</th>
-                            <th data-priority="1">Nama Jabatan</th>
-                            <th data-priority="3">Departemen</th>
-                            <th data-priority="3">Bagian</th>
-                            <th data-priority="3">Section</th>
-                            <th data-priority="2" class="text-center">Aksi</th>
+                            <th data-priority="1">Nama</th>
+                            <th data-priority="3">Tanggal</th>
+                            <th data-priority="3">Jenis</th>
+                            <th data-priority="3">Keterangan</th>
+                            <th data-priority="1">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @php
                             $no = 1;
                         @endphp
-                        @foreach ($Tjabatan as $j)
+                        @foreach ($absensi as $a)
                             <tr>
                                 <td>{{ $no++ }}</td>
-                                <td>{{ $j->nama_jabatan }}</td>
-                                <td>{{ $j->nama_departemen }}</td>
-                                <td>{{ $j->nama_bagian }}</td>
-                                <td>{{ $j->nama_sie }}</td>
+                                <td>{{ $a->nama }}</td>
+                                <td>{{ $a->tanggal }}</td>
+                                <td>{{ $a->jenis }}</td>
+                                <td>{{ $a->ket }}</td>
                                 <td>
                                     <div class="row justify-content-center" style="min-width:110px;">
                                         <div style="max-width:60px"><button type="button"
-                                                class="btn btn-sm btn-primary btn-block" data-bs-toggle="modal"
-                                                data-bs-target="#editjabatan"
-                                                onclick="editjabatan({{ $j->id }},'{{ $j->nama_jabatan }}','{{ $j->departemen }}','{{ $j->bagian }}','{{ $j->sie }}','{{ $j->level }}','{{ $j->pid }}')">
-                                                <i class="bi bi-pencil-square"></i></button></div>
+                                                class="btn btn-primary btn-block" data-bs-toggle="modal"
+                                                data-bs-target="#edit_absensi"
+                                                onclick="edit({{ $a->id }},{{ $a->id_master }},'{{ $a->tanggal }}','{{ $a->jenis }}','{{ $a->ket }}')"><i
+                                                    class="bi bi-pencil-square"></i></button></div>
                                         <div style="max-width:60px"><button type="button"
-                                                class="btn btn-sm btn-danger btn-block" data-bs-toggle="modal"
-                                                data-bs-target="#hapusjabatan"
-                                                onclick="hapusjabatan({{ $j->id }},'{{ $j->nama_jabatan }}')"><i
+                                                class="btn btn-danger btn-block" data-bs-toggle="modal"
+                                                data-bs-target="#hapus_absensi"
+                                                onclick="hapus({{ $a->id }},'{{ $a->nama }}','{{ $a->tanggal }}')"><i
                                                     class="bi bi-trash3-fill"></i></button></div>
                                     </div>
                                 </td>
@@ -84,7 +76,22 @@
     @include('partials.navdown')
 
 </body>
-<script src="../assets/ui/jquery-3.6.1/jquery-3.6.1.min.js"></script>
+@include('absensi.tambahabsensi')
+@include('absensi.editabsensi')
+@include('absensi.hapusabsensi')
+<script src="../assets/js/jquery-1.11.3.min.js"></script>
+{{-- <script src="../assets/ui/jquery-3.6.1/jquery-3.6.1.min.js"></script> --}}
+<script type="text/javascript" src="../assets/DataTables/datatables.min.js"></script>
+<script src="../assets/js/select2-master/dist/js/select2.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('.form-select').select2({
+            dropdownParent: $('#tambahabsensi')
+        });
+    });
+</script>
+
 <script src="../assets/ui/bootstrap-5.2.1-dist/js/bootstrap.bundle.min.js"></script>
 <script>
     $(document).on("scroll", function() {
@@ -98,13 +105,13 @@
         $(this).select();
     });
 </script>
-<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script type="text/javascript" src="../assets/DataTables/datatables.min.js"></script>
+{{-- <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script> --}}
+
 <!-- Script -->
-<script>
-    console.log(@json($Tjabatan))
+<script type="text/javascript">
     $(document).ready(function() {
-        $('#table').DataTable({
+        // DataTable
+        $('#mTable').DataTable({
             processing: true,
             deferRender: true,
             "lengthMenu": [
@@ -113,11 +120,11 @@
             ],
             buttons: [{
                     extend: 'excelHtml5',
-                    title: 'Data export Jabatan'
+                    title: 'Data export Karyawan'
                 },
                 {
                     extend: 'pdfHtml5',
-                    title: 'Data export Jabatan'
+                    title: 'Data export Karyawan'
                 }
             ],
             language: {
@@ -134,12 +141,10 @@
             },
             pagingType: 'simple_numbers',
             responsive: true,
-            dom: '<"rowt justify-content-between"<l><"rowt"<f><B>>><t><"rowt justify-content-between"ip>',
+            dom: '<"rowt justify-content-between"<l><"rowt"<f><B>>>t<"rowt justify-content-between"ip>',
         });
+
     });
 </script>
-@include('jabatan.tambahjabatan')
-@include('jabatan.editjabatan')
-@include('jabatan.hapusjabatan')
 
 </html>

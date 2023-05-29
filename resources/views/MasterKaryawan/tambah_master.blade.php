@@ -1,4 +1,13 @@
 <!-- Modal Input Master -->
+<style>
+    .select2 {
+        width: 100% !important;
+    }
+
+    .modal-body {
+        overflow-x: hidden !important;
+    }
+</style>
 <div class="modal fade" id="tambah_master" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">

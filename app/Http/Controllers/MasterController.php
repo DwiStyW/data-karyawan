@@ -152,10 +152,10 @@ class MasterController extends Controller
         $jabatan=Jabatan::get();
         $fil = Jabatan::where('id',$id)->get();
         foreach($fil as $fil):
-            $namafilter = $fil->nama_bagian;
+            $namafilter = $fil->nama_jabatan;
         endforeach;
         $Tmaster=DB::select("SELECT master.*, nama_jabatan from master join jabatan on jabatan.id=master.id_jabatan where status='Aktif' AND jabatan.id='$id' order by id DESC");
-        // dd($Tmaster);
+        // dd($namafilter);
          // Load index view
          return view('MasterKaryawan.masterfilter',compact('jabatan','Tmaster','namafilter'));
      }

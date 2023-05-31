@@ -107,20 +107,59 @@
                     </div>
                 </a>
             </div>
-            <div class="row mt-4" style="position: relative">
-                <select style="max-width:200px;z-index:10;position:absolute;left:20px"class="form-select" name=""
-                    id="selectchart" onchange="changechart()">
-                    <option value="karyawan">Turn Over Karyawan</option>
-                    <option value="mutasi">Turn Over Mutasi</option>
-                </select>
-                <div id="turnover">
-                    <div id="karyawan"></div>
+            <div class="row">
+                <div class="col-lg-8 col-md-12 col-12">
+                    <div class="row mt-4" style="position: relative">
+                        <select style="max-width:200px;z-index:10;position:absolute;left:20px"class="form-select"
+                            name="" id="selectchart" onchange="changechart()">
+                            <option value="karyawan">Turn Over Karyawan</option>
+                            <option value="mutasi">Turn Over Mutasi</option>
+                        </select>
+                        <div id="turnover">
+                            <div id="karyawan"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12 col-12 position-relative">
+                    <div class="card border-0 rounded-0 shadow bg-light mt-4 h-auto p-3">
+                        <a href="/absensi" class="text-decoration-none position-absolute top-0"
+                            style="margin-top:10px;right:10px">
+                            <button class="btn btn-sm btn-secondary"><i class="bi bi-plus"></i></button>
+                        </a>
+                        <h4 class="card-title mb-1">Absensi Karyawan</h4>
+                        <h6 class="card-text mb-2">Tanggal : {{ date('d-m-Y') }}</h6>
+                        <div class="mt-2">
+                            <table id='absen' width='100%' class="table table-striped table-bordered ">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama</th>
+                                        <th>Jabatan</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php
+                                        $nomor = 1;
+                                    @endphp
+                                    @foreach ($absen as $a)
+                                        <tr>
+                                            <td>{{ $nomor++ }}</td>
+                                            <td>{{ $a->nama }}</td>
+                                            <td>{{ $a->nama_jabatan }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
+
             <div class="row mt-4" style="z-index:100">
                 <div class="col-lg-6 col-md-6 col-12" id="column-pend">
                 </div>
                 <div class="col-lg-6 col-md-6 col-12" id="pie-gender">
+
                 </div>
             </div>
         </div>
@@ -352,6 +391,27 @@
             pagingType: 'simple_numbers',
             responsive: true,
             dom: '<"rowt justify-content-between"<l><"rowt"<f><B>>>t<"rowt justify-content-between"ip>',
+        });
+
+        $('#absen').DataTable({
+            processing: true,
+            deferRender: true,
+            language: {
+                paginate: {
+                    previous: '‹',
+                    next: '›'
+                },
+                aria: {
+                    paginate: {
+                        previous: 'Previous',
+                        next: 'Next'
+                    }
+                }
+            },
+            "pageLength": 3,
+            pagingType: 'simple_numbers',
+            responsive: true,
+            dom: '<"rowt justify-content-between"<"rowt">>t<"rowt justify-content-end"p>',
         });
     });
 </script>

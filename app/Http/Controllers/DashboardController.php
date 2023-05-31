@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Absen;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -170,8 +171,12 @@ class DashboardController extends Controller
             }
         }
 // dd(array_sum($testing));
-
-        return view('dashboard',compact('datagender','datapend','jumkar','apoteker','totalpensiun','dataap','datamp','masterap'));
+        // absensi
+        $date=date('Y-m-d');
+        // dd($date);
+        $absen=Absen::leftjoin('master','master.id','=','absen.id_master')->leftjoin('jabatan','jabatan.id','=','master.id_jabatan')->where('tanggal',$date)->get();
+        // dd($absen);
+        return view('dashboard',compact('datagender','datapend','jumkar','apoteker','totalpensiun','dataap','datamp','masterap','absen'));
     }
     function cari($data, $data2)
     {

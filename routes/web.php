@@ -47,7 +47,7 @@ Route::get('dashboard', [DashboardController::class, 'index'])->middleware('auth
 //Filter perdepartemen&bagian
 Route::get('perdepart/{id}', [MasterController::class, 'perdepartemen'])->middleware('auth');
 Route::get('perbagian/{id}', [MasterController::class, 'perbagian'])->middleware('auth');
-//Filter pergolongan
+Route::get('persie/{id}', [MasterController::class, 'persie'])->middleware('auth');
 Route::get('pergolongan/{gol}', [MasterController::class, 'pergolongan'])->middleware('auth');
 Route::get('perjabatan/{id}', [MasterController::class, 'perjabatan'])->middleware('auth');
 

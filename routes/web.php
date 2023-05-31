@@ -17,6 +17,8 @@ use App\Http\Controllers\RiwayatKaryawanController;
 use App\Http\Controllers\SimpleController;
 use App\Http\Controllers\StrukturController;
 use App\Http\Controllers\RiwkaryawanController;
+use App\Http\Controllers\BagianController;
+use App\Http\Controllers\SectionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -47,6 +49,7 @@ Route::get('perdepart/{id}', [MasterController::class, 'perdepartemen'])->middle
 Route::get('perbagian/{id}', [MasterController::class, 'perbagian'])->middleware('auth');
 //Filter pergolongan
 Route::get('pergolongan/{gol}', [MasterController::class, 'pergolongan'])->middleware('auth');
+Route::get('perjabatan/{id}', [MasterController::class, 'perjabatan'])->middleware('auth');
 
 //master
 Route::get('master', [MasterController::class, 'index'])->middleware('auth');
@@ -80,6 +83,8 @@ Route::post('/updatebpjstk', [BpjstkController::class, 'update']);
 Route::post('/hapusbpjstk', [BpjstkController::class, 'destroy']);
 
 Route::get('departement', [DepartementController::class, 'index'])->middleware('auth');
+Route::get('bagian', [BagianController::class, 'index'])->middleware('auth');
+Route::get('section', [SectionController::class, 'index'])->middleware('auth');
 Route::get('golongan', [GolonganController::class, 'index']);
 
 Route::get('/riwkaryawan', [RiwkaryawanController::class, 'index'])->middleware('auth');

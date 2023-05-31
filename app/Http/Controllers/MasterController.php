@@ -137,6 +137,28 @@ class MasterController extends Controller
          // Load index view
          return view('MasterKaryawan.masterfilter',compact('jabatan','Tmaster','namafilter'));
      }
+     public function persie($id){
+        $jabatan=Jabatan::get();
+        $fil = DB::table('sie')->where('id',$id)->get();
+        foreach($fil as $fil):
+            $namafilter = $fil->nama_sie;
+        endforeach;
+        $Tmaster=DB::select("SELECT master.*, nama_jabatan from master join jabatan on jabatan.id=master.id_jabatan where status='Aktif' AND jabatan.sie='$id' order by id DESC");
+        // dd($Tmaster);
+         // Load index view
+         return view('MasterKaryawan.masterfilter',compact('jabatan','Tmaster','namafilter'));
+     }
+     public function perjabatan($id){
+        $jabatan=Jabatan::get();
+        $fil = Jabatan::where('id',$id)->get();
+        foreach($fil as $fil):
+            $namafilter = $fil->nama_bagian;
+        endforeach;
+        $Tmaster=DB::select("SELECT master.*, nama_jabatan from master join jabatan on jabatan.id=master.id_jabatan where status='Aktif' AND jabatan.id='$id' order by id DESC");
+        // dd($Tmaster);
+         // Load index view
+         return view('MasterKaryawan.masterfilter',compact('jabatan','Tmaster','namafilter'));
+     }
 
      public function detailmaster($id_master){
         $jabatan=Jabatan::get(); //untuk select option jabatan

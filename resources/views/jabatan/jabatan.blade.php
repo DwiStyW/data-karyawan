@@ -55,7 +55,7 @@
                         @foreach ($Tjabatan as $j)
                             <tr>
                                 <td>{{ $no++ }}</td>
-                                <td>{{ $j->nama_jabatan }}</td>
+                                <td><a href="perjabatan/{{ $j->id }}">{{ $j->nama_jabatan }}</a></td>
                                 <td>{{ $j->nama_departemen }}</td>
                                 <td>{{ $j->nama_bagian }}</td>
                                 <td>{{ $j->nama_sie }}</td>

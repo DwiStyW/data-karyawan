@@ -9,7 +9,7 @@
         <button type="button" class="btn-close position-absolute top-0 end-0 m-1 d-lg-none" data-bs-dismiss="offcanvas"
             data-bs-target="#sidebar" aria-label="Close"></button>
     </div>
-    <div class="offcanvas-body d-block p-0" style="overflow-y: auto; height: calc(100% - 192px);">
+    <div class="offcanvas-body d-block p-0 sidebar" style="overflow-y: auto; height: calc(100% - 150px);">
         <!-- sidebar user menu -->
         <section>
             <ul class="list-group mb-4 rounded-0">
@@ -34,25 +34,71 @@
                     </a>
                 </li>
                 <li class="list-group-item">
-                    <a class="btn" href="/departement" id="navDAR">
+                    <a class="nav-link btn position-relative" href="#">
                         <div class="btn-header me-3">
                             <i class="bi bi-building"></i>
                         </div>
                         <div class="btn-body">
-                            Departemen
+                            Filter
+                        </div>
+                        <div class="position-absolute end-0 pe-3">
+                            <i class="bi small bi-caret-down-fill "></i>
                         </div>
                     </a>
+                    <ul class="submenu collapse" style="padding-inline-start: 0px !important;">
+                        <li class="list-group-item bg-light">
+                            <a class="btn py-1" href="/departement" id="navDAR">
+                                <div class="btn-header me-1">
+                                    <i class="bi bi-dot"></i>
+                                </div>
+                                <div class="btn-body">
+                                    Departemen
+                                </div>
+                            </a>
+                        </li>
+                        <li class="list-group-item  bg-light">
+                            <a class="btn py-1" href="/bagian" id="navDAR">
+                                <div class="btn-header me-1">
+                                    <i class="bi bi-dot"></i>
+                                </div>
+                                <div class="btn-body">
+                                    Bagian
+                                </div>
+                            </a>
+                        </li>
+                        <li class="list-group-item bg-light">
+                            <a class="btn py-1" href="/section" id="navDAR">
+                                <div class="btn-header me-1">
+                                    <i class="bi bi-dot"></i>
+                                </div>
+                                <div class="btn-body">
+                                    Section
+                                </div>
+                            </a>
+                        </li>
+                        <li class="list-group-item bg-light">
+                            <a class="btn py-1" href="/jabatan" id="navDAR">
+                                <div class="btn-header me-1">
+                                    <i class="bi bi-dot"></i>
+                                </div>
+                                <div class="btn-body">
+                                    Jabatan
+                                </div>
+                            </a>
+                        </li>
+                        <li class="list-group-item bg-light">
+                            <a class="btn py-1" href="/golongan" id="navDAR">
+                                <div class="btn-header me-1">
+                                    <i class="bi bi-dot"></i>
+                                </div>
+                                <div class="btn-body">
+                                    Status/Golongan
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
-                <li class="list-group-item">
-                    <a class="btn" href="/golongan" id="navDAR">
-                        <div class="btn-header me-3">
-                            <i class="bi bi-diagram-3"></i>
-                        </div>
-                        <div class="btn-body">
-                            Status/Golongan
-                        </div>
-                    </a>
-                </li>
+
                 <li class="list-group-item">
                     <a class="btn" href="/bpjstk" id="navDAR">
                         <div class="btn-header me-3">
@@ -103,6 +149,7 @@
                         </div>
                     </a>
                 </li> --}}
+
                 <li class="list-group-item mobile">
                     <a class="btn" href="/logout" id="navDAR">
                         <div class="btn-header me-3">
@@ -194,3 +241,34 @@
         filter: invert(1);
     }
 </style>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll('.sidebar .nav-link').forEach(function(element) {
+
+            element.addEventListener('click', function(e) {
+
+                let nextEl = element.nextElementSibling;
+                let parentEl = element.parentElement;
+
+                if (nextEl) {
+                    e.preventDefault();
+                    let mycollapse = new bootstrap.Collapse(nextEl);
+
+                    if (nextEl.classList.contains('show')) {
+                        mycollapse.hide();
+                    } else {
+                        mycollapse.show();
+                        // find other submenus with class=show
+                        var opened_submenu = parentEl.parentElement.querySelector(
+                            '.submenu.show');
+                        // if it exists, then close all of them
+                        if (opened_submenu) {
+                            new bootstrap.Collapse(opened_submenu);
+                        }
+                    }
+                }
+            }); // addEventListener
+        }) // forEach
+    });
+    // DOMContentLoaded  end
+</script>

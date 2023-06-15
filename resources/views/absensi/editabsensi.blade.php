@@ -77,7 +77,6 @@
         $(document).ready(function() {
             $('.form-select').select2({
                 dropdownParent: $('#edit_absensi'),
-                // dropdownParent: $('#edit_master'),
             });
         });
     }

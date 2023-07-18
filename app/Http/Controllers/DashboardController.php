@@ -176,7 +176,7 @@ class DashboardController extends Controller
         // dd($date);
         $absen=Absen::leftjoin('master','master.id','=','absen.id_master')->leftjoin('jabatan','jabatan.id','=','master.id_jabatan')->where('tanggal',$date)->get();
         // dd($absen);
-        return view('dashboard',compact('datagender','datapend','jumkar','apoteker','totalpensiun','dataap','datamp','masterap','absen'));
+        return view('dashboard.dashboard-personalia',compact('datagender','datapend','jumkar','apoteker','totalpensiun','dataap','datamp','masterap','absen'));
     }
     function cari($data, $data2)
     {
@@ -202,6 +202,11 @@ class DashboardController extends Controller
     }
 
 
+
+    function dashboardkabag(){
+        $data=[];
+        return view('dashboard.dashboard-kabag',compact('data'));
+    }
     /**
      * Show the form for creating a new resource.
      *

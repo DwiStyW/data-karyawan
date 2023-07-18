@@ -142,32 +142,6 @@
         const groupByname = groupBy(['nama']);
         let dataabsensi = [];
         var no = 1;
-        // for (let [groupName, values] of Object.entries(groupByname(filterabsen))) {
-        //     // console.log(`${groupName}: ${values.length}`);
-        //     var s = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'sakit'),
-        //         i = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'ijin'),
-        //         c = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'cuti'),
-        //         a = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'alpha');
-        //     // var valket = _.pluck(values, 'ket'),
-        //     //     valjenis = _.pluck(values, 'jenis');
-        //     var ket = values.map(function(item) {
-        //         return item['tanggal'] + ' (' + item['jenis'] + ') : ' + item['ket'] + '<br>';
-        //     });
-
-        //     console.log(ket.join(''));
-        //     dataabsensi.push({
-        //         no: no++,
-        //         nama: groupName,
-        //         sakit: s.length,
-        //         ijin: i.length,
-        //         cuti: c.length,
-        //         alpha: a.length,
-        //         jumlah: values.length,
-        //         keterangan: ket.join(''),
-        //         values
-        //     })
-        // }
-        // const masters = [];
         for (let [nama, values] of Object.entries(groupByname(filterabsen))) {
             var s = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'sakit'),
                 i = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'ijin'),

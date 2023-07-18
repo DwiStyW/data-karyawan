@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Absen;
+use App\Models\Distribusiabsen;
+use App\Models\Jabatan;
 use App\Models\Master;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AbsensiController extends Controller
 {
@@ -45,6 +49,7 @@ class AbsensiController extends Controller
             'tanggal'=>$request->tanggal,
             'jenis'=>$request->jenis,
             'ket'=>$request->ket,
+            'status'=>'disetujui',
             'updated_at'=>date("Y-m-d H:i:s"),
         ];
         try{
@@ -131,5 +136,83 @@ class AbsensiController extends Controller
         $absensi=Absen::leftjoin('master','master.id','=','absen.id_master')->select('absen.*','master.nama')->orderby('id_master','asc','tanggal','desc')->get();
 
         return view('DetailMaster.rekapabsensipermaster',compact('master','absensi'));
+    }
+    public function absensiperhari(){
+        $date=date('Y-m-d');
+        $absensi=Absen::leftjoin('master','master.id','=','absen.id_master')->select('absen.*','master.nama')->orderby('tanggal','desc')->where('tanggal',$date)->get();
+        $master=Master::get();
+        // dd($absensi);
+        return view('absensi.absensiperhari',compact('absensi','master','date'));
+    }
+    public function absensiperdiv(){
+        $master=[];
+        $data=[];
+        $idjabatan=Auth::user()->id_jabatan;
+        $jabatan=Jabatan::where('id',$idjabatan)->get();
+        foreach($jabatan as $j){}
+        $iddepartemen=$j->departemen;
+        $level=$j->level;
+        $departemen=Jabatan::where('departemen',$iddepartemen)->where('level','>',$level)->get();
+        foreach ($departemen as $d) {
+            $id_jabatan=$d->id;
+            $qmaster=DB::select("SELECT * from master where id_jabatan='$id_jabatan'");
+            if(count($qmaster)!=0){
+                foreach($qmaster as $qm){
+                    $master[]=[
+                        'id'=>$qm->id,
+                        'id_jabatan'=>$qm->id_jabatan
+                    ];
+                }
+            }
+        }
+
+        foreach($master as $m){
+            $idmaster=$m['id'];
+            $absensi=Absen::leftjoin('master','master.id','=','absen.id_master')
+            ->select('absen.*','master.nama')
+            // ->orderby('tanggal','asc')
+            ->where('absen.id_master',$idmaster)
+            ->get();
+            if(count($absensi)!=0){
+                foreach($absensi as $a){
+                    $data[]=[
+                        'id'=>$a->id,
+                        'nama'=>$a->nama,
+                        'tanggal'=>strtotime($a->tanggal)*1000,
+                        'jenis'=>$a->jenis,
+                        'ket'=>$a->ket,
+                        'status'=>$a->status,
+                    ];
+                }
+            }
+        }
+
+        // distribusi absen
+        $dabsen=Distribusiabsen::where('id_jabatan',$idjabatan)->get();
+        $disabsen=[];
+        foreach($dabsen as $da){
+            $disabsen[]=[
+                "tanggal"=>strtotime($da->tanggal)*1000
+            ];
+        }
+        // dd($data);
+        return view('absensi.absensi-perdiv',compact('data','disabsen'));
+    }
+    public function distribusiabsen($strtime){
+        $ts=$strtime/1000;
+        $tanggal = date("Y-m-d",$ts);
+        $idjabatan=Auth::user()->id_jabatan;
+        $data=[
+            "id_jabatan"=>$idjabatan,
+            "tanggal"=>$tanggal
+        ];
+        try{
+            Distribusiabsen::insert($data);
+            return back()->with('success','Data berhasil ditambahkan!');
+        }catch(Exception $e){
+            //alert gagal
+            // dd($e);
+            return back()->with('failed','Data gagal ditambahkan!');
+        }
     }
 }

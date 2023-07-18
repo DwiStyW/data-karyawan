@@ -42,7 +42,8 @@ Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('/auth', [AuthController::class, 'auth']);
 Route::get('/logout', [AuthController::class, 'logout']);
 
-Route::get('dashboard', [DashboardController::class, 'index'])->middleware('auth');
+Route::get('dashboard-personalia', [DashboardController::class, 'index'])->middleware('auth');
+Route::get('dashboard-kabag', [DashboardController::class, 'dashboardkabag'])->middleware('auth');
 
 //Filter perdepartemen&bagian
 Route::get('perdepart/{id}', [MasterController::class, 'perdepartemen'])->middleware('auth');
@@ -111,11 +112,15 @@ Route::get('printkes/{date}', [RiwayatController::class, 'printriwayatbpjskes'])
 Route::get('simpandatabpjskes', [RiwayatController::class, 'simpandatabpjskes']);
 
 Route::get('/absensi', [AbsensiController::class, 'index'])->middleware('auth');
+Route::get('/absensiperhari', [AbsensiController::class, 'absensiperhari'])->middleware('auth');
 Route::post('/postabsensi', [AbsensiController::class, 'store'])->middleware('auth');
 Route::post('/updateabsensi', [AbsensiController::class, 'update']);
 Route::post('/hapusabsensi', [AbsensiController::class, 'destroy']);
 Route::get('/rekapabsensi', [AbsensiController::class, 'rekap']);
 Route::get('/rekapabsensi/{id}', [AbsensiController::class, 'rekapabsensipermaster']);
+Route::get('/absensi-perdiv', [AbsensiController::class, 'absensiperdiv'])->middleware('auth');
+Route::get('/distribusi-absensi/{strtime}', [AbsensiController::class, 'distribusiabsen'])->middleware('auth');
+
 
 Route::get('pengajuan', [PengajuanController::class, 'index']);
 Route::get('pengajuan/add', [PengajuanController::class, 'create']);

@@ -122,7 +122,7 @@
                 </div>
                 <div class="col-lg-4 col-md-12 col-12 position-relative">
                     <div class="card border-0 rounded-0 shadow bg-light mt-4 h-auto p-3">
-                        <a href="/absensi" class="text-decoration-none position-absolute top-0"
+                        <a href="/absensiperhari" class="text-decoration-none position-absolute top-0"
                             style="margin-top:10px;right:10px">
                             <button class="btn btn-sm btn-secondary"><i class="bi bi-plus"></i></button>
                         </a>

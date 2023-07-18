@@ -13,133 +13,143 @@
         <!-- sidebar user menu -->
         <section>
             <ul class="list-group mb-4 rounded-0">
-                <li class="list-group-item">
-                    <a href="/dashboard" class="btn" id="navDashboard">
-                        <div class="btn-header me-3">
-                            <i class="bi bi-speedometer2"></i>
-                        </div>
-                        <div class="btn-body">
-                            Dashboard
-                        </div>
-                    </a>
-                </li>
-                <li class="list-group-item">
-                    <a class="btn" id="navDAR" href="/master">
-                        <div class="btn-header me-3">
-                            <i class="bi bi-people"></i>
-                        </div>
-                        <div class="btn-body">
-                            Data Master
-                        </div>
-                    </a>
-                </li>
-                <li class="list-group-item">
-                    <a class="nav-link btn position-relative" href="#">
-                        <div class="btn-header me-3">
-                            <i class="bi bi-building"></i>
-                        </div>
-                        <div class="btn-body">
-                            Filter
-                        </div>
-                        <div class="position-absolute end-0 pe-3">
-                            <i class="bi small bi-caret-down-fill "></i>
-                        </div>
-                    </a>
-                    <ul class="submenu collapse" style="padding-inline-start: 0px !important;">
-                        <li class="list-group-item bg-light">
-                            <a class="btn py-1" href="/departement" id="navDAR">
-                                <div class="btn-header me-1">
-                                    <i class="bi bi-dot"></i>
-                                </div>
-                                <div class="btn-body">
-                                    Departemen
-                                </div>
-                            </a>
-                        </li>
-                        <li class="list-group-item  bg-light">
-                            <a class="btn py-1" href="/bagian" id="navDAR">
-                                <div class="btn-header me-1">
-                                    <i class="bi bi-dot"></i>
-                                </div>
-                                <div class="btn-body">
-                                    Bagian
-                                </div>
-                            </a>
-                        </li>
-                        <li class="list-group-item bg-light">
-                            <a class="btn py-1" href="/section" id="navDAR">
-                                <div class="btn-header me-1">
-                                    <i class="bi bi-dot"></i>
-                                </div>
-                                <div class="btn-body">
-                                    Section
-                                </div>
-                            </a>
-                        </li>
-                        <li class="list-group-item bg-light">
-                            <a class="btn py-1" href="/jabatan" id="navDAR">
-                                <div class="btn-header me-1">
-                                    <i class="bi bi-dot"></i>
-                                </div>
-                                <div class="btn-body">
-                                    Jabatan
-                                </div>
-                            </a>
-                        </li>
-                        <li class="list-group-item bg-light">
-                            <a class="btn py-1" href="/golongan" id="navDAR">
-                                <div class="btn-header me-1">
-                                    <i class="bi bi-dot"></i>
-                                </div>
-                                <div class="btn-body">
-                                    Status/Golongan
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                @if (auth()->user()->role == 'personalia')
+                    <li class="list-group-item">
+                        <a href="/dashboard" class="btn {{ Request::is('dashboard') ? 'active' : '' }}"
+                            id="navDashboard">
+                            <div class="btn-header me-3">
+                                <i class="bi bi-speedometer2"></i>
+                            </div>
+                            <div class="btn-body">
+                                Dashboard
+                            </div>
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="btn {{ Request::is('master') ? 'active' : '' }}" id="navDAR" href="/master">
+                            <div class="btn-header me-3">
+                                <i class="bi bi-people"></i>
+                            </div>
+                            <div class="btn-body">
+                                Data Master
+                            </div>
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="nav-link btn position-relative {{ Request::is('departement') ? 'active' : '' }}{{ Request::is('bagian') ? 'active' : '' }}{{ Request::is('section') ? 'active' : '' }}{{ Request::is('jabatan') ? 'active' : '' }}{{ Request::is('golongan') ? 'active' : '' }}"
+                            href="#">
+                            <div class="btn-header me-3">
+                                <i class="bi bi-building"></i>
+                            </div>
+                            <div class="btn-body">
+                                Filter
+                            </div>
+                            <div class="position-absolute end-0 pe-3">
+                                <i class="bi small bi-caret-down-fill "></i>
+                            </div>
+                        </a>
+                        <ul
+                            class="submenu collapse {{ Request::is('departement') ? 'show' : '' }}{{ Request::is('bagian') ? 'show' : '' }}{{ Request::is('section') ? 'show' : '' }}{{ Request::is('jabatan') ? 'show' : '' }}{{ Request::is('golongan') ? 'show' : '' }}"style="padding-inline-start: 0px !important;">
+                            <li class="list-group-item bg-light">
+                                <a class="btn py-1 {{ Request::is('departement') ? 'active' : '' }}"
+                                    href="/departement" id="navDAR">
+                                    <div class="btn-header me-1">
+                                        <i class="bi bi-dot"></i>
+                                    </div>
+                                    <div class="btn-body">
+                                        Departemen
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="list-group-item  bg-light">
+                                <a class="btn py-1 {{ Request::is('bagian') ? 'active' : '' }}" href="/bagian"
+                                    id="navDAR">
+                                    <div class="btn-header me-1">
+                                        <i class="bi bi-dot"></i>
+                                    </div>
+                                    <div class="btn-body">
+                                        Bagian
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="list-group-item bg-light">
+                                <a class="btn py-1 {{ Request::is('section') ? 'active' : '' }}" href="/section"
+                                    id="navDAR">
+                                    <div class="btn-header me-1">
+                                        <i class="bi bi-dot"></i>
+                                    </div>
+                                    <div class="btn-body">
+                                        Section
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="list-group-item bg-light">
+                                <a class="btn py-1 {{ Request::is('jabatan') ? 'active' : '' }}" href="/jabatan"
+                                    id="navDAR">
+                                    <div class="btn-header me-1">
+                                        <i class="bi bi-dot"></i>
+                                    </div>
+                                    <div class="btn-body">
+                                        Jabatan
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="list-group-item bg-light">
+                                <a class="btn py-1 {{ Request::is('golongan') ? 'active' : '' }}" href="/golongan"
+                                    id="navDAR">
+                                    <div class="btn-header me-1">
+                                        <i class="bi bi-dot"></i>
+                                    </div>
+                                    <div class="btn-body">
+                                        Status/Golongan
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
 
-                <li class="list-group-item">
-                    <a class="btn" href="/bpjstk" id="navDAR">
-                        <div class="btn-header me-3">
-                            <i class="bi bi-wrench-adjustable-circle"></i>
-                        </div>
-                        <div class="btn-body">
-                            BPJS Ketenagakerjaan
-                        </div>
-                    </a>
-                </li>
-                <li class="list-group-item">
-                    <a class="btn" href="/bpjskes" id="navDAR">
-                        <div class="btn-header me-3">
-                            <i class="bi bi-patch-plus"></i>
-                        </div>
-                        <div class="btn-body">
-                            BPJS Kesehatan
-                        </div>
-                    </a>
-                </li>
-                <li class="list-group-item">
-                    <a class="btn" href="/riwayatkaryawan" id="navDAR">
-                        <div class="btn-header me-3">
-                            <i class="bi bi-arrow-left-right"></i>
-                        </div>
-                        <div class="btn-body">
-                            Riwayat Karyawan
-                        </div>
-                    </a>
-                </li>
-                <li class="list-group-item">
-                    <a class="btn" href="/absensi" id="navDAR">
-                        <div class="btn-header me-3">
-                            <i class="bi bi-clock-history"></i>
-                        </div>
-                        <div class="btn-body">
-                            Absensi Karyawan
-                        </div>
-                    </a>
-                </li>
-                {{-- <li class="list-group-item">
+                    <li class="list-group-item">
+                        <a class="btn {{ Request::is('bpjstk') ? 'active' : '' }}" href="/bpjstk" id="navDAR">
+                            <div class="btn-header me-3">
+                                <i class="bi bi-wrench-adjustable-circle"></i>
+                            </div>
+                            <div class="btn-body">
+                                BPJS Ketenagakerjaan
+                            </div>
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="btn {{ Request::is('bpjskes') ? 'active' : '' }}" href="/bpjskes" id="navDAR">
+                            <div class="btn-header me-3">
+                                <i class="bi bi-patch-plus"></i>
+                            </div>
+                            <div class="btn-body">
+                                BPJS Kesehatan
+                            </div>
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="btn {{ Request::is('riwayatkaryawan') ? 'active' : '' }}" href="/riwayatkaryawan"
+                            id="navDAR">
+                            <div class="btn-header me-3">
+                                <i class="bi bi-arrow-left-right"></i>
+                            </div>
+                            <div class="btn-body">
+                                Riwayat Karyawan
+                            </div>
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="btn {{ Request::is('absensi') ? 'active' : '' }}" href="/absensi" id="navDAR">
+                            <div class="btn-header me-3">
+                                <i class="bi bi-clock-history"></i>
+                            </div>
+                            <div class="btn-body">
+                                Absensi Karyawan
+                            </div>
+                        </a>
+                    </li>
+                    {{-- <li class="list-group-item">
                     <a class="btn" href="/pengajuan" id="navDAR">
                         <div class="btn-header me-3">
                             <i class="bi bi-person-add"></i>
@@ -150,16 +160,41 @@
                     </a>
                 </li> --}}
 
-                <li class="list-group-item mobile">
-                    <a class="btn" href="/logout" id="navDAR">
-                        <div class="btn-header me-3">
-                            <i class="bi bi-box-arrow-left"></i>
-                        </div>
-                        <div class="btn-body">
-                            Logout
-                        </div>
-                    </a>
-                </li>
+                    <li class="list-group-item mobile">
+                        <a class="btn" href="/logout" id="navDAR">
+                            <div class="btn-header me-3">
+                                <i class="bi bi-box-arrow-left"></i>
+                            </div>
+                            <div class="btn-body">
+                                Logout
+                            </div>
+                        </a>
+                    </li>
+                @elseif (auth()->user()->role == 'kabag')
+                    <li class="list-group-item">
+                        <a href="/dashboard-kabag" class="btn {{ Request::is('dashboard-kabag') ? 'active' : '' }}"
+                            id="navDashboard">
+                            <div class="btn-header me-3">
+                                <i class="bi bi-speedometer2"></i>
+                            </div>
+                            <div class="btn-body">
+                                Dashboard
+                            </div>
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="btn {{ Request::is('absensi-perdiv') ? 'active' : '' }}" href="/absensi-perdiv"
+                            id="navDAR">
+                            <div class="btn-header me-3">
+                                <i class="bi bi-clock-history"></i>
+                            </div>
+                            <div class="btn-body">
+                                Absensi Karyawan
+                            </div>
+                        </a>
+                    </li>
+                @endif
+
             </ul>
             <!-- end of sidebar menu -->
     </div>

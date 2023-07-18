@@ -18,9 +18,8 @@
     <main class="wrapper">
         <div class="container-custome">
             <header class="mb-3">
-                <h3 class="title-pages fw-bold">Data Absensi Karyawan</h3>
+                <h3 class="title-pages fw-bold">Data Absensi Karyawan tanggal {{ $date }}</h3>
             </header>
-            {{-- <a href="" download="file"></a> --}}
             @include('alert')
             <div class="pb-3">
                 <button data-bs-toggle="modal" data-bs-target="#tambahabsensi" class="btn btn-sm btn-secondary">

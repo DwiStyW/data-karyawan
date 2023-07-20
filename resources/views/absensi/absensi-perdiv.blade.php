@@ -42,6 +42,7 @@
     @include('partials.navdown')
 
 </body>
+@include('absensi.mengetahui')
 <script src="../assets/js/jquery-1.11.3.min.js"></script>
 <script type="text/javascript" src="../assets/DataTables/datatables.min.js"></script>
 <script src="//cdn.rawgit.com/ashl1/datatables-rowsgroup/v2.0.0/dataTables.rowsGroup.js"></script>
@@ -104,6 +105,7 @@
         }
     }
     dataeliminasi.sort((a, b) => b.tanggal - a.tanggal);
+
     const groupBytanggal = groupBy(['tanggal']);
     let dataabsensi = [];
     var no = 1;
@@ -120,7 +122,8 @@
                 tanggal: tgl,
                 jenis: values[b].jenis,
                 ket: values[b].ket,
-                button: '<button class="btn btn-sm btn-warning" onclick="mengetahui(' + ts +
+                button: '<button class="btn btn-sm btn-warning" type="button" class="btn btn-danger btn-block" data-bs-toggle="modal" data-bs-target="#mengetahui_absensi" onclick="mengetahui(' +
+                    ts +
                     ')">Mengetahui</button>',
             })
         }
@@ -184,10 +187,10 @@
 
     });
 
-    function mengetahui(timenumber) {
-        console.log(timenumber)
-        location.href = '/distribusi-absensi/' + timenumber;
-    }
+    // function mengetahui(timenumber) {
+    //     console.log(timenumber)
+    //     location.href = '/distribusi-absensi/' + timenumber;
+    // }
 </script>
 <style>
     td {

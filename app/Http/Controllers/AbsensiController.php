@@ -21,7 +21,7 @@ class AbsensiController extends Controller
     public function index()
     {
         $absensi=Absen::leftjoin('master','master.id','=','absen.id_master')->select('absen.*','master.nama')->orderby('tanggal','desc')->get();
-        $master=Master::get();
+        $master=Master::where('status','aktif')->get();
         // dd($absensi);
         return view('absensi.absensi',compact('absensi','master'));
     }

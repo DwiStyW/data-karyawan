@@ -15,8 +15,8 @@
             <ul class="list-group mb-4 rounded-0">
                 @if (auth()->user()->role == 'personalia')
                     <li class="list-group-item">
-                        <a href="/dashboard" class="btn {{ Request::is('dashboard') ? 'active' : '' }}"
-                            id="navDashboard">
+                        <a href="/dashboard-personalia"
+                            class="btn {{ Request::is('dashboard-personalia') ? 'active' : '' }}" id="navDashboard">
                             <div class="btn-header me-3">
                                 <i class="bi bi-speedometer2"></i>
                             </div>
@@ -179,6 +179,17 @@
                             </div>
                             <div class="btn-body">
                                 Dashboard
+                            </div>
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="btn {{ Request::is('master-kabag') ? 'active' : '' }}" id="navDAR"
+                            href="/master-kabag">
+                            <div class="btn-header me-3">
+                                <i class="bi bi-people"></i>
+                            </div>
+                            <div class="btn-body">
+                                Data Master
                             </div>
                         </a>
                     </li>

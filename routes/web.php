@@ -59,6 +59,7 @@ Route::post('/postMaster', [MasterController::class, 'store']);
 Route::post('/updateMaster', [MasterController::class, 'update']);
 Route::post('/hapusMasterResign', [MasterController::class, 'destroyresign']);
 Route::post('/hapusMasterPensiun', [MasterController::class, 'destroypensiun']);
+Route::get('master-kabag', [MasterController::class, 'masterkabag'])->middleware('auth');
 
 Route::get('detailmaster/{id_master}', [MasterController::class, 'detailmaster'])->middleware('auth');
 Route::get('print/{id_master}', [MasterController::class, 'print'])->middleware('auth');

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Absen;
+use App\Models\Jabatan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -204,8 +206,73 @@ class DashboardController extends Controller
 
 
     function dashboardkabag(){
+        $date=date('Y-m-d');
+
+        $master=[];
         $data=[];
-        return view('dashboard.dashboard-kabag',compact('data'));
+        $idjabatan=Auth::user()->id_jabatan;
+        $jabatan=Jabatan::where('id',$idjabatan)->get();
+
+        foreach($jabatan as $j){}
+        $iddepartemen=$j->departemen;
+        $idbagian=$j->bagian;
+        $idsie=$j->sie;
+        $level=$j->level;
+        if($level=='1'){
+            $carijabatan=Jabatan::get();
+        }
+        else if($level=='2'){
+            $carijabatan=Jabatan::where('departemen',$iddepartemen)->where('level','>',$level)->get();
+        }
+        else if($level=='3'){
+            $carijabatan=Jabatan::where('departemen',$iddepartemen)->where('bagian',$idbagian)->where('level','>',$level)->get();
+        }
+        else if($level=='4'){
+            $carijabatan=Jabatan::where('departemen',$iddepartemen)->where('bagian',$idbagian)->where('sie',$idsie)->where('level','>',$level)->get();
+        }
+        foreach ($carijabatan as $d) {
+            $id_jabatan=$d->id;
+            $qmaster=DB::select("SELECT master.*, nama_jabatan from master join jabatan on jabatan.id=master.id_jabatan where id_jabatan='$id_jabatan' and status='Aktif' order by id DESC");
+            if(count($qmaster)!=0){
+                foreach($qmaster as $qm){
+                    $idmaster=$qm->id;
+                    $master[]=[
+                        'id'=>$qm->id,
+                        'nama'=>$qm->nama,
+                        'nik'=>$qm->nik,
+                        'tempat_lahir'=>$qm->tempat_lahir,
+                        'tanggal_lahir'=>$qm->tanggal_lahir,
+                        'jenis_kelamin'=>$qm->jenis_kelamin,
+                        'alamat'=>$qm->alamat,
+                        'no_hp'=>$qm->no_hp,
+                        'agama'=>$qm->agama,
+                        'nama_jabatan'=>$qm->nama_jabatan,
+                        'golongan'=>$qm->golongan,
+                    ];
+                }
+            }
+        }
+        foreach($master as $m){
+            $idmaster=$m['id'];
+            $absensi=Absen::leftjoin('master','master.id','=','absen.id_master')
+            ->select('absen.*','master.nama')
+            ->where('absen.id_master',$idmaster)
+            ->where('absen.tanggal',$date)
+            ->get();
+            if(count($absensi)!=0){
+                foreach($absensi as $a){
+                    $data[]=[
+                        'id'=>$a->id,
+                        'nama'=>$a->nama,
+                        'tanggal'=>$a->tanggal,
+                        'jenis'=>$a->jenis,
+                        'ket'=>$a->ket,
+                        'status'=>$a->status,
+                    ];
+                }
+            }
+        }
+        return view('dashboard.dashboard-kabag',compact('data','master'));
     }
     /**
      * Show the form for creating a new resource.

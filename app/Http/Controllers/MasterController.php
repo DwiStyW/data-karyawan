@@ -15,6 +15,7 @@ use App\Models\Riwayatkaryawan;
 use Exception;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class MasterController extends Controller
@@ -32,70 +33,33 @@ class MasterController extends Controller
             $bpjskes=Bpjskes::where('id_master',$idmaster)->get();
             $bpjstk=Bpjstk::where('id_master',$idmaster)->get();
             if(count($bpjskes)!=0 && count($bpjstk)!=0){
-                $Tmaster[]=[
-                    'id'=>$tm->id,
-                    'nama'=>$tm->nama,
-                    'nik'=>$tm->nik,
-                    'tempat_lahir'=>$tm->tempat_lahir,
-                    'tanggal_lahir'=>$tm->tanggal_lahir,
-                    'jenis_kelamin'=>$tm->jenis_kelamin,
-                    'alamat'=>$tm->alamat,
-                    'no_hp'=>$tm->no_hp,
-                    'agama'=>$tm->agama,
-                    'nama_jabatan'=>$tm->nama_jabatan,
-                    'golongan'=>$tm->golongan,
-                    'bpjskes'=>'Terdaftar',
-                    'bpjstk'=>'Terdaftar',
-                ];
+                $bkes='Terdaftar';
+                $btk='Terdaftar';
             }elseif(count($bpjskes)!=0){
-                $Tmaster[]=[
-                    'id'=>$tm->id,
-                    'nama'=>$tm->nama,
-                    'nik'=>$tm->nik,
-                    'tempat_lahir'=>$tm->tempat_lahir,
-                    'tanggal_lahir'=>$tm->tanggal_lahir,
-                    'jenis_kelamin'=>$tm->jenis_kelamin,
-                    'alamat'=>$tm->alamat,
-                    'no_hp'=>$tm->no_hp,
-                    'agama'=>$tm->agama,
-                    'nama_jabatan'=>$tm->nama_jabatan,
-                    'golongan'=>$tm->golongan,
-                    'bpjskes'=>'Terdaftar',
-                    'bpjstk'=>'Belum Terdaftar',
-                ];
+                $bkes='Terdaftar';
+                $btk='Belum Terdaftar';
             }elseif(count($bpjstk)!=0){
-                $Tmaster[]=[
-                    'id'=>$tm->id,
-                    'nama'=>$tm->nama,
-                    'nik'=>$tm->nik,
-                    'tempat_lahir'=>$tm->tempat_lahir,
-                    'tanggal_lahir'=>$tm->tanggal_lahir,
-                    'jenis_kelamin'=>$tm->jenis_kelamin,
-                    'alamat'=>$tm->alamat,
-                    'no_hp'=>$tm->no_hp,
-                    'agama'=>$tm->agama,
-                    'nama_jabatan'=>$tm->nama_jabatan,
-                    'golongan'=>$tm->golongan,
-                    'bpjskes'=>'Belum Terdaftar',
-                    'bpjstk'=>'Terdaftar',
-                ];
+                $bkes='Belum Terdaftar';
+                $btk='Terdaftar';
             }else{
-                $Tmaster[]=[
-                    'id'=>$tm->id,
-                    'nama'=>$tm->nama,
-                    'nik'=>$tm->nik,
-                    'tempat_lahir'=>$tm->tempat_lahir,
-                    'tanggal_lahir'=>$tm->tanggal_lahir,
-                    'jenis_kelamin'=>$tm->jenis_kelamin,
-                    'alamat'=>$tm->alamat,
-                    'no_hp'=>$tm->no_hp,
-                    'agama'=>$tm->agama,
-                    'nama_jabatan'=>$tm->nama_jabatan,
-                    'golongan'=>$tm->golongan,
-                    'bpjskes'=>'Belum Terdaftar',
-                    'bpjstk'=>'Belum Terdaftar',
-                ];
+                $bkes='Belum Terdaftar';
+                $btk='Belum Terdaftar';
             }
+            $Tmaster[]=[
+                'id'=>$tm->id,
+                'nama'=>$tm->nama,
+                'nik'=>$tm->nik,
+                'tempat_lahir'=>$tm->tempat_lahir,
+                'tanggal_lahir'=>$tm->tanggal_lahir,
+                'jenis_kelamin'=>$tm->jenis_kelamin,
+                'alamat'=>$tm->alamat,
+                'no_hp'=>$tm->no_hp,
+                'agama'=>$tm->agama,
+                'nama_jabatan'=>$tm->nama_jabatan,
+                'golongan'=>$tm->golongan,
+                'bpjskes'=>$bkes,
+                'bpjstk'=>$btk,
+            ];
             // $cekriw=Riwayatkaryawan::where('id_master',$idmaster)->where('jenis','masuk')->get();
             // if(count($cekriw)==0){
             //     $test[]=$idmaster;
@@ -491,27 +455,92 @@ class MasterController extends Controller
 
     foreach($jabatanlama as $jl){
     }
-    $data=[
-        'id_master'=>$id_master,
-        'tanggal'=>date('Y-m-d'),
-        'jenis'=>'Non Aktif',
-        'jabatan'=>$jl->id_jabatan,
-        'deskripsi'=>'Keluar karena pensiun',
-        'keterangan'=>'',
-    ];
-    // dd($data);
-    DB::beginTransaction();
-    try{
-        master::where(['id'=>$id_master])->update(['status'=>'Non Aktif']);
-        Bpjstk::where(['id_master'=>$id_master])->update(['status'=>'Non Aktif']);
-        Bpjskes::where(['id_master'=>$id_master])->update(['status'=>'Pengajuan','alasan_nonaktif'=>'master dinonaktifkan karena pensiun']);
-        Riwayatkaryawan::insert($data);
-        DB::commit();
-        return back()->with('success','Data berhasil dihapus!');
-    }catch(Exception $e){
-        // dd($e);
-        DB::rollBack();
-        return back()->with('failed','Data gagal dihapus!');
+        $data=[
+            'id_master'=>$id_master,
+            'tanggal'=>date('Y-m-d'),
+            'jenis'=>'Non Aktif',
+            'jabatan'=>$jl->id_jabatan,
+            'deskripsi'=>'Keluar karena pensiun',
+            'keterangan'=>'',
+        ];
+        // dd($data);
+        DB::beginTransaction();
+        try{
+            master::where(['id'=>$id_master])->update(['status'=>'Non Aktif']);
+            Bpjstk::where(['id_master'=>$id_master])->update(['status'=>'Non Aktif']);
+            Bpjskes::where(['id_master'=>$id_master])->update(['status'=>'Pengajuan','alasan_nonaktif'=>'master dinonaktifkan karena pensiun']);
+            Riwayatkaryawan::insert($data);
+            DB::commit();
+            return back()->with('success','Data berhasil dihapus!');
+        }catch(Exception $e){
+            // dd($e);
+            DB::rollBack();
+            return back()->with('failed','Data gagal dihapus!');
+        }
     }
+
+    public function masterkabag(){
+        $Tmaster=[];
+        $idjabatan=Auth::user()->id_jabatan;
+        $jabatan=Jabatan::where('id',$idjabatan)->get();
+
+        foreach($jabatan as $j){}
+        $iddepartemen=$j->departemen;
+        $idbagian=$j->bagian;
+        $idsie=$j->sie;
+        $level=$j->level;
+        if($level=='1'){
+            $carijabatan=Jabatan::get();
+        }
+        else if($level=='2'){
+            $carijabatan=Jabatan::where('departemen',$iddepartemen)->where('level','>',$level)->get();
+        }
+        else if($level=='3'){
+            $carijabatan=Jabatan::where('departemen',$iddepartemen)->where('bagian',$idbagian)->where('level','>',$level)->get();
+        }
+        else if($level=='4'){
+            $carijabatan=Jabatan::where('departemen',$iddepartemen)->where('bagian',$idbagian)->where('sie',$idsie)->where('level','>',$level)->get();
+        }
+        foreach ($carijabatan as $d) {
+            $id_jabatan=$d->id;
+            $qmaster=DB::select("SELECT master.*, nama_jabatan from master join jabatan on jabatan.id=master.id_jabatan where id_jabatan='$id_jabatan' and status='Aktif' order by id DESC");
+            if(count($qmaster)!=0){
+                foreach($qmaster as $qm){
+                    $idmaster=$qm->id;
+                    $bpjskes=Bpjskes::where('id_master',$idmaster)->get();
+                    $bpjstk=Bpjstk::where('id_master',$idmaster)->get();
+                    if(count($bpjskes)!=0 && count($bpjstk)!=0){
+                        $bkes='Terdaftar';
+                        $btk='Terdaftar';
+                    }elseif(count($bpjskes)!=0){
+                        $bkes='Terdaftar';
+                        $btk='Belum Terdaftar';
+                    }elseif(count($bpjstk)!=0){
+                        $bkes='Belum Terdaftar';
+                        $btk='Terdaftar';
+                    }else{
+                        $bkes='Belum Terdaftar';
+                        $btk='Belum Terdaftar';
+                    }
+                    $Tmaster[]=[
+                        'id'=>$qm->id,
+                        'nama'=>$qm->nama,
+                        'nik'=>$qm->nik,
+                        'tempat_lahir'=>$qm->tempat_lahir,
+                        'tanggal_lahir'=>$qm->tanggal_lahir,
+                        'jenis_kelamin'=>$qm->jenis_kelamin,
+                        'alamat'=>$qm->alamat,
+                        'no_hp'=>$qm->no_hp,
+                        'agama'=>$qm->agama,
+                        'nama_jabatan'=>$qm->nama_jabatan,
+                        'golongan'=>$qm->golongan,
+                        'bpjskes'=>$bkes,
+                        'bpjstk'=>$btk,
+                    ];
+                }
+            }
+        }
+        return view('MasterKaryawan.master-kabag',compact('Tmaster'));
+
     }
 }

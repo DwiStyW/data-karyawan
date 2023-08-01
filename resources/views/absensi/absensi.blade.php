@@ -28,6 +28,7 @@
                     Absensi
                 </button>
                 <a href="/rekapabsensi" class="btn btn-sm btn-secondary">Rekap Absensi</a>
+                <a href="/rekappotongan" class="btn btn-sm btn-secondary">Rekap Potongan Absen</a>
             </div>
             <div>
                 <table id='mTable' width='100%' class="table table-striped table-bordered ">
@@ -37,7 +38,9 @@
                             <th data-priority="1">Nama</th>
                             <th data-priority="3">Tanggal</th>
                             <th data-priority="3">Jenis</th>
+                            <th data-priority="3">Surat</th>
                             <th data-priority="3">Keterangan</th>
+                            {{-- <th data-priority="3">Potongan Absen</th> --}}
                             <th data-priority="1">Aksi</th>
                         </tr>
                     </thead>
@@ -51,7 +54,15 @@
                                 <td>{{ $a->nama }}</td>
                                 <td>{{ $a->tanggal }}</td>
                                 <td>{{ $a->jenis }}</td>
+                                <td>{{ $a->surat }}</td>
                                 <td>{{ $a->ket }}</td>
+                                {{-- <td>
+                                    @if ($a->golongan == 'tetap' && $a->surat == 'ada')
+                                        {{ 'Tidak Dipotong' }}
+                                    @else
+                                        {{ 'Dipotong' }}
+                                    @endif
+                                </td> --}}
                                 <td>
                                     <div class="row justify-content-center" style="min-width:110px;">
                                         <div style="max-width:60px"><button type="button"

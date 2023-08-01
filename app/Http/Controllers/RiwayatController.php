@@ -115,7 +115,7 @@ class RiwayatController extends Controller
         $totaliuran=DB::select("SELECT date,sum(iuran) as total from riwayat_bpjs_kes where date='$datewingi' group by date");
 
         $primer=DB::select('SELECT id_master,master.nama as nama,sum(iuran) as tiuran from bpjs_kes join master on master.id=bpjs_kes.id_master group by id_master,master.nama');
-        $rowspan=DB::select('SELECT count(*) as row from bpjs_kes group by id_master');
+        // $rowspan=DB::select('SELECT count(*) as row from bpjs_kes group by id_master');
         // dd($data);
 
         return view('riwayat.riwayatbpjskes',compact('data','totaliuran','period','riwayat','primer'));

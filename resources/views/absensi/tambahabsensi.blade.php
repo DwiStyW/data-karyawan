@@ -61,7 +61,21 @@
                                 <label for="">Keterangan</label>
                             </div>
                             <div class="col-lg-9">
-                                <textarea class="form-control" name="ket" rows="4" placeholder="Keterangan" required></textarea>
+                                <div class="row mb-1">
+                                    <div class="w-auto">
+                                        <input type="radio" id="html" name="surat" value="ada">
+                                    </div>
+                                    <div class="w-auto">
+                                        <label class="ps-0" for="html">Dengan Surat</label>
+                                    </div>
+                                    <div class="w-auto">
+                                        <input type="radio" id="html" name="surat" value="tidak">
+                                    </div>
+                                    <div class="w-auto">
+                                        <label class="ps-0" for="html">Tanpa Surat</label>
+                                    </div>
+                                </div>
+                                <textarea class="form-control" name="ket" rows="4" placeholder="Keterangan"></textarea>
                             </div>
                         </div>
                 </div>

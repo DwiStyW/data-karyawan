@@ -121,7 +121,7 @@ Route::get('/rekapabsensi', [AbsensiController::class, 'rekap']);
 Route::get('/rekapabsensi/{id}', [AbsensiController::class, 'rekapabsensipermaster']);
 Route::get('/absensi-perdiv', [AbsensiController::class, 'absensiperdiv'])->middleware('auth');
 Route::get('/distribusi-absensi/{strtime}', [AbsensiController::class, 'distribusiabsen'])->middleware('auth');
-
+Route::get('/rekappotongan', [AbsensiController::class, 'rekappotongan']);
 
 Route::get('pengajuan', [PengajuanController::class, 'index']);
 Route::get('pengajuan/add', [PengajuanController::class, 'create']);

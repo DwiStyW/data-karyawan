@@ -44,6 +44,56 @@ class PendidikanController extends Controller
         $S2=$request->pendidikanS2;
         $Lainnya=$request->pendidikanLainnya;
 
+        if($SD!="" && $request->hasFile('sertifikatSD')){
+            $resorceSD       = $request->file('sertifikatSD');
+            $sertifikatSD   = $resorceSD->getClientOriginalName();
+            $resorceSD->move(\base_path() ."/public/assets/img/sertifikat", $sertifikatSD);
+        }else{
+            $sertifikatSD="";
+        }
+        if($SMP!="" && $request->hasFile('sertifikatSMP')){
+            $resorceSMP       = $request->file('sertifikatSMP');
+            $sertifikatSMP   = $resorceSMP->getClientOriginalName();
+            $resorceSMP->move(\base_path() ."/public/assets/img/sertifikat", $sertifikatSMP);
+        }else{
+            $sertifikatSMP="";
+        }
+        if($SMA!="" && $request->hasFile('sertifikatSMA')){
+            $resorceSMA       = $request->file('sertifikatSMA');
+            $sertifikatSMA   = $resorceSMA->getClientOriginalName();
+            $resorceSMA->move(\base_path() ."/public/assets/img/sertifikat", $sertifikatSMA);
+        }else{
+            $sertifikatSMA="";
+        }
+        if($Diploma!="" && $request->hasFile('sertifikatDiploma')){
+            $resorceDiploma       = $request->file('sertifikatDiploma');
+            $sertifikatDiploma   = $resorceDiploma->getClientOriginalName();
+            $resorceDiploma->move(\base_path() ."/public/assets/img/sertifikat", $sertifikatDiploma);
+        }else{
+            $sertifikatDiploma="";
+        }
+        if($S1!="" && $request->hasFile('sertifikatS1')){
+            $resorceS1       = $request->file('sertifikatS1');
+            $sertifikatS1   = $resorceS1->getClientOriginalName();
+            $resorceS1->move(\base_path() ."/public/assets/img/sertifikat", $sertifikatS1);
+        }else{
+            $sertifikatS1="";
+        }
+        if($S2!="" && $request->hasFile('sertifikatS2')){
+            $resorceS2       = $request->file('sertifikatS2');
+            $sertifikatS2   = $resorceS2->getClientOriginalName();
+            $resorceS2->move(\base_path() ."/public/assets/img/sertifikat", $sertifikatS2);
+        }else{
+            $sertifikatS2="";
+        }
+        if($Lainnya!="" && $request->hasFile('sertifikatLainnya')){
+            $resorceLainnya       = $request->file('sertifikatLainnya');
+            $sertifikatLainnya   = $resorceLainnya->getClientOriginalName();
+            $resorceLainnya->move(\base_path() ."/public/assets/img/sertifikat", $sertifikatLainnya);
+        }else{
+            $sertifikatLainnya="";
+        }
+
         $dataSD=[
             'tingkat_pendidikan'=>"SD",
             'nama_sekolah'=>$request->pendidikanSD,
@@ -51,6 +101,7 @@ class PendidikanController extends Controller
             'tgl_awal'=>$request->masukSD,
             'tgl_akhir'=>$request->keluarSD,
             'id_master'=>$request->id_master,
+            'sertifikat'=>$sertifikatSD,
             'updated_at'=>date("Y-m-d H:i:s")
         ];
 
@@ -61,6 +112,7 @@ class PendidikanController extends Controller
             'tgl_awal'=>$request->masukSMP,
             'tgl_akhir'=>$request->keluarSMP,
             'id_master'=>$request->id_master,
+            'sertifikat'=>$sertifikatSMP,
             'updated_at'=>date("Y-m-d H:i:s")
         ];
 
@@ -71,6 +123,7 @@ class PendidikanController extends Controller
             'tgl_awal'=>$request->masukSMA,
             'tgl_akhir'=>$request->keluarSMA,
             'id_master'=>$request->id_master,
+            'sertifikat'=>$sertifikatSMA,
             'updated_at'=>date("Y-m-d H:i:s")
         ];
 
@@ -81,6 +134,7 @@ class PendidikanController extends Controller
             'tgl_awal'=>$request->masukDiploma,
             'tgl_akhir'=>$request->keluarDiploma,
             'id_master'=>$request->id_master,
+            'sertifikat'=>$sertifikatDiploma,
             'updated_at'=>date("Y-m-d H:i:s")
         ];
 
@@ -91,6 +145,7 @@ class PendidikanController extends Controller
             'tgl_awal'=>$request->masukS1,
             'tgl_akhir'=>$request->keluarS1,
             'id_master'=>$request->id_master,
+            'sertifikat'=>$sertifikatS1,
             'updated_at'=>date("Y-m-d H:i:s")
         ];
 
@@ -101,6 +156,7 @@ class PendidikanController extends Controller
             'tgl_awal'=>$request->masukS2,
             'tgl_akhir'=>$request->keluarS2,
             'id_master'=>$request->id_master,
+            'sertifikat'=>$sertifikatS2,
             'updated_at'=>date("Y-m-d H:i:s")
         ];
 
@@ -111,6 +167,7 @@ class PendidikanController extends Controller
             'tgl_awal'=>$request->masukLainnya,
             'tgl_akhir'=>$request->keluarLainnya,
             'id_master'=>$request->id_master,
+            'sertifikat'=>$sertifikatLainnya,
             'updated_at'=>date("Y-m-d H:i:s")
         ];
         if($SD!='' && $SMP!='' && $SMA!='' && $Diploma!='' && $S1!='' && $S2!='' && $Lainnya!=''){

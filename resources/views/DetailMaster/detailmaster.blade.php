@@ -29,7 +29,7 @@
                             <i class="bi bi-printer"></i>
                         </a>
                         <button data-bs-toggle="modal" data-bs-target="#editmaster" class="btn btn-md btn-secondary"
-                            onclick="editmaster({{ $id_master }},'{{ $m->nama }}','{{ $m->nik }}','{{ $m->alamat }}','{{ $m->tempat_lahir }}','{{ $m->tanggal_lahir }}','{{ $m->jenis_kelamin }}','{{ $m->agama }}','{{ $m->no_hp }}')">
+                            onclick="editmaster({{ $id_master }},'{{ $m->nama }}','{{ $m->nik }}','{{ $m->alamat }}','{{ $m->tempat_lahir }}','{{ $m->tanggal_lahir }}','{{ $m->jenis_kelamin }}','{{ $m->agama }}','{{ $m->no_hp }}','{{ $m->nokk }}','{{ $m->norekening }}')">
                             <i class="bi bi-pencil-square"></i>
                         </button>
                     </div>
@@ -74,10 +74,37 @@
 
                         <div class="row mb-3">
                             <div class="col-md-3">
+                                <h6 class="form-label text-form"><b>No KK</b></h6>
+                            </div>
+                            <div class="col-md-9">
+                                <label class="form-control" style="min-height: 35px">{{ $m->nokk }}</label>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-3">
                                 <h6 class="form-label text-form"><b>No KTP</b></h6>
                             </div>
                             <div class="col-md-9">
                                 <label class="form-control" style="min-height: 35px">{{ $m->nik }}</label>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <h6 class="form-label text-form"><b>No Rekening</b></h6>
+                            </div>
+                            <div class="col-md-9">
+                                <label class="form-control" style="min-height: 35px">{{ $m->norekening }}</label>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <h6 class="form-label text-form"><b>No Telp</b></h6>
+                            </div>
+                            <div class="col-md-9">
+                                <label class="form-control" style="min-height: 35px">{{ $m->no_hp }}</label>
                             </div>
                         </div>
 
@@ -335,6 +362,7 @@
                                         <th>Jurusan</th>
                                         <th>Tahun Masuk</th>
                                         <th>Tahun Keluar</th>
+                                        <th>Sertifikat</th>
                                         <th>aksi</th>
                                     </tr>
                                 </thead>
@@ -352,8 +380,14 @@
                                             <td>{{ $p->jurusan }}</td>
                                             <td>{{ $p->tgl_awal }}</td>
                                             <td>{{ $p->tgl_akhir }}</td>
-                                            {{-- <td>{{ date('d/m/Y', strtotime($p->tgl_awal)) }}</td>
-                                            <td>{{ date('d/m/Y', strtotime($p->tgl_akhir)) }}</td> --}}
+                                            <td>
+                                                @if ($p->sertifikat != '')
+                                                    <a href="/assets/img/sertifikat/{{ $p->sertifikat }}"
+                                                        target="_blank">
+                                                        <i class="bi bi-image"></i>
+                                                    </a>
+                                                @endif
+                                            </td>
                                             <td>
                                                 <div class="row justify-content-center">
                                                     <div style="max-width:60px">

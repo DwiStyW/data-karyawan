@@ -159,11 +159,12 @@
                     alpha: a.length,
                     jumlah: values.length,
                     keterangan: values[b].tanggal + ' ( <b>' + values[b].jenis + '</b> ) : ' + values[b].ket,
+                    surat: values[b].surat,
                 })
             }
 
         }
-        console.log(dataabsensi)
+        // console.log(groupByname(filterabsen))
 
         var tabel = '';
         tabel += '<table id="mTable" width="100%" class="table table-bordered">';
@@ -177,6 +178,7 @@
         tabel += '          <th data-priority="1">Alpha</th>';
         tabel += '          <th data-priority="3">jumlah</th>';
         tabel += '          <th data-priority="3">Keterangan</th>';
+        tabel += '          <th data-priority="3">Surat</th>';
         tabel += '      </tr>';
         tabel += '  </thead>';
         tabel += '</table>';
@@ -210,6 +212,9 @@
                     },
                     {
                         data: 'keterangan',
+                    },
+                    {
+                        data: 'surat',
                     },
                 ],
                 rowsGroup: [0, 1, 2, 3, 4, 5, 6],

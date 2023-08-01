@@ -20,7 +20,7 @@ class AbsensiController extends Controller
      */
     public function index()
     {
-        $absensi=Absen::leftjoin('master','master.id','=','absen.id_master')->select('absen.*','master.nama')->orderby('tanggal','desc')->get();
+        $absensi=Absen::leftjoin('master','master.id','=','absen.id_master')->select('absen.*','master.nama','master.golongan')->orderby('tanggal','desc')->get();
         $master=Master::where('status','aktif')->get();
         // dd($absensi);
         return view('absensi.absensi',compact('absensi','master'));
@@ -44,12 +44,19 @@ class AbsensiController extends Controller
      */
     public function store(Request $request)
     {
+        if($request->ket==null){
+            $ket='-';
+        }else{
+            $ket=$request->ket;
+        }
+        // dd($request->ket);
         $data=[
             'id_master'=>$request->id_master,
             'tanggal'=>$request->tanggal,
             'jenis'=>$request->jenis,
-            'ket'=>$request->ket,
+            'ket'=>$ket,
             'status'=>'disetujui',
+            'surat'=>$request->surat,
             'updated_at'=>date("Y-m-d H:i:s"),
         ];
         try{
@@ -214,5 +221,15 @@ class AbsensiController extends Controller
             // dd($e);
             return back()->with('failed','Data gagal ditambahkan!');
         }
+    }
+
+    public function rekappotongan(){
+        $month=date('F Y');
+        $date=date('m');
+        $absen=Absen::leftjoin('master','master.id','=','absen.id_master')->select('absen.*','master.nama','master.golongan')->whereMonth('tanggal',$date)->orderby('tanggal','desc')->get();
+
+        $periode=DB::select('SELECT Month(tanggal) as bulan,Year(tanggal) as tahun from absen group by MONTH(tanggal),YEAR(tanggal)');
+        // dd($periode);
+        return view('absensi.rekappotonganabsen',compact('month','absen'));
     }
 }

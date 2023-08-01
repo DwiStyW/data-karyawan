@@ -49,6 +49,8 @@ class MasterController extends Controller
                 'id'=>$tm->id,
                 'nama'=>$tm->nama,
                 'nik'=>$tm->nik,
+                'nokk'=>$tm->nokk,
+                'norekening'=>$tm->norekening,
                 'tempat_lahir'=>$tm->tempat_lahir,
                 'tanggal_lahir'=>$tm->tanggal_lahir,
                 'jenis_kelamin'=>$tm->jenis_kelamin,

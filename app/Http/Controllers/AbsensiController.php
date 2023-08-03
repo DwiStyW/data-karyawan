@@ -49,6 +49,13 @@ class AbsensiController extends Controller
         }else{
             $ket=$request->ket;
         }
+        if($request->hasFile('suratizin')){
+            $resorcesurat      = $request->file('suratizin');
+            $suratizin   = $resorcesurat->getClientOriginalName();
+            $resorcesurat->move(\base_path() ."/public/assets/img/surat-izin", $suratizin);
+        }else{
+            $suratizin="";
+        }
         // dd($request->ket);
         $data=[
             'id_master'=>$request->id_master,
@@ -57,6 +64,7 @@ class AbsensiController extends Controller
             'ket'=>$ket,
             'status'=>'disetujui',
             'surat'=>$request->surat,
+            'filesurat'=>$suratizin,
             'updated_at'=>date("Y-m-d H:i:s"),
         ];
         try{

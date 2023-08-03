@@ -54,7 +54,13 @@
                                 <td>{{ $a->nama }}</td>
                                 <td>{{ $a->tanggal }}</td>
                                 <td>{{ $a->jenis }}</td>
-                                <td>{{ $a->surat }}</td>
+                                <td>{{ $a->surat }}
+                                    @if ($a->surat == 'ada')
+                                        <a href="/assets/img/surat-izin/{{ $a->filesurat }}" target="_blank">
+                                            <i class="bi bi-image"></i>
+                                        </a>
+                                    @endif
+                                </td>
                                 <td>{{ $a->ket }}</td>
                                 {{-- <td>
                                     @if ($a->golongan == 'tetap' && $a->surat == 'ada')

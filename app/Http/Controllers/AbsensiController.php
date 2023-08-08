@@ -67,13 +67,21 @@ class AbsensiController extends Controller
             'filesurat'=>$suratizin,
             'updated_at'=>date("Y-m-d H:i:s"),
         ];
-        try{
-            Absen::insert($data);
-            return back()->with('success','Data berhasil ditambahkan!');
-        }catch(Exception $e){
-            //alert gagal
-            // dd($e);
-            return back()->with('failed','Data gagal ditambahkan!');
+
+        $tgl=$request->tanggal;
+        $master=$request->id_master;
+        $cek=Absen::whare('tanggal',$tgl)->whare('id_master',$master)->get();
+        if(count($cek)==0){
+            try{
+                Absen::insert($data);
+                return back()->with('success','Data berhasil ditambahkan!');
+            }catch(Exception $e){
+                //alert gagal
+                // dd($e);
+                return back()->with('failed','Data gagal ditambahkan!');
+            }
+        }else{
+             return back()->with('failed','Data Master sudah ditambahkan sebelumnya!');
         }
     }
 
@@ -235,9 +243,25 @@ class AbsensiController extends Controller
         $month=date('F Y');
         $date=date('m');
         $absen=Absen::leftjoin('master','master.id','=','absen.id_master')->select('absen.*','master.nama','master.golongan')->whereMonth('tanggal',$date)->orderby('tanggal','desc')->get();
-
-        $periode=DB::select('SELECT Month(tanggal) as bulan,Year(tanggal) as tahun from absen group by MONTH(tanggal),YEAR(tanggal)');
+        $per=[];
+        $periode=DB::select("SELECT MONTH(tanggal) as bln, MONTHNAME(tanggal) as bulan,Year(tanggal) as tahun from absen group by MONTH(tanggal),MONTHNAME(tanggal),YEAR(tanggal)");
+        foreach($periode as $p){
+            if($p->bln < 10){
+                $bln='0'.$p->bln;
+            }else{
+                $bln=$p->bln;
+            }
+            $per[]=[
+                'bln'=>$bln,
+                'bulan'=>$p->bulan,
+                'tahun'=>$p->tahun
+            ];
+        }
         // dd($periode);
-        return view('absensi.rekappotonganabsen',compact('month','absen'));
+        return view('absensi.rekappotonganabsen',compact('month','absen','per'));
+    }
+
+    public function rekappotongan_post(Request $request){
+        return "student saved successfully";
     }
 }

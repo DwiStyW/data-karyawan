@@ -40,7 +40,6 @@
                             <th data-priority="3">Jenis</th>
                             <th data-priority="3">Surat</th>
                             <th data-priority="3">Keterangan</th>
-                            {{-- <th data-priority="3">Potongan Absen</th> --}}
                             <th data-priority="1">Aksi</th>
                         </tr>
                     </thead>
@@ -62,13 +61,6 @@
                                     @endif
                                 </td>
                                 <td>{{ $a->ket }}</td>
-                                {{-- <td>
-                                    @if ($a->golongan == 'tetap' && $a->surat == 'ada')
-                                        {{ 'Tidak Dipotong' }}
-                                    @else
-                                        {{ 'Dipotong' }}
-                                    @endif
-                                </td> --}}
                                 <td>
                                     <div class="row justify-content-center" style="min-width:110px;">
                                         <div style="max-width:60px"><button type="button"

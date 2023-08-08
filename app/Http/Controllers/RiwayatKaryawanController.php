@@ -50,6 +50,14 @@ class RiwayatKaryawanController extends Controller
         }else{
             $keterangan=$request->keterangan;
         }
+        if($request->hasFile('sertifikat')){
+            $resorcesurat      = $request->file('sertifikat');
+            $sertifikat   = $resorcesurat->getClientOriginalName();
+            $resorcesurat->move(\base_path() ."/public/assets/img/sertifikat", $sertifikat);
+        }else{
+            $sertifikat="";
+        }
+
         $jenis=$request->jenis;
         if($jenis=='Demosi' or $jenis=='Rotasi' or $jenis=='Promosi'){
             $jabatanlama=DB::select("SELECT id_jabatan,nama_jabatan,nama_departemen from master
@@ -70,6 +78,7 @@ class RiwayatKaryawanController extends Controller
                 'jabatan'=>$request->id_jabatan,
                 'deskripsi'=>'Jenis mutasi '.$jenis.' dari Departemen '.$jl->nama_departemen.'bagian jabatan '.$jl->nama_jabatan.' menjadi Departemen '.$jb->nama_departemen.'bagian jabatan '.$jb->nama_jabatan,
                 'keterangan'=>$keterangan,
+                'sertifikat'=>$sertifikat,
             ];
             $data2=[
                 'id_jabatan'=>$request->id_jabatan,
@@ -105,6 +114,7 @@ class RiwayatKaryawanController extends Controller
                 'jabatan'=>$jl->id_jabatan,
                 'deskripsi'=>'Status Karyawan menjadi '.$request->jenis,
                 'keterangan'=>$keterangan,
+                'sertifikat'=>$sertifikat,
             ];
             $data2=[
                 'golongan'=>$request->jenis,
@@ -140,6 +150,7 @@ class RiwayatKaryawanController extends Controller
                 'jabatan'=>$jl->id_jabatan,
                 'deskripsi'=>'Sanksi '.$request->jenis,
                 'keterangan'=>$keterangan,
+                'sertifikat'=>$sertifikat,
             ];
             try{
                 Riwayatkaryawan::insert($data1);
@@ -164,6 +175,7 @@ class RiwayatKaryawanController extends Controller
                 'jabatan'=>$jl->id_jabatan,
                 'deskripsi'=>'Mendapatkan '.$request->jenis.' '.$request->deskripsi,
                 'keterangan'=>$keterangan,
+                'sertifikat'=>$sertifikat,
             ];
             try{
                 Riwayatkaryawan::insert($data1);
@@ -188,6 +200,7 @@ class RiwayatKaryawanController extends Controller
                 'jabatan'=>$jl->id_jabatan,
                 'deskripsi'=>'Melakukan cek '.$request->jenis.' '.$request->deskripsi,
                 'keterangan'=>$keterangan,
+                'sertifikat'=>$sertifikat,
             ];
             try{
                 Riwayatkaryawan::insert($data1);

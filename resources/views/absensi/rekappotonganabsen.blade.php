@@ -18,11 +18,19 @@
     <main class="wrapper">
         <div class="container-custome">
             <header class="mb-3">
-                <h4 class="title-pages fw-bold">Rekap Potongan Absen Bulan
+                <h5 class="title-pages fw-bold">Rekap Potongan Absen Bulan
                     <span id="bulan">{{ $month }}</span>
-                </h4>
+                </h5>
             </header>
             @include('alert')
+            <div class="float-end">
+                <select class="form-select" name="periode" id="periode" onchange="periodeabsen()">
+                    @foreach ($per as $p)
+                        <option value="{{ $p['tahun'] }}-{{ $p['bln'] }}">{{ $p['bulan'] }} {{ $p['tahun'] }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
             <div>
                 <table id='mTable' width='100%' class="table table-striped table-bordered ">
                     <thead>
@@ -68,7 +76,7 @@
 <script>
     $(document).ready(function() {
         $('.form-select').select2({
-            dropdownParent: $('#tambahabsensi')
+
         });
     });
 </script>
@@ -85,11 +93,23 @@
     $('input').hover(function() {
         $(this).select();
     });
-</script>
-<script type="text/javascript">
-    $(document).ready(function() {
 
-    });
+    function periodeabsen() {
+        var periode = document.getElementById('periode').value;
+        $.ajax({
+            url: "{{ route('rekappotongan.post') }}",
+            type: "POST",
+            data: {
+                periode: periode
+            },
+            success: function(response) {
+                console.log(response);
+            },
+            error: function(request, status, error) {
+                console.log(request, status, error);
+            }
+        });
+    }
 </script>
 
 </html>

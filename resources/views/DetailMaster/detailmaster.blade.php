@@ -612,11 +612,24 @@
                                         <td>{{ $rk->jenis }}</td>
                                         <td>{{ $rk->deskripsi }}</td>
                                         <td>
-                                            @if ($rk->keterangan == '')
-                                                {{ '-' }}
+                                            @if ($rk->jenis == 'Penghargaan')
+                                                @if ($rk->keterangan == '')
+                                                    {{ '-' }}
+                                                @else
+                                                    {{ $rk->keterangan }}
+                                                @endif
+                                                <a href="/assets/img/sertifikat/{{ $rk->sertifikat }}"
+                                                    target="_blank">
+                                                    <i class="bi bi-image"></i>
+                                                </a>
                                             @else
-                                                {{ $rk->keterangan }}
+                                                @if ($rk->keterangan == '')
+                                                    {{ '-' }}
+                                                @else
+                                                    {{ $rk->keterangan }}
+                                                @endif
                                             @endif
+
                                         </td>
                                         {{-- <td>
                                             <div class="row justify-content-center">

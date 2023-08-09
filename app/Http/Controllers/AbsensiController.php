@@ -241,8 +241,9 @@ class AbsensiController extends Controller
 
     public function rekappotongan(){
         $month=date('F Y');
-        $date=date('m');
-        $absen=Absen::leftjoin('master','master.id','=','absen.id_master')->select('absen.*','master.nama','master.golongan')->whereMonth('tanggal',$date)->orderby('tanggal','desc')->get();
+        $bulan=date('m');
+        $tahun=date('Y');
+        $absen=Absen::leftjoin('master','master.id','=','absen.id_master')->select('absen.*','master.nama','master.golongan')->whereMonth('tanggal',$bulan)->whereYear('tanggal',$tahun)->orderby('tanggal','desc')->get();
         $per=[];
         $periode=DB::select("SELECT MONTH(tanggal) as bln, MONTHNAME(tanggal) as bulan,Year(tanggal) as tahun from absen group by MONTH(tanggal),MONTHNAME(tanggal),YEAR(tanggal)");
         foreach($periode as $p){
@@ -258,10 +259,8 @@ class AbsensiController extends Controller
             ];
         }
         // dd($periode);
-        return view('absensi.rekappotonganabsen',compact('month','absen','per'));
-    }
+        $alldata=Absen::leftjoin('master','master.id','=','absen.id_master')->select('absen.*','master.nama','master.golongan')->orderby('tanggal','desc')->get();
 
-    public function rekappotongan_post(Request $request){
-        return "student saved successfully";
+        return view('absensi.rekappotonganabsen',compact('month','absen','per','alldata'));
     }
 }

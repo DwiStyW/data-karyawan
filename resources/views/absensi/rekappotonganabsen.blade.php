@@ -26,12 +26,19 @@
             <div class="float-end">
                 <select class="form-select" name="periode" id="periode" onchange="periodeabsen()">
                     @foreach ($per as $p)
-                        <option value="{{ $p['tahun'] }}-{{ $p['bln'] }}">{{ $p['bulan'] }} {{ $p['tahun'] }}
-                        </option>
+                        @if ($month == $p['bulan'] . ' ' . $p['tahun'])
+                            <option value="{{ $p['tahun'] }}-{{ $p['bln'] }}" selected>{{ $p['bulan'] }}
+                                {{ $p['tahun'] }}
+                            </option>
+                        @else
+                            <option value="{{ $p['tahun'] }}-{{ $p['bln'] }}">{{ $p['bulan'] }}
+                                {{ $p['tahun'] }}
+                            </option>
+                        @endif
                     @endforeach
                 </select>
             </div>
-            <div>
+            <div id="tabelrekappotongan" style="display:block">
                 <table id='mTable' width='100%' class="table table-striped table-bordered ">
                     <thead>
                         <tr style="background-color:#5F7A61;color:#ddd;font-weight:bold">
@@ -63,6 +70,7 @@
                     </tbody>
                 </table>
             </div>
+            <div id="tabelpotonganbulan" style="display:none"></div>
         </div>
         @include('partials.footer')
     </main>
@@ -94,21 +102,51 @@
         $(this).select();
     });
 
+    function filterByValue(array, string) {
+        return array.filter(o =>
+            Object.keys(o).some(k => o[k].toLowerCase().includes(string.toLowerCase())));
+    }
+
     function periodeabsen() {
         var periode = document.getElementById('periode').value;
-        $.ajax({
-            url: "{{ route('rekappotongan.post') }}",
-            type: "POST",
-            data: {
-                periode: periode
-            },
-            success: function(response) {
-                console.log(response);
-            },
-            error: function(request, status, error) {
-                console.log(request, status, error);
-            }
+        const data = @json($alldata);
+        const newarr = data.filter(data => {
+            return data.tanggal.includes(periode);
         });
+        var str = '';
+        str += '<table id="mTable" width="100%" class = "table table-striped table-bordered " > ';
+        str += '<thead>';
+        str += '<tr style="background-color:#5F7A61;color:#ddd;font-weight:bold">';
+        str += '<th data-priority="1">No</th>';
+        str += '<th data-priority="1">Nama</th>';
+        str += '<th data-priority="3">Tanggal</th>';
+        str += '<th data-priority="3">Jenis</th>';
+        str += '<th data-priority="3">Surat</th>';
+        str += '<th data-priority="3">Keterangan</th>';
+        str += '</tr>';
+        str += '</thead>';
+        str += '<tbody>';
+        var no = 1;
+        for (let i = 0; i < newarr.length; i++) {
+            str += '<tr>';
+            str += '<td>' + no++ + '</td>';
+            str += '<td>' + newarr[i].nama + '</td>';
+            str += '<td>' + newarr[i].tanggal + '</td>';
+            str += '<td>' + newarr[i].jenis + '</td>';
+            str += '<td>' + newarr[i].surat + '</td>';
+            str += '<td>' + newarr[i].ket + '</td>';
+            str += '</tr>';
+        }
+        str += '</tbody>';
+        str += '</table>';
+
+        var e = document.getElementById("periode");
+        var text = e.options[e.selectedIndex].text;
+        document.getElementById('bulan').textContent = text;
+        document.getElementById('tabelpotonganbulan').innerHTML = str;
+        document.getElementById('tabelrekappotongan').style.display = 'none';
+        document.getElementById('tabelpotonganbulan').style.display = 'block';
+        console.log(text)
     }
 </script>
 

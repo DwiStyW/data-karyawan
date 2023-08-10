@@ -16,7 +16,8 @@
                                 <label for="">Nama Karyawan</label>
                             </div>
                             <div class="col-lg-9">
-                                <select name="id_master" class="form-select" required>
+                                <select name="id_master" id="id_master" class="form-select" required
+                                    onchange="pilihmaster()">
                                     <option value="" selected>Pilih Nama Karyawan</option>
                                     @foreach ($master as $m)
                                         <option value="{{ $m->id }}">{{ $m->nama }}</option>
@@ -78,6 +79,7 @@
                             </div>
                         </div>
                         <div id="desk"></div>
+                        <div id="sertifikat"></div>
                         <div class="row mb-3">
                             <div class="col-lg-3">
                                 <label for="">Keterangan</label>
@@ -98,8 +100,12 @@
     </div>
 </div>
 <script>
-    function tambahriwayatkaryawan(namajabatan) {
-        document.getElementById('namajabatan').value = namajabatan
+    function pilihmaster() {
+        var data = @json($master);
+        var idmaster = document.getElementById('id_master').value;
+        var filtmaster = data.filter(a => a.id == idmaster);
+
+        document.getElementById('namajabatan').value = filtmaster[0].nama_jabatan;
     }
 
     function pilihjenis() {
@@ -107,6 +113,7 @@
         var jabatanlama = document.getElementById('namajabatan').value;
         var str = '';
         var text = '';
+        var teks = '';
         var jenis = document.getElementById('jenis').value;
         var filterjabatan = jabatan.filter(b => b.nama_jabatan != jabatanlama);
         if (jenis == 'Demosi' || jenis == 'Rotasi' || jenis == 'Promosi') {
@@ -148,5 +155,17 @@
             text += '</div>';
         }
         document.getElementById('desk').innerHTML = text;
+
+        if (jenis == 'Penghargaan') {
+            teks += '<div class="row mb-3">';
+            teks += '    <div class="col-lg-3">';
+            teks += '        <label for="">Sertifikat</label>';
+            teks += '    </div>';
+            teks += '    <div class="col-lg-9">';
+            teks += '        <input type="file" class="form-control" name="sertifikat">';
+            teks += '    </div>';
+            teks += '</div>';
+        }
+        document.getElementById('sertifikat').innerHTML = teks;
     }
 </script>

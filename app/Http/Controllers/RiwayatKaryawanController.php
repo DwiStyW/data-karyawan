@@ -19,7 +19,7 @@ class RiwayatKaryawanController extends Controller
     public function index()
     {
         $riwkaryawan=DB::select('SELECT riwayat_karyawan.*, master.nama as nama_master from riwayat_karyawan join master on master.id=riwayat_karyawan.id_master order by id ASC');
-        $master=Master::where('status','Aktif')->get();
+        $master=DB::select('SELECT master.*, nama_jabatan from master join jabatan on jabatan.id=master.id_jabatan where status="Aktif" order by id DESC');
         $jabatan=Jabatan::get();
         // dd($bpjstk);
         return view('riwkaryawan.riwayatkaryawan',compact('riwkaryawan','master','jabatan'));

@@ -243,7 +243,7 @@ class AbsensiController extends Controller
         $month=date('F Y');
         $bulan=date('m');
         $tahun=date('Y');
-        $absen=Absen::leftjoin('master','master.id','=','absen.id_master')->select('absen.*','master.nama','master.golongan')->whereMonth('tanggal',$bulan)->whereYear('tanggal',$tahun)->orderby('tanggal','desc')->get();
+        $absen=Absen::leftjoin('master','master.id','=','absen.id_master')->select('absen.*','master.nama','master.golongan')->whereMonth('tanggal',$bulan)->whereYear('tanggal',$tahun)->orderby('nama','desc')->get();
         $per=[];
         $periode=DB::select("SELECT MONTH(tanggal) as bln, MONTHNAME(tanggal) as bulan,Year(tanggal) as tahun from absen group by MONTH(tanggal),MONTHNAME(tanggal),YEAR(tanggal)");
         foreach($periode as $p){
@@ -259,7 +259,7 @@ class AbsensiController extends Controller
             ];
         }
         // dd($periode);
-        $alldata=Absen::leftjoin('master','master.id','=','absen.id_master')->select('absen.*','master.nama','master.golongan')->orderby('tanggal','desc')->get();
+        $alldata=Absen::leftjoin('master','master.id','=','absen.id_master')->select('absen.*','master.nama','master.golongan')->orderby('nama','desc')->get();
 
         return view('absensi.rekappotonganabsen',compact('month','absen','per','alldata'));
     }

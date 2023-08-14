@@ -202,12 +202,20 @@ class MasterController extends Controller
         ->join('master','pendidikan.id_master','=','master.id')
         ->orderby('batas_pensiun.id','ASC')
         ->count();
-        $master=DB::select("SELECT master.*,nama_jabatan,nama_departemen,tanggal from master
-        join jabatan on jabatan.id = master.id_jabatan
-        left join departemen on departemen.id = jabatan.departemen
-        join riwayat_karyawan on riwayat_karyawan.id_master = master.id
-        where riwayat_karyawan.jenis = 'masuk' and master.id = $id_master order by tanggal ASC limit 1
-        ");
+        $cekriwmasuk=Riwayatkaryawan::where('id_master',$id_master)->where('jenis','masuk')->get();
+        if(count($cekriwmasuk)!=0){
+            $master=DB::select("SELECT master.*,nama_jabatan,nama_departemen,tanggal from master
+            join jabatan on jabatan.id = master.id_jabatan
+            left join departemen on departemen.id = jabatan.departemen
+            join riwayat_karyawan on riwayat_karyawan.id_master = master.id
+            where riwayat_karyawan.jenis = 'masuk' and master.id = $id_master order by tanggal ASC limit 1
+            ");
+        }else{
+            $master=DB::select("SELECT master.*,nama_jabatan,nama_departemen,'0000-00-00' as tanggal from master
+            join jabatan on jabatan.id = master.id_jabatan
+            left join departemen on departemen.id = jabatan.departemen
+            where master.id = $id_master order by tanggal ASC limit 1");
+        }
         $pendidikan=Pendidikan::where('pendidikan.id_master',$id_master)//echo data pendidikan
         ->leftJoin('batas_pensiun','pendidikan.tingkat_pendidikan','=','batas_pensiun.tingkatan_pendidikan')
         ->orderby('batas_pensiun.id','DESC')
@@ -241,7 +249,7 @@ class MasterController extends Controller
         ->get();
         // $riwayatkaryawan=DB::select("SELECT riwayat_karyawan.*,nama_jabatan from riwayat_karyawan
         // join jabatan on jabatan.id=riwayat_karyawan.jabatan where id_master=$id_master");
-        // dd($riwayatkaryawan);
+        // dd($master);
 
         return view('DetailMaster.print',compact('master','pendidikanterakhir','id_master','jabatan','bataspensiun','pendidikan','historykerja','bpjskes','bpjstk','riwayatkaryawan','cekriwkontrak','cekriwtetap'));
     }

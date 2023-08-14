@@ -263,4 +263,9 @@ class AbsensiController extends Controller
 
         return view('absensi.rekappotonganabsen',compact('month','absen','per','alldata'));
     }
+
+    public function daftardistribusiabsen(){
+
+        return view('absensi.distribusiabsen');
+    }
 }

@@ -17,7 +17,7 @@
                     <li class="list-group-item">
                         <a href="/dashboard-personalia"
                             class="btn {{ Request::is('dashboard-personalia') ? 'active' : '' }}" id="navDashboard">
-                            <div class="btn-header me-3">
+                            <div class="btn-header me-3 d-flex align-items-center">
                                 <i class="bi bi-speedometer2"></i>
                             </div>
                             <div class="btn-body">
@@ -27,7 +27,7 @@
                     </li>
                     <li class="list-group-item">
                         <a class="btn {{ Request::is('master') ? 'active' : '' }}" id="navDAR" href="/master">
-                            <div class="btn-header me-3">
+                            <div class="btn-header me-3 d-flex align-items-center">
                                 <i class="bi bi-people"></i>
                             </div>
                             <div class="btn-body">
@@ -38,7 +38,7 @@
                     <li class="list-group-item">
                         <a class="nav-link btn position-relative {{ Request::is('departement') ? 'active' : '' }}{{ Request::is('bagian') ? 'active' : '' }}{{ Request::is('section') ? 'active' : '' }}{{ Request::is('jabatan') ? 'active' : '' }}{{ Request::is('golongan') ? 'active' : '' }}"
                             href="#">
-                            <div class="btn-header me-3">
+                            <div class="btn-header me-3 d-flex align-items-center">
                                 <i class="bi bi-building"></i>
                             </div>
                             <div class="btn-body">
@@ -110,7 +110,7 @@
 
                     <li class="list-group-item">
                         <a class="btn {{ Request::is('bpjstk') ? 'active' : '' }}" href="/bpjstk" id="navDAR">
-                            <div class="btn-header me-3">
+                            <div class="btn-header me-3 d-flex align-items-center">
                                 <i class="bi bi-wrench-adjustable-circle"></i>
                             </div>
                             <div class="btn-body">
@@ -120,7 +120,7 @@
                     </li>
                     <li class="list-group-item">
                         <a class="btn {{ Request::is('bpjskes') ? 'active' : '' }}" href="/bpjskes" id="navDAR">
-                            <div class="btn-header me-3">
+                            <div class="btn-header me-3 d-flex align-items-center">
                                 <i class="bi bi-patch-plus"></i>
                             </div>
                             <div class="btn-body">
@@ -131,7 +131,7 @@
                     <li class="list-group-item">
                         <a class="btn {{ Request::is('riwayatkaryawan') ? 'active' : '' }}" href="/riwayatkaryawan"
                             id="navDAR">
-                            <div class="btn-header me-3">
+                            <div class="btn-header me-3 d-flex align-items-center">
                                 <i class="bi bi-arrow-left-right"></i>
                             </div>
                             <div class="btn-body">
@@ -140,18 +140,80 @@
                         </a>
                     </li>
                     <li class="list-group-item">
-                        <a class="btn {{ Request::is('absensi') ? 'active' : '' }}" href="/absensi" id="navDAR">
-                            <div class="btn-header me-3">
+                        <a class="nav-link btn position-relativess {{ Request::is('absensi') ? 'active' : '' }}{{ Request::is('rekapabsensi') ? 'active' : '' }}{{ Request::is('rekappotongan') ? 'active' : '' }}{{ Request::is('jabatan') ? 'active' : '' }}{{ Request::is('golongan') ? 'active' : '' }}"
+                            href="#">
+                            <div class="btn-header me-3 d-flex align-items-center">
                                 <i class="bi bi-clock-history"></i>
                             </div>
                             <div class="btn-body">
                                 Absensi Karyawan
                             </div>
+                            <div class="position-absolute end-0 pe-3">
+                                <i class="bi small bi-caret-down-fill "></i>
+                            </div>
                         </a>
+                        <ul
+                            class="submenu collapse {{ Request::is('absensi') ? 'show' : '' }}{{ Request::is('rekapabsensi') ? 'show' : '' }}{{ Request::is('rekappotongan') ? 'show' : '' }}{{ Request::is('jabatan') ? 'show' : '' }}{{ Request::is('golongan') ? 'show' : '' }}"style="padding-inline-start: 0px !important;">
+                            <li class="list-group-item bg-light">
+                                <a class="btn py-1 {{ Request::is('absensi') ? 'active' : '' }}" href="/absensi"
+                                    id="navDAR">
+                                    <div class="btn-header me-1">
+                                        <i class="bi bi-dot"></i>
+                                    </div>
+                                    <div class="btn-body">
+                                        Absensi
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="list-group-item  bg-light">
+                                <a class="btn py-1 {{ Request::is('rekapabsensi') ? 'active' : '' }}"
+                                    href="/rekapabsensi" id="navDAR">
+                                    <div class="btn-header me-1">
+                                        <i class="bi bi-dot"></i>
+                                    </div>
+                                    <div class="btn-body">
+                                        Rekap Absensi
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="list-group-item bg-light">
+                                <a class="btn py-1 {{ Request::is('rekappotongan') ? 'active' : '' }}"
+                                    href="/rekappotongan" id="navDAR">
+                                    <div class="btn-header me-1">
+                                        <i class="bi bi-dot"></i>
+                                    </div>
+                                    <div class="btn-body">
+                                        Rekap Potongan
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="list-group-item bg-light">
+                                <a class="btn py-1 {{ Request::is('daftardistribusiabsen') ? 'active' : '' }}"
+                                    href="/daftardistribusiabsen" id="navDAR">
+                                    <div class="btn-header me-1">
+                                        <i class="bi bi-dot"></i>
+                                    </div>
+                                    <div class="btn-body">
+                                        Distribusi Absen
+                                    </div>
+                                </a>
+                            </li>
+                            {{-- <li class="list-group-item bg-light">
+                                <a class="btn py-1 {{ Request::is('golongan') ? 'active' : '' }}" href="/golongan"
+                                    id="navDAR">
+                                    <div class="btn-header me-1">
+                                        <i class="bi bi-dot"></i>
+                                    </div>
+                                    <div class="btn-body">
+                                        Rekap Distribusi Absen
+                                    </div>
+                                </a>
+                            </li> --}}
+                        </ul>
                     </li>
                     {{-- <li class="list-group-item">
                     <a class="btn" href="/pengajuan" id="navDAR">
-                        <div class="btn-header me-3">
+                        <div class="btn-header me-3 d-flex align-items-center">
                             <i class="bi bi-person-add"></i>
                         </div>
                         <div class="btn-body">
@@ -162,7 +224,7 @@
 
                     <li class="list-group-item mobile">
                         <a class="btn" href="/logout" id="navDAR">
-                            <div class="btn-header me-3">
+                            <div class="btn-header me-3 d-flex align-items-center">
                                 <i class="bi bi-box-arrow-left"></i>
                             </div>
                             <div class="btn-body">
@@ -174,7 +236,7 @@
                     <li class="list-group-item">
                         <a href="/dashboard-kabag" class="btn {{ Request::is('dashboard-kabag') ? 'active' : '' }}"
                             id="navDashboard">
-                            <div class="btn-header me-3">
+                            <div class="btn-header me-3 d-flex align-items-center">
                                 <i class="bi bi-speedometer2"></i>
                             </div>
                             <div class="btn-body">
@@ -185,7 +247,7 @@
                     <li class="list-group-item">
                         <a class="btn {{ Request::is('master-kabag') ? 'active' : '' }}" id="navDAR"
                             href="/master-kabag">
-                            <div class="btn-header me-3">
+                            <div class="btn-header me-3 d-flex align-items-center">
                                 <i class="bi bi-people"></i>
                             </div>
                             <div class="btn-body">
@@ -196,7 +258,7 @@
                     <li class="list-group-item">
                         <a class="btn {{ Request::is('absensi-perdiv') ? 'active' : '' }}" href="/absensi-perdiv"
                             id="navDAR">
-                            <div class="btn-header me-3">
+                            <div class="btn-header me-3 d-flex align-items-center">
                                 <i class="bi bi-clock-history"></i>
                             </div>
                             <div class="btn-body">

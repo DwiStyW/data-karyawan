@@ -11,11 +11,17 @@
                         <i class="bi bi-person-circle"></i>
                         <b>&nbsp;{{ auth()->user()->name }}</b>
                     </div>
-                    <div class="dropdown-content text-center">
+                    <div class="dropdown-content">
                         <a href="/setting" class="btn">
                             <i class="bi bi-gear"></i>
                             &nbsp; setting
                         </a><br>
+                        @if (auth()->user()->role == 'personalia')
+                            <a href="/hakakses" class="btn">
+                                <i class="bi bi-universal-access-circle"></i>
+                                &nbsp; akses jabatan
+                            </a><br>
+                        @endif
                         <a href="/logout" class="btn">
                             <i class="bi bi-box-arrow-left"></i>
                             &nbsp; logout

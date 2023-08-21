@@ -73,7 +73,7 @@
                             <div class="card-body text-center position-relative">
                                 <h3 class="card-title mb-1">Apoteker Aktif</h3>
                                 <h6 class="card-text mb-2">Tanggal : {{ date('d-m-Y') }}</h6>
-                                <h1 class="text-center mt-2 mb-2 "><b>{{ count($masterap) }}</b></h1>
+                                <h1 class="text-center mt-2 mb-2 "><b>{{ count($dataap) }}</b></h1>
                                 <svg class="position-absolute icon-dashboard" xmlns="http://www.w3.org/2000/svg"
                                     width="90" height="90" fill="#866500" class="bi bi-capsule"
                                     viewBox="0 0 16 16">
@@ -92,7 +92,7 @@
                                 <h3 class="card-title mb-1">Karyawan Pensiun</h3>
                                 <h6 class="card-text mb-2">Tahun : {{ date('Y') }}</h6>
                                 <h1 class="text-center mt-2 mb-2"><b>
-                                        {{ array_sum($totalpensiun) }}
+                                        {{ count($datamp) }}
                                     </b></h1>
                                 <svg class="position-absolute icon-dashboard" xmlns="http://www.w3.org/2000/svg"
                                     width="90" height="90" fill="#866500" class="bi bi-person-fill-exclamation"
@@ -376,19 +376,7 @@
                     title: 'Data export Karyawan'
                 }
             ],
-            language: {
-                paginate: {
-                    previous: '‹',
-                    next: '›'
-                },
-                aria: {
-                    paginate: {
-                        previous: 'Previous',
-                        next: 'Next'
-                    }
-                }
-            },
-            pagingType: 'simple_numbers',
+            paging: false,
             responsive: true,
             dom: '<"rowt justify-content-between"<l><"rowt"<f><B>>>t<"rowt justify-content-between"ip>',
         });

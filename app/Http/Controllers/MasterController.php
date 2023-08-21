@@ -472,6 +472,7 @@ class MasterController extends Controller
             'jabatan'=>$jl->id_jabatan,
             'deskripsi'=>'Keluar karena pensiun',
             'keterangan'=>'',
+            'sertifikat'=>'',
         ];
         // dd($data);
         DB::beginTransaction();
@@ -483,7 +484,7 @@ class MasterController extends Controller
             DB::commit();
             return back()->with('success','Data berhasil dihapus!');
         }catch(Exception $e){
-            // dd($e);
+            dd($e);
             DB::rollBack();
             return back()->with('failed','Data gagal dihapus!');
         }

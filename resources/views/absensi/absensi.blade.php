@@ -27,8 +27,8 @@
                     <i class="bi bi-plus-square-fill"></i>
                     Absensi
                 </button>
-                <a href="/rekapabsensi" class="btn btn-sm btn-secondary">Rekap Absensi</a>
-                <a href="/rekappotongan" class="btn btn-sm btn-secondary">Rekap Potongan Absen</a>
+                {{-- <a href="/rekapabsensi" class="btn btn-sm btn-secondary">Rekap Absensi</a>
+                <a href="/rekappotongan" class="btn btn-sm btn-secondary">Rekap Potongan Absen</a> --}}
             </div>
             <div>
                 <table id='mTable' width='100%' class="table table-striped table-bordered ">

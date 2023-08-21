@@ -102,7 +102,7 @@ class DashboardController extends Controller
             foreach($apoteker as $ap){
                 $idmaster=$ap->id_master;
                 $masterap=DB::select("SELECT master.*, nama_jabatan from master join jabatan on jabatan.id=master.id_jabatan where master.id = $idmaster and master.status='Aktif'");
-                if(count($masterap)){
+                // if(count($masterap)!=0){
                     foreach($masterap as $map){
                         $dataap[]=[
                             'id'=>$map->id,
@@ -116,12 +116,13 @@ class DashboardController extends Controller
                             'agama'=>$map->agama,
                             'nama_jabatan'=>$map->nama_jabatan,
                             'golongan'=>$map->golongan,
+                            'status'=>$map->status,
                         ];
                     }
-                }
-                else{
-                     $dataap=[];
-                }
+                // }
+                // else{
+                //      $dataap=[];
+                // }
             }
         }else{
             $dataap=[];
@@ -143,7 +144,7 @@ class DashboardController extends Controller
             $jarak[]=['jarak'=>(int)$jp,'id'=>$pen['id_master']];
             $jarakumur[]=(int)$jp;
 
-            if($jp<=0){
+            if($jp==0){
                 $id= $pen['id_master'];
                 $masterp=DB::select("SELECT master.*, nama_jabatan from master join jabatan on jabatan.id=master.id_jabatan where master.id = $id");
                     foreach($masterp as $m){
@@ -172,7 +173,7 @@ class DashboardController extends Controller
                 $totalpensiun[]=$pensiun[$a];
             }
         }
-// dd(array_sum($testing));
+// dd(array_sum($datamp));
         // absensi
         $date=date('Y-m-d');
         // dd($date);

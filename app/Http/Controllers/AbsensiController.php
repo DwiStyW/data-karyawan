@@ -6,6 +6,7 @@ use App\Models\Absen;
 use App\Models\Distribusiabsen;
 use App\Models\Jabatan;
 use App\Models\Master;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -225,7 +226,9 @@ class AbsensiController extends Controller
         $ts=$strtime/1000;
         $tanggal = date("Y-m-d",$ts);
         $idjabatan=Auth::user()->id_jabatan;
+        $iduser=Auth::user()->id;
         $data=[
+            "is_user"=>$iduser,
             "id_jabatan"=>$idjabatan,
             "tanggal"=>$tanggal
         ];
@@ -265,7 +268,10 @@ class AbsensiController extends Controller
     }
 
     public function daftardistribusiabsen(){
+        $distribusi=Distribusiabsen::leftjoin('jabatan','jabatan.id','=','distribusi_absen.id_jabatan')->leftjoin('users','users.id','=','distribusi_absen.id_user')->get();
 
+        $user=User::where('role','kabag')->get();
+        dd($user);
         return view('absensi.distribusiabsen');
     }
 }

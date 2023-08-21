@@ -18,6 +18,7 @@ use App\Http\Controllers\SimpleController;
 use App\Http\Controllers\StrukturController;
 use App\Http\Controllers\RiwkaryawanController;
 use App\Http\Controllers\BagianController;
+use App\Http\Controllers\HakAksesController;
 use App\Http\Controllers\SectionController;
 use Illuminate\Support\Facades\Route;
 
@@ -126,3 +127,7 @@ Route::get('/daftardistribusiabsen', [AbsensiController::class, 'daftardistribus
 
 Route::get('pengajuan', [PengajuanController::class, 'index']);
 Route::get('pengajuan/add', [PengajuanController::class, 'create']);
+
+Route::get('hakakses', [HakAksesController::class, 'index'])->middleware('auth');
+Route::get('tambahhakakses', [HakAksesController::class, 'create'])->middleware('auth');
+Route::post('/posthakakses', [HakAksesController::class, 'store'])->middleware('auth');

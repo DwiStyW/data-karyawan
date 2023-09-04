@@ -10,7 +10,7 @@ class Distribusiabsen extends Model
     use HasFactory;
     protected $table="distribusi_absen";
     protected $fillable=[
-        'id_jabatan',
+        'id_user',
         'tanggal',
     ];
 }

@@ -221,7 +221,17 @@
                         </div>
                     </a>
                 </li> --}}
-
+                    <li class="list-group-item">
+                        <a class="btn {{ Request::is('hakakses') ? 'active' : '' }}" href="/hakakses"
+                            id="navDAR">
+                            <div class="btn-header me-3 d-flex align-items-center">
+                                <i class="bi bi-universal-access-circle"></i>
+                            </div>
+                            <div class="btn-body">
+                                Hak Akses
+                            </div>
+                        </a>
+                    </li>
                     <li class="list-group-item mobile">
                         <a class="btn" href="/logout" id="navDAR">
                             <div class="btn-header me-3 d-flex align-items-center">
@@ -232,7 +242,7 @@
                             </div>
                         </a>
                     </li>
-                @elseif (auth()->user()->role == 'kabag')
+                @elseif (auth()->user()->role == 'pimpinan')
                     <li class="list-group-item">
                         <a href="/dashboard-kabag" class="btn {{ Request::is('dashboard-kabag') ? 'active' : '' }}"
                             id="navDashboard">
@@ -263,6 +273,17 @@
                             </div>
                             <div class="btn-body">
                                 Absensi Karyawan
+                            </div>
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="btn {{ Request::is('pengajuan') ? 'active' : '' }}" href="/pengajuan"
+                            id="navDAR">
+                            <div class="btn-header me-3 d-flex align-items-center">
+                                <i class="bi bi-person-add"></i>
+                            </div>
+                            <div class="btn-body">
+                                Pengajuan Karyawan
                             </div>
                         </a>
                     </li>

@@ -23,10 +23,12 @@
             </header>
             @include('alert')
             <div class="pb-3">
-                <button data-bs-toggle="modal" data-bs-target="#tambah_Jabatan" class="btn btn-sm btn-secondary">
-                    <i class="bi bi-plus-square-fill"></i>
-                    Pengajuan
-                </button>
+                <a href="pengajuan/add">
+                    <button class="btn btn-sm btn-secondary">
+                        <i class="bi bi-plus-square-fill"></i>
+                        Pengajuan
+                    </button>
+                </a>
             </div>
             <div>
                 <table id='mTable' width='100%' class="table table-striped table-bordered ">
@@ -40,11 +42,38 @@
                             <th data-priority="3">Profesi</th>
                             <th data-priority="3">Maksimal Usia</th>
                             <th data-priority="3">Jenis Kelamin</th>
-                            <th data-priority="3">Deskripsi</th>
                             <th data-priority="3">Status</th>
                             <th data-priority="3">Aksi</th>
                         </tr>
                     </thead>
+                    <tbody>
+                        @php
+                            $no = 1;
+                        @endphp
+                        @foreach ($pengajuan as $p)
+                            <tr>
+                                <td>{{ $no++ }}</td>
+                                <td>{{ $p->name }}</td>
+                                <td>{{ $p->nama_jabatan }}</td>
+                                <td>{{ $p->jumlah }}</td>
+                                <td>{{ $p->pendidikan_akhir }}</td>
+                                <td>{{ $p->profesi }}</td>
+                                <td>{{ $p->max_usia }}</td>
+                                <td>{{ $p->jenis_kelamin }}</td>
+                                <td>{{ $p->status }}</td>
+                                <td>
+                                    <div class="d-flex justify-content-center">
+                                        <button class="btn btn-sm btn-primary">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-danger">
+                                            <i class="bi bi-trash3-fill"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
                 </table>
             </div>
         </div>

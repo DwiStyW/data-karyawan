@@ -82,7 +82,7 @@
 
 <script src="../assets/ui/bootstrap-5.2.1-dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    var absen = @json($absen);
+    var absen = @json($dataabsenbulan);
     // grupby
     const groupBy = (keys) => (array) =>
         array.reduce((objectsByKeyValue, obj) => {
@@ -97,7 +97,7 @@
     for (let [nama, values] of Object.entries(groupByname(absen))) {
         let number = no++;
         for (let b = 0; b < values.length; b++) {
-            if (values[b].golongan != 'tetap' && values[b].surat == 'ada' || values[b].golongan != 'tetap' && values[b]
+            if (values[b].status != 'Tetap' && values[b].surat == 'ada' || values[b].status != 'Tetap' && values[b]
                 .surat == 'tidak') {
                 dataabsensi.push({
                     no: number,
@@ -106,6 +106,7 @@
                     tanggal: values[b].tanggal,
                     jenis: values[b].jenis,
                     ket: values[b].ket,
+                    status: values[b].status,
                 })
             }
         }

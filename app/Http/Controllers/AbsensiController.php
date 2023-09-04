@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Absen;
 use App\Models\Distribusiabsen;
+use App\Models\Hakakses;
 use App\Models\Jabatan;
 use App\Models\Master;
+use App\Models\Riwayatkaryawan;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -71,7 +73,7 @@ class AbsensiController extends Controller
 
         $tgl=$request->tanggal;
         $master=$request->id_master;
-        $cek=Absen::whare('tanggal',$tgl)->whare('id_master',$master)->get();
+        $cek=Absen::where('tanggal',$tgl)->where('id_master',$master)->get();
         if(count($cek)==0){
             try{
                 Absen::insert($data);
@@ -169,29 +171,31 @@ class AbsensiController extends Controller
         return view('absensi.absensiperhari',compact('absensi','master','date'));
     }
     public function absensiperdiv(){
-        $master=[];
+        $Tmaster=[];
         $data=[];
-        $idjabatan=Auth::user()->id_jabatan;
-        $jabatan=Jabatan::where('id',$idjabatan)->get();
-        foreach($jabatan as $j){}
-        $iddepartemen=$j->departemen;
-        $level=$j->level;
-        $departemen=Jabatan::where('departemen',$iddepartemen)->where('level','>',$level)->get();
-        foreach ($departemen as $d) {
-            $id_jabatan=$d->id;
-            $qmaster=DB::select("SELECT * from master where id_jabatan='$id_jabatan'");
-            if(count($qmaster)!=0){
-                foreach($qmaster as $qm){
-                    $master[]=[
-                        'id'=>$qm->id,
-                        'id_jabatan'=>$qm->id_jabatan
-                    ];
-                }
+        $iduser=Auth::user()->id;
+        $hks=Hakakses::where('id_user',$iduser)->get();
+        foreach($hks as $hk){
+            $idjabatan=$hk->id_jabatan;
+            $master=Master::leftjoin('jabatan','jabatan.id','=','id_jabatan')->where('id_jabatan',$idjabatan)->where('status','aktif')->select('master.*','nama_jabatan')->get();
+            foreach($master as $m){
+                $Tmaster[]=[
+                    'id'=>$m->id,
+                    'nama'=>$m->nama,
+                    'nik'=>$m->nik,
+                    'tempat_lahir'=>$m->tempat_lahir,
+                    'tanggal_lahir'=>$m->tanggal_lahir,
+                    'jenis_kelamin'=>$m->jenis_kelamin,
+                    'alamat'=>$m->alamat,
+                    'no_hp'=>$m->no_hp,
+                    'agama'=>$m->agama,
+                    'nama_jabatan'=>$m->nama_jabatan,
+                    'golongan'=>$m->golongan,
+                ];
             }
         }
-
-        foreach($master as $m){
-            $idmaster=$m['id'];
+        foreach($Tmaster as $tm){
+            $idmaster=$tm['id'];
             $absensi=Absen::leftjoin('master','master.id','=','absen.id_master')
             ->select('absen.*','master.nama')
             // ->orderby('tanggal','asc')
@@ -206,13 +210,15 @@ class AbsensiController extends Controller
                         'jenis'=>$a->jenis,
                         'ket'=>$a->ket,
                         'status'=>$a->status,
+                        'surat'=>$a->surat,
+                        'file'=>$a->filesurat,
                     ];
                 }
             }
         }
 
         // distribusi absen
-        $dabsen=Distribusiabsen::where('id_jabatan',$idjabatan)->get();
+        $dabsen=Distribusiabsen::where('id_user',$iduser)->get();
         $disabsen=[];
         foreach($dabsen as $da){
             $disabsen[]=[
@@ -228,8 +234,7 @@ class AbsensiController extends Controller
         $idjabatan=Auth::user()->id_jabatan;
         $iduser=Auth::user()->id;
         $data=[
-            "is_user"=>$iduser,
-            "id_jabatan"=>$idjabatan,
+            "id_user"=>$iduser,
             "tanggal"=>$tanggal
         ];
         try{
@@ -246,7 +251,26 @@ class AbsensiController extends Controller
         $month=date('F Y');
         $bulan=date('m');
         $tahun=date('Y');
+        $dataabsenbulan=[];
         $absen=Absen::leftjoin('master','master.id','=','absen.id_master')->select('absen.*','master.nama','master.golongan')->whereMonth('tanggal',$bulan)->whereYear('tanggal',$tahun)->orderby('nama','desc')->get();
+        foreach($absen as $a){
+            $idmaster=$a->id_master;
+            $cektetap=Riwayatkaryawan::where('id_master',$idmaster)->where('jenis','Tetap')->get();
+            if(count($cektetap)!=0){
+                $status='Tetap';
+            }else{
+                $status='Tidak Tetap';
+            }
+            $dataabsenbulan[]=[
+                'nama'=>$a->nama,
+                'tanggal'=>$a->tanggal,
+                'jenis'=>$a->jenis,
+                'ket'=>$a->ket,
+                'status'=>$status,
+                'surat'=>$a->surat,
+            ];
+        }
+        // dd($dataabsenbulan);
         $per=[];
         $periode=DB::select("SELECT MONTH(tanggal) as bln, MONTHNAME(tanggal) as bulan,Year(tanggal) as tahun from absen group by MONTH(tanggal),MONTHNAME(tanggal),YEAR(tanggal)");
         foreach($periode as $p){
@@ -264,14 +288,59 @@ class AbsensiController extends Controller
         // dd($periode);
         $alldata=Absen::leftjoin('master','master.id','=','absen.id_master')->select('absen.*','master.nama','master.golongan')->orderby('nama','desc')->get();
 
-        return view('absensi.rekappotonganabsen',compact('month','absen','per','alldata'));
+        return view('absensi.rekappotonganabsen',compact('month','dataabsenbulan','per','alldata'));
     }
-
-    public function daftardistribusiabsen(){
-        $distribusi=Distribusiabsen::leftjoin('jabatan','jabatan.id','=','distribusi_absen.id_jabatan')->leftjoin('users','users.id','=','distribusi_absen.id_user')->get();
-
-        $user=User::where('role','kabag')->get();
-        dd($user);
+     public function daftardistribusiabsen(){
         return view('absensi.distribusiabsen');
+     }
+
+    public function daftardistribusiabsenpost(Request $request){
+        $data=[];
+        $userhk=[];
+        $date=$request->tanggal;
+        $absen=Absen::leftjoin('master','master.id','=','id_master')->where('tanggal',$date)->select('absen.*','id_jabatan')->get();
+        if(count($absen)!=0){
+            foreach($absen as $a){
+                $idjabatan=$a->id_jabatan;
+                $uhk=Hakakses::leftjoin('users','users.id','=','id_user')->where('akses_jabatan.id_jabatan',$idjabatan)->select('akses_jabatan.*','name')->get();
+                foreach($uhk as $uk){
+                    $userhk[]=[
+                        'id_user'=>$uk->id_user,
+                        'nama_user'=>$uk->name
+                    ];
+                }
+            }
+
+            $iduser_penerima = array_reduce($userhk, function($carry, $item){
+                if(!isset($carry[$item['id_user']])){
+                    $carry[$item['id_user']] = [
+                        'id_user'=>$item['id_user'],
+                        'nama_user'=>$item['nama_user']
+                    ];
+                }
+                return $carry;
+            });
+            foreach($iduser_penerima as $r){
+                $iduser=$r['id_user'];
+                $namauser=$r['nama_user'];
+                $distribusi=Distribusiabsen::leftjoin('users','users.id','=','distribusi_absen.id_user')
+                    ->where('id_user',$iduser)
+                    ->where('tanggal',$date)
+                    ->get();
+                if(count($distribusi)==0){
+                    $status='Belum Mengetahui';
+                }else{
+                    $status='Sudah Mengetahui';
+                }
+                $data[]=[
+                    'id_user'=>$iduser,
+                    'nama'=>$namauser,
+                    'status'=>$status
+                ];
+            }
+        }else{
+            $data=[];
+        }
+        return response()->json($data);
     }
 }

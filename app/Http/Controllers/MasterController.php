@@ -7,6 +7,7 @@ use App\Models\Bagian;
 use App\Models\Bataspensiun;
 use App\Models\Bpjskes;
 use App\Models\Bpjstk;
+use App\Models\Hakakses;
 use App\Models\Historypekerjaan;
 use App\Models\Jabatan;
 use App\Models\Master;
@@ -492,65 +493,28 @@ class MasterController extends Controller
 
     public function masterkabag(){
         $Tmaster=[];
-        $idjabatan=Auth::user()->id_jabatan;
-        $jabatan=Jabatan::where('id',$idjabatan)->get();
-
-        foreach($jabatan as $j){}
-        $iddepartemen=$j->departemen;
-        $idbagian=$j->bagian;
-        $idsie=$j->sie;
-        $level=$j->level;
-        if($level=='1'){
-            $carijabatan=Jabatan::get();
-        }
-        else if($level=='2'){
-            $carijabatan=Jabatan::where('departemen',$iddepartemen)->where('level','>',$level)->get();
-        }
-        else if($level=='3'){
-            $carijabatan=Jabatan::where('departemen',$iddepartemen)->where('bagian',$idbagian)->where('level','>',$level)->get();
-        }
-        else if($level=='4'){
-            $carijabatan=Jabatan::where('departemen',$iddepartemen)->where('bagian',$idbagian)->where('sie',$idsie)->where('level','>',$level)->get();
-        }
-        foreach ($carijabatan as $d) {
-            $id_jabatan=$d->id;
-            $qmaster=DB::select("SELECT master.*, nama_jabatan from master join jabatan on jabatan.id=master.id_jabatan where id_jabatan='$id_jabatan' and status='Aktif' order by id DESC");
-            if(count($qmaster)!=0){
-                foreach($qmaster as $qm){
-                    $idmaster=$qm->id;
-                    $bpjskes=Bpjskes::where('id_master',$idmaster)->get();
-                    $bpjstk=Bpjstk::where('id_master',$idmaster)->get();
-                    if(count($bpjskes)!=0 && count($bpjstk)!=0){
-                        $bkes='Terdaftar';
-                        $btk='Terdaftar';
-                    }elseif(count($bpjskes)!=0){
-                        $bkes='Terdaftar';
-                        $btk='Belum Terdaftar';
-                    }elseif(count($bpjstk)!=0){
-                        $bkes='Belum Terdaftar';
-                        $btk='Terdaftar';
-                    }else{
-                        $bkes='Belum Terdaftar';
-                        $btk='Belum Terdaftar';
-                    }
-                    $Tmaster[]=[
-                        'id'=>$qm->id,
-                        'nama'=>$qm->nama,
-                        'nik'=>$qm->nik,
-                        'tempat_lahir'=>$qm->tempat_lahir,
-                        'tanggal_lahir'=>$qm->tanggal_lahir,
-                        'jenis_kelamin'=>$qm->jenis_kelamin,
-                        'alamat'=>$qm->alamat,
-                        'no_hp'=>$qm->no_hp,
-                        'agama'=>$qm->agama,
-                        'nama_jabatan'=>$qm->nama_jabatan,
-                        'golongan'=>$qm->golongan,
-                        'bpjskes'=>$bkes,
-                        'bpjstk'=>$btk,
-                    ];
-                }
+        $iduser=Auth::user()->id;
+        $hks=Hakakses::where('id_user',$iduser)->get();
+        foreach($hks as $hk){
+            $idjabatan=$hk->id_jabatan;
+            $master=Master::leftjoin('jabatan','jabatan.id','=','id_jabatan')->where('id_jabatan',$idjabatan)->where('status','aktif')->select('master.*','nama_jabatan')->get();
+            foreach($master as $m){
+                $Tmaster[]=[
+                    'id'=>$m->id,
+                    'nama'=>$m->nama,
+                    'nik'=>$m->nik,
+                    'tempat_lahir'=>$m->tempat_lahir,
+                    'tanggal_lahir'=>$m->tanggal_lahir,
+                    'jenis_kelamin'=>$m->jenis_kelamin,
+                    'alamat'=>$m->alamat,
+                    'no_hp'=>$m->no_hp,
+                    'agama'=>$m->agama,
+                    'nama_jabatan'=>$m->nama_jabatan,
+                    'golongan'=>$m->golongan,
+                ];
             }
         }
+        // dd($Tmaster);
         return view('MasterKaryawan.master-kabag',compact('Tmaster'));
 
     }

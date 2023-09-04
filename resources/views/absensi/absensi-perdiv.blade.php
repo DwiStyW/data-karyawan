@@ -31,6 +31,7 @@
                             <th data-priority="3">Nama</th>
                             <th data-priority="3">Jenis</th>
                             <th data-priority="3">Keterangan</th>
+                            <th data-priority="3">Surat</th>
                             <th data-priority="1">Aksi</th>
                         </tr>
                     </thead>
@@ -70,12 +71,19 @@
         for (i = 0; i < disabsen.length; i++) {
             filtersabsen = data.filter(a => a.tanggal == disabsen[i].tanggal)
             for (j = 0; j < filtersabsen.length; j++) {
+                if (filtersabsen[j].surat == 'ada') {
+                    surat = filtersabsen[j].surat + '<a href="/assets/img/surat-izin/' + filtersabsen[j].file +
+                        '" target="_blank"><i class="bi bi-image"></i></a>'
+                } else {
+                    surat = filtersabsen[j].surat
+                }
                 datafilterabsen.push({
                     'id': filtersabsen[j].id,
                     'nama': filtersabsen[j].nama,
                     'tanggal': filtersabsen[j].tanggal,
                     'jenis': filtersabsen[j].jenis,
                     'ket': filtersabsen[j].ket,
+                    'surat': surat
                 })
             }
         }
@@ -100,6 +108,7 @@
                     'tanggal': values[a].tanggal,
                     'jenis': values[a].jenis,
                     'ket': values[a].ket,
+                    'surat': values[a].surat,
                 })
             }
         }
@@ -122,12 +131,16 @@
                 tanggal: tgl,
                 jenis: values[b].jenis,
                 ket: values[b].ket,
+                surat: values[b].surat,
                 button: '<button class="btn btn-sm btn-warning" type="button" class="btn btn-danger btn-block" data-bs-toggle="modal" data-bs-target="#mengetahui_absensi" onclick="mengetahui(' +
                     ts +
                     ')">Mengetahui</button>',
             })
         }
     }
+    console.log(datafilterabsen);
+    console.log(dataeliminasi);
+    console.log(dataabsensi);
     $(document).ready(function() {
         // DataTable
         $('#mTable').DataTable({
@@ -162,6 +175,9 @@
                 },
                 {
                     data: 'ket',
+                },
+                {
+                    data: 'surat',
                 },
                 {
                     data: 'button',

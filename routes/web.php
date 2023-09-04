@@ -124,9 +124,11 @@ Route::get('/absensi-perdiv', [AbsensiController::class, 'absensiperdiv'])->midd
 Route::get('/distribusi-absensi/{strtime}', [AbsensiController::class, 'distribusiabsen'])->middleware('auth');
 Route::get('/rekappotongan', [AbsensiController::class, 'rekappotongan']);
 Route::get('/daftardistribusiabsen', [AbsensiController::class, 'daftardistribusiabsen']);
+Route::post('/daftardistribusiabsen', [AbsensiController::class, 'daftardistribusiabsenpost'])->name('daftardistribusiabsen.post');
 
 Route::get('pengajuan', [PengajuanController::class, 'index']);
 Route::get('pengajuan/add', [PengajuanController::class, 'create']);
+Route::get('pengajuan/post', [PengajuanController::class, 'store']);
 
 Route::get('hakakses', [HakAksesController::class, 'index'])->middleware('auth');
 Route::get('tambahhakakses', [HakAksesController::class, 'create'])->middleware('auth');

@@ -116,12 +116,12 @@
             ],
             rowsGroup: [0, 1],
             data: data,
-            pageLength: '10',
+            pageLength: '50',
             processing: true,
             deferRender: true,
             "lengthMenu": [
-                [10, 25, 50, -1],
-                [10, 25, 50, "All"]
+                [50, 100, 200, -1],
+                [50, 100, 200, "All"]
             ],
             buttons: [{
                     extend: 'excelHtml5',

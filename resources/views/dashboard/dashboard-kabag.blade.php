@@ -55,7 +55,7 @@
                             <div class="card-body text-center position-relative">
                                 <h3 class="card-title mb-1">Jumlah Karyawan</h3>
                                 <h6 class="card-text mb-2">Tanggal : {{ date('d-m-Y') }}</h6>
-                                <h1 class="text-center mt-2 mb-2"><b>{{ count($master) }}</b></h1>
+                                <h1 class="text-center mt-2 mb-2"><b>{{ count($Tmaster) }}</b></h1>
                                 <svg class="position-absolute icon-dashboard" xmlns="http://www.w3.org/2000/svg"
                                     width="90" height="90" fill="#866500" class="bi bi-people-fill"
                                     viewBox="0 0 16 16">

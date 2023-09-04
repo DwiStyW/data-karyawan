@@ -9,6 +9,7 @@ use App\Models\Master;
 use App\Models\Sie;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class JabatanController extends Controller
@@ -69,6 +70,7 @@ class JabatanController extends Controller
             'level'=>$request->level,
             'pid'=>$request->pid,
             'tags'=>$tags,
+            'updateby'=>Auth::user()->id,
         ];
 
         try{
@@ -130,6 +132,7 @@ class JabatanController extends Controller
             'level'=>$request->level,
             'pid'=>$request->pid,
             'tags'=>$tags,
+            'updateby'=>Auth::user()->id,
         ];
         $where=[
             'id'=>$request->id_jabatan

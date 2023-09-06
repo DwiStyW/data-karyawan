@@ -319,6 +319,7 @@ class MasterController extends Controller
             'jabatan'=>$request->id_jabatan,
             'deskripsi'=>'karyawan baru',
             'keterangan'=>'',
+            'sertifikat'=>'',
             'tanggal'=>$request->awal_kerja,
         ];
         // dd($data1,$data2);

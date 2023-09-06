@@ -18,6 +18,7 @@ use App\Http\Controllers\SimpleController;
 use App\Http\Controllers\StrukturController;
 use App\Http\Controllers\RiwkaryawanController;
 use App\Http\Controllers\BagianController;
+use App\Http\Controllers\DataController;
 use App\Http\Controllers\HakAksesController;
 use App\Http\Controllers\SectionController;
 use Illuminate\Support\Facades\Route;
@@ -44,7 +45,7 @@ Route::post('/auth', [AuthController::class, 'auth']);
 Route::get('/logout', [AuthController::class, 'logout']);
 
 Route::get('dashboard-personalia', [DashboardController::class, 'index'])->middleware('auth');
-Route::get('dashboard-kabag', [DashboardController::class, 'dashboardkabag'])->middleware('auth');
+Route::get('dashboard-kabag', [DashboardController::class, 'dashboardkabag'],[DataController::class, 'pengajuan'])->middleware('auth');
 
 //Filter perdepartemen&bagian
 Route::get('perdepart/{id}', [MasterController::class, 'perdepartemen'])->middleware('auth');
@@ -95,6 +96,7 @@ Route::get('/riwayatkaryawan', [RiwayatkaryawanController::class, 'index'])->mid
 Route::post('/postriwayatkaryawan', [RiwayatKaryawanController::class, 'store'])->middleware('auth');
 
 Route::get('jabatan', [JabatanController::class, 'index']);
+Route::get('filterjabatan', [JabatanController::class, 'index']);
 Route::get('/getJabatan', [JabatanController::class, 'getJabatan'])->name('getJabatan');
 Route::post('/postJabatan', [JabatanController::class, 'store']);
 Route::post('/updatejabatan', [JabatanController::class, 'update']);

@@ -10,6 +10,6 @@ class Pengajuan extends Model
     use HasFactory;
     protected $table="pengajuan_karyawan";
     protected $fillable=[
-        'idpengaju','idpenyatuju','status','idjabatan','jumlah','pendidikan_akhir','profesi','usia_max','jenis_kelamin'
+        'idpengaju','idpenyatuju','status','idjabatan','jumlah','pendidikan_akhir','profesi','usia_max','jenis_kelamin','updateby'
     ];
 }

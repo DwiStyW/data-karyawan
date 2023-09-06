@@ -41,9 +41,20 @@
                     <i class="bi bi-plus-square-fill"></i>
                     Karyawan
                 </button>
-                <a href="/jabatan" class="btn btn-sm btn-secondary">
-                    Jabatan
-                </a>
+                @if (count($jtnblmaprove) != 0)
+                    <a href="/jabatan" class="btn btn-sm btn-secondary position-relative">
+                        <div class="bg-danger position-absolute rounded-circle"
+                            style="right:-5px !important;top:-10px !important; width:20px;hight:20px">
+                            {{ count($jtnblmaprove) }}</div>
+                        Jabatan
+                    </a>
+                @else
+                    <a href="/jabatan">
+                        <button class="btn btn-sm btn-secondary">
+                            Jabatan
+                        </button>
+                    </a>
+                @endif
                 <a href="/struktur" class="btn btn-sm btn-secondary">
                     Struktur
                 </a>

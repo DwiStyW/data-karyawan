@@ -6,7 +6,9 @@ use App\Models\Bagian;
 use App\Models\Departemen;
 use App\Models\Jabatan;
 use App\Models\Master;
+use App\Models\Pengajuan;
 use App\Models\Sie;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,13 +23,14 @@ class JabatanController extends Controller
      */
     public function index()
     {
-        $Tjabatan=DB::select('SELECT jabatan.*, nama_jabatan,nama_departemen,nama_bagian,nama_sie FROM jabatan LEFT JOIN departemen ON departemen.id=jabatan.departemen LEFT JOIN bagian ON bagian.id=jabatan.bagian LEFT JOIN sie ON sie.id=jabatan.sie');
-        $jabatan=Jabatan::get();
+        $Tjabatan=DB::select('SELECT jabatan.*, nama_jabatan,nama_departemen,nama_bagian,nama_sie FROM jabatan LEFT JOIN users ON users.id=jabatan.updateby LEFT JOIN departemen ON departemen.id=jabatan.departemen LEFT JOIN bagian ON bagian.id=jabatan.bagian LEFT JOIN sie ON sie.id=jabatan.sie where role="personalia"');
+        $jabatan=Jabatan::leftjoin('users','users.id','=','updateby')->where('role','personalia')->select('jabatan.*')->get();
+        $jtnblmaprove=Jabatan::leftjoin('users','users.id','=','updateby')->where('role','pimpinan')->select('jabatan.*','name')->get();
         $departemen=Departemen::get();
         $bagian=Bagian::get();
         // dd($Tjabatan);
         $sie=Sie::get();
-        return view('jabatan.jabatan',compact('Tjabatan','jabatan','departemen','bagian','sie'));
+        return view('jabatan.jabatan',compact('Tjabatan','jabatan','departemen','bagian','sie','jtnblmaprove'));
     }
 
 
@@ -124,6 +127,11 @@ class JabatanController extends Controller
         }else{
             $tags=0;
         }
+        $idubdateby=$request->updateby;
+        $updateby=User::where('id',$idubdateby)->get();
+        foreach ($updateby as $u){}
+        $role=$u->role;
+        // dd($role);
         $data=[
             'nama_jabatan'=>$request->nama_jabatan,
             'departemen'=>$request->departemen,
@@ -134,16 +142,35 @@ class JabatanController extends Controller
             'tags'=>$tags,
             'updateby'=>Auth::user()->id,
         ];
-        $where=[
-            'id'=>$request->id_jabatan
+        $data_pengajuan=[
+            'status'=>'pengajuan',
         ];
+
         $id=$request->id_jabatan;
-        try {
-            Jabatan::where('id',$id)->update($data);
-            return back()->with('success','Data berhasil diedit!');
-        }catch(Exception $e){
-            return back()->with('failed','Data gagal diedit!');
+        if($role=='personalia'){
+            try {
+                Jabatan::where('id',$id)->update($data);
+                return back()->with('success','Data berhasil diedit!');
+            }catch(Exception $e){
+                return back()->with('failed','Data gagal diedit!');
+            }
+        }else if($role=='pimpinan'){
+            DB::beginTransaction();
+            try{
+                Jabatan::where('id',$id)->update($data);
+                Pengajuan::where('idjabatan',$id)->update($data_pengajuan);
+
+                DB::commit();
+                //alert berhasil
+                return back()->with('success','Data berhasil ditambahkan!');
+            }catch(Exception $e){
+                dd($e);
+                DB::rollback();
+                //alert gagal
+                return back()->with('failed','Data gagal ditambahkan!');
+            }
         }
+
     }
 
     /**

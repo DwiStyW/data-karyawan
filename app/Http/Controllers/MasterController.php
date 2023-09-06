@@ -27,7 +27,8 @@ class MasterController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        $jabatan=Jabatan::get();
+        $jabatan=Jabatan::leftjoin('users','users.id','=','updateby')->where('role','personalia')->select('jabatan.*')->get();
+        $jtnblmaprove=Jabatan::leftjoin('users','users.id','=','updateby')->where('role','pimpinan')->get();
         $master=DB::select('SELECT master.*, nama_jabatan from master join jabatan on jabatan.id=master.id_jabatan where status="Aktif" order by id DESC');
         foreach($master as $tm){
             $idmaster=$tm->id;
@@ -71,7 +72,7 @@ class MasterController extends Controller
         }
         // dd($Tmaster);
          // Load index view
-         return view('MasterKaryawan.master',compact('jabatan','Tmaster'));
+         return view('MasterKaryawan.master',compact('jabatan','Tmaster','jtnblmaprove'));
      }
 
      public function perdepartemen($id){
@@ -297,6 +298,8 @@ class MasterController extends Controller
         $data1=[
             'nama'=>$request->nama,
             'nik'=>$request->nik,
+            'nokk'=>$request->nik,
+            'norekening'=>$request->nik,
             'tempat_lahir'=>$request->tempat_lahir,
             'tanggal_lahir'=>$request->tanggal_lahir,
             'jenis_kelamin'=>$request->jenis_kelamin,
@@ -370,6 +373,8 @@ class MasterController extends Controller
         $data=[
             'nama'=>$request->nama,
             'nik'=>$request->nik,
+            'nokk'=>$request->nik,
+            'norekening'=>$request->nik,
             'tempat_lahir'=>$request->tempat_lahir,
             'tanggal_lahir'=>$request->tanggal_lahir,
             'jenis_kelamin'=>$request->jenis_kelamin,

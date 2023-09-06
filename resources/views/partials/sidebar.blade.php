@@ -36,7 +36,7 @@
                         </a>
                     </li>
                     <li class="list-group-item">
-                        <a class="nav-link btn position-relative {{ Request::is('departement') ? 'active' : '' }}{{ Request::is('bagian') ? 'active' : '' }}{{ Request::is('section') ? 'active' : '' }}{{ Request::is('jabatan') ? 'active' : '' }}{{ Request::is('golongan') ? 'active' : '' }}"
+                        <a class="nav-link btn position-relative {{ Request::is('departement') ? 'active' : '' }}{{ Request::is('bagian') ? 'active' : '' }}{{ Request::is('section') ? 'active' : '' }}{{ Request::is('filterjabatan') ? 'active' : '' }}{{ Request::is('golongan') ? 'active' : '' }}"
                             href="#">
                             <div class="btn-header me-3 d-flex align-items-center">
                                 <i class="bi bi-building"></i>
@@ -49,7 +49,7 @@
                             </div>
                         </a>
                         <ul
-                            class="submenu collapse {{ Request::is('departement') ? 'show' : '' }}{{ Request::is('bagian') ? 'show' : '' }}{{ Request::is('section') ? 'show' : '' }}{{ Request::is('jabatan') ? 'show' : '' }}{{ Request::is('golongan') ? 'show' : '' }}"style="padding-inline-start: 0px !important;">
+                            class="submenu collapse {{ Request::is('departement') ? 'show' : '' }}{{ Request::is('bagian') ? 'show' : '' }}{{ Request::is('section') ? 'show' : '' }}{{ Request::is('filterjabatan') ? 'show' : '' }}{{ Request::is('golongan') ? 'show' : '' }}"style="padding-inline-start: 0px !important;">
                             <li class="list-group-item bg-light">
                                 <a class="btn py-1 {{ Request::is('departement') ? 'active' : '' }}"
                                     href="/departement" id="navDAR">
@@ -84,8 +84,8 @@
                                 </a>
                             </li>
                             <li class="list-group-item bg-light">
-                                <a class="btn py-1 {{ Request::is('jabatan') ? 'active' : '' }}" href="/jabatan"
-                                    id="navDAR">
+                                <a class="btn py-1 {{ Request::is('filterjabatan') ? 'active' : '' }}"
+                                    href="/filterjabatan" id="navDAR">
                                     <div class="btn-header me-1">
                                         <i class="bi bi-dot"></i>
                                     </div>
@@ -140,7 +140,7 @@
                         </a>
                     </li>
                     <li class="list-group-item">
-                        <a class="nav-link btn position-relativess {{ Request::is('absensi') ? 'active' : '' }}{{ Request::is('rekapabsensi') ? 'active' : '' }}{{ Request::is('rekappotongan') ? 'active' : '' }}{{ Request::is('jabatan') ? 'active' : '' }}{{ Request::is('golongan') ? 'active' : '' }}"
+                        <a class="nav-link btn position-relativess {{ Request::is('absensi') ? 'active' : '' }}{{ Request::is('rekapabsensi') ? 'active' : '' }}{{ Request::is('rekappotongan') ? 'active' : '' }}"
                             href="#">
                             <div class="btn-header me-3 d-flex align-items-center">
                                 <i class="bi bi-clock-history"></i>
@@ -153,7 +153,7 @@
                             </div>
                         </a>
                         <ul
-                            class="submenu collapse {{ Request::is('absensi') ? 'show' : '' }}{{ Request::is('rekapabsensi') ? 'show' : '' }}{{ Request::is('rekappotongan') ? 'show' : '' }}{{ Request::is('jabatan') ? 'show' : '' }}{{ Request::is('golongan') ? 'show' : '' }}"style="padding-inline-start: 0px !important;">
+                            class="submenu collapse {{ Request::is('absensi') ? 'show' : '' }}{{ Request::is('rekapabsensi') ? 'show' : '' }}{{ Request::is('rekappotongan') ? 'show' : '' }}"style="padding-inline-start: 0px !important;">
                             <li class="list-group-item bg-light">
                                 <a class="btn py-1 {{ Request::is('absensi') ? 'active' : '' }}" href="/absensi"
                                     id="navDAR">
@@ -285,6 +285,13 @@
                             <div class="btn-body">
                                 Pengajuan Karyawan
                             </div>
+                            @isset($pengajuan)
+                                <div class="position-absolute end-0 pe-3">
+                                    <div id="pengajuan">
+                                        {{ $pengajuan }}
+                                    </div>
+                                </div>
+                            @endisset
                         </a>
                     </li>
                 @endif

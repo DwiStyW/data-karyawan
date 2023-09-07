@@ -11,7 +11,7 @@
  Target Server Version : 80030
  File Encoding         : 65001
 
- Date: 06/09/2023 16:21:48
+ Date: 07/09/2023 10:37:45
 */
 
 SET NAMES utf8mb4;
@@ -1157,7 +1157,7 @@ INSERT INTO `master` VALUES (380, 'Rahmad', '', '3525130310920001', '', '', 'Gre
 INSERT INTO `master` VALUES (381, 'Jaini Dahlan', '', '3525082404920004', '', '', 'Gresik', '1982-04-24', 'laki-laki', 'Belahanrejo, Kedamean', '', 'Islam', 69, 'HL', 'Aktif', '2023-01-23 08:56:00');
 INSERT INTO `master` VALUES (382, 'Ani Supriadi', '', '3521111207780006', '', '', 'Madiun', '1978-07-12', 'laki-laki', '', '', 'Islam', 69, 'HL', 'Aktif', '2023-01-23 08:56:00');
 INSERT INTO `master` VALUES (383, 'Sugeng Hadi Iswanto', '', '3522012206820002', '', '', 'Mojokerto', '1982-06-22', 'laki-laki', 'Dsn. Sukorejo RT05/RW02 Mojokerto', '', 'Islam', 69, 'HL', 'Aktif', '2023-01-23 08:56:00');
-INSERT INTO `master` VALUES (384, 'Purnomo1', '', '3525110807810001', '3525000000000000', '123456789', 'Gresik', '1981-07-08', 'laki-laki', 'Desa Cerme Lor RT02 RW07', '081234567890', 'Islam', 69, 'HL', 'Aktif', '2023-09-06 02:17:26');
+INSERT INTO `master` VALUES (384, 'Purnomo', '', '3525110807810001', '3525000000000000', '123456789', 'Gresik', '1981-07-08', 'laki-laki', 'Desa Cerme Lor RT02 RW07', '081234567890', 'Islam', 69, 'HL', 'Aktif', '2023-09-07 02:31:26');
 
 -- ----------------------------
 -- Table structure for pendidikan
@@ -2317,8 +2317,8 @@ CREATE TABLE `riwayat_karyawan`  (
   `jenis` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `jabatan` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `deskripsi` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `keterangan` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `sertifikat` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `keterangan` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+  `sertifikat` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '',
   `tanggal` date NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE

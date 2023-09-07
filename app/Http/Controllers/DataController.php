@@ -30,7 +30,7 @@ class DataController extends Controller
             foreach($users as $u){}
             if(count($users)!=0){
                 $iduserpengaju=$u->id;
-                $pengajuanuser=Pengajuan::leftjoin('users','users.id','=','idpengaju')->leftjoin('jabatan','jabatan.id','=','idjabatan')->where('idpengaju',$iduserpengaju)->select('pengajuan_karyawan.*','nama_jabatan','name')->get();
+                $pengajuanuser=Pengajuan::leftjoin('users','users.id','=','idpengaju')->leftjoin('jabatan','jabatan.id','=','idjabatan')->where('pengajuan_karyawan.updateby',$iduserpengaju)->where('pengajuan_karyawan.status','!=','ditolak')->select('pengajuan_karyawan.*','nama_jabatan','name')->get();
                 foreach($pengajuanuser as $pu){
                     $pengajuanpersetujuan[]=[
                         'id'=>$pu->id,
@@ -52,5 +52,54 @@ class DataController extends Controller
         }
         $pengajuan=count($pengajuanpersetujuan);
         return $pengajuan;
+    }
+
+    public static function absen(){
+        $Tmaster=[];
+        $data=[];
+        $iduser=Auth::user()->id;
+        $hks=Hakakses::where('id_user',$iduser)->get();
+        foreach($hks as $hk){
+            $idjabatan=$hk->id_jabatan;
+            $master=Master::leftjoin('jabatan','jabatan.id','=','id_jabatan')->where('id_jabatan',$idjabatan)->where('status','aktif')->select('master.*','nama_jabatan')->get();
+            foreach($master as $m){
+                $Tmaster[]=[
+                    'id'=>$m->id,
+                    'nama'=>$m->nama,
+                    'nik'=>$m->nik,
+                    'tempat_lahir'=>$m->tempat_lahir,
+                    'tanggal_lahir'=>$m->tanggal_lahir,
+                    'jenis_kelamin'=>$m->jenis_kelamin,
+                    'alamat'=>$m->alamat,
+                    'no_hp'=>$m->no_hp,
+                    'agama'=>$m->agama,
+                    'nama_jabatan'=>$m->nama_jabatan,
+                    'golongan'=>$m->golongan,
+                ];
+            }
+        }
+        foreach($Tmaster as $tm){
+            $idmaster=$tm['id'];
+            $absensi=Absen::leftjoin('master','master.id','=','absen.id_master')
+            ->select('absen.*','master.nama')
+            // ->orderby('tanggal','asc')
+            ->where('absen.id_master',$idmaster)
+            ->get();
+            if(count($absensi)!=0){
+                foreach($absensi as $a){
+                    $data[]=[
+                        'id'=>$a->id,
+                        'nama'=>$a->nama,
+                        'tanggal'=>strtotime($a->tanggal)*1000,
+                        'jenis'=>$a->jenis,
+                        'ket'=>$a->ket,
+                        'status'=>$a->status,
+                        'surat'=>$a->surat,
+                        'file'=>$a->filesurat,
+                    ];
+                }
+            }
+        }
+        return count($data);
     }
 }

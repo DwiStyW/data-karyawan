@@ -22,19 +22,21 @@
                 <h3 class="title-pages fw-bold">Data Jabatan</h3>
             </header>
             @include('alert')
-            <div class="pb-3">
-                <button data-bs-toggle="modal" data-bs-target="#tambah_Jabatan" class="btn btn-sm btn-secondary">
-                    <i class="bi bi-plus-square-fill"></i>
-                    Jabatan
-                </button>
+            @if (Request::is('jabatan'))
+                <div class="pb-3">
+                    <button data-bs-toggle="modal" data-bs-target="#tambah_Jabatan" class="btn btn-sm btn-secondary">
+                        <i class="bi bi-plus-square-fill"></i>
+                        Jabatan
+                    </button>
 
-                <a href="/struktur" class="btn btn-sm btn-secondary">
-                    Struktur
-                </a>
-                <a href="master" class="btn btn-sm btn-secondary">
-                    Karyawan
-                </a>
-            </div>
+                    <a href="/struktur" class="btn btn-sm btn-secondary">
+                        Struktur
+                    </a>
+                    <a href="master" class="btn btn-sm btn-secondary">
+                        Karyawan
+                    </a>
+                </div>
+            @endif
             @if (count($jtnblmaprove) != 0)
                 <div class="mb-5">
                     <table class="table table-striped table-bordered ">

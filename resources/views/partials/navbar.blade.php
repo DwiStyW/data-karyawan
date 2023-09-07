@@ -25,7 +25,8 @@
             </div>
         </div>
         <a class="navbar-brand d-flex align-items-top order-lg-2 me-lg-0" href="sidar-ui">
-            <img src="../assets/img/logo/log.png" width="120" class="mobile" style="margin-left: -10px;">
+            <img src="{{ URL::asset('/assets/img/logo/log.png') }}" width="120" class="mobile"
+                style="margin-left: -10px;">
         </a>
         <button class="navbar-toggler bg-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar">
             <span class="navbar-toggler-icon"></span>

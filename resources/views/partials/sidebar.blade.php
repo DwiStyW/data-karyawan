@@ -2,7 +2,8 @@
     tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
     <div class="offcanvas-header d-block text-center position-relative py-4">
         <div class="position-relative d-inline-block mb-1">
-            <img src="../assets/img/logo/logo.png" width="140" alt="" style="padding: .35rem;">
+            <img src="{{ URL::asset('/assets/img/logo/logo.png') }}" width="140" alt=""
+                style="padding: .35rem;">
         </div>
         <h6 class="offcanvas-title mb-1" id="sidebarLabel" style="color:#444941"><b>Sistem Informasi</b></h6>
         <p class="offcanvas-title mb-1" id="sidebarLabel" style="color:#444941">Data Karyawan</p>
@@ -274,6 +275,13 @@
                             <div class="btn-body">
                                 Absensi Karyawan
                             </div>
+                            @isset($countabsen)
+                                <div class="position-absolute notif">
+                                    <div id="pengajuan">
+                                        {{ $countabsen }}
+                                    </div>
+                                </div>
+                            @endisset
                         </a>
                     </li>
                     <li class="list-group-item">
@@ -285,10 +293,10 @@
                             <div class="btn-body">
                                 Pengajuan Karyawan
                             </div>
-                            @isset($pengajuan)
-                                <div class="position-absolute end-0 pe-3">
+                            @isset($countpengajuan)
+                                <div class="position-absolute notif">
                                     <div id="pengajuan">
-                                        {{ $pengajuan }}
+                                        {{ $countpengajuan }}
                                     </div>
                                 </div>
                             @endisset
@@ -301,6 +309,21 @@
     </div>
 </div>
 <style>
+    .notif {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background-color: rgb(219, 0, 0);
+        color: ghostwhite;
+        right: 0;
+        text-align: center;
+        align-items: center;
+        padding: 2px;
+        margin-right: 10px;
+        border-color: rgb(133, 0, 0);
+        font-size: 11px;
+    }
+
     #sidebar {
         max-width: 320px;
     }

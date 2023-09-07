@@ -521,7 +521,9 @@ class MasterController extends Controller
             }
         }
         // dd($Tmaster);
-        return view('MasterKaryawan.master-kabag',compact('Tmaster'));
+        $countpengajuan=DataController::pengajuan();
+        $countabsen=DataController::absen();
+        return view('MasterKaryawan.master-kabag',compact('Tmaster','countpengajuan','countabsen'));
 
     }
 }

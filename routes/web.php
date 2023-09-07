@@ -130,7 +130,11 @@ Route::post('/daftardistribusiabsen', [AbsensiController::class, 'daftardistribu
 
 Route::get('pengajuan', [PengajuanController::class, 'index']);
 Route::get('pengajuan/add', [PengajuanController::class, 'create']);
-Route::get('pengajuan/post', [PengajuanController::class, 'store']);
+Route::post('pengajuan/post', [PengajuanController::class, 'store']);
+Route::get('pengajuan/edit/{id}', [PengajuanController::class, 'edit']);
+Route::post('pengajuan/update/{id}', [PengajuanController::class, 'update']);
+Route::post('/persetujuan', [PengajuanController::class, 'persetujuan']);
+Route::post('/tolakpengajuan', [PengajuanController::class, 'tolakpengajuan']);
 
 Route::get('hakakses', [HakAksesController::class, 'index'])->middleware('auth');
 Route::get('tambahhakakses', [HakAksesController::class, 'create'])->middleware('auth');

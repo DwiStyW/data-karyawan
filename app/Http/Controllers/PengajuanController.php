@@ -7,6 +7,7 @@ use App\Models\Hakakses;
 use App\Models\Jabatan;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Pengajuan;
+use App\Models\Riwayatpengajuan;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -23,12 +24,18 @@ class PengajuanController extends Controller
     {
         // dd(Auth::id());
         $iduser=Auth::user()->id;
-        $carilevel=User::leftjoin('jabatan','jabatan.id','=','id_jabatan')->where('users.id',$iduser)->select('users.*','level')->get();
+        $carilevel=User::leftjoin('jabatan','jabatan.id','=','id_jabatan')
+        ->where('users.id',$iduser)
+        ->select('users.*','level')
+        ->get();
         foreach ($carilevel as $cl){}
         $level=$cl->level;
         $levelbawahan=$level+1;
         // dd($level);
-        $akses=Hakakses::leftjoin('jabatan','jabatan.id','=','id_jabatan')->where('id_user',$iduser)->where('level',$levelbawahan)->get();
+        $akses=Hakakses::leftjoin('jabatan','jabatan.id','=','id_jabatan')
+        ->where('id_user',$iduser)
+        ->where('level',$levelbawahan)
+        ->get();
         $pengajuanpersetujuan=[];
         foreach($akses as $as){
             $jabatan=$as->id_jabatan;
@@ -36,7 +43,11 @@ class PengajuanController extends Controller
             foreach($users as $u){}
             if(count($users)!=0){
                 $iduserpengaju=$u->id;
-                $pengajuanuser=Pengajuan::leftjoin('users','users.id','=','idpengaju')->leftjoin('jabatan','jabatan.id','=','idjabatan')->where('pengajuan_karyawan.updateby',$iduserpengaju)->where('pengajuan_karyawan.status','pengajuan')->select('pengajuan_karyawan.*','nama_jabatan','name')->get();
+                $pengajuanuser=Pengajuan::leftjoin('users','users.id','=','idpengaju')
+                ->leftjoin('jabatan','jabatan.id','=','idjabatan')
+                ->where('pengajuan_karyawan.updateby',$iduserpengaju)
+                ->where('pengajuan_karyawan.status','!=','ditolak')
+                ->select('pengajuan_karyawan.*','nama_jabatan','name')->get();
                 foreach($pengajuanuser as $pu){
                     $pengajuanpersetujuan[]=[
                         'id'=>$pu->id,
@@ -58,7 +69,8 @@ class PengajuanController extends Controller
         }
         // dump($akses);
         $pengajuanpribadi=Pengajuan::leftjoin('users','users.id','=','idpengaju')->leftjoin('jabatan','jabatan.id','=','idjabatan')->where('idpengaju',$iduser)->select('pengajuan_karyawan.*','nama_jabatan','name')->get();
-        return view('pengajuan.list_pengajuan',compact('pengajuanpribadi','pengajuanpersetujuan'));
+        $countabsen=DataController::absen();
+        return view('pengajuan.list_pengajuan',compact('pengajuanpribadi','pengajuanpersetujuan','countabsen'));
     }
 
     /**
@@ -121,6 +133,7 @@ class PengajuanController extends Controller
                 try{
                     Jabatan::insert($data_jabatan);
                 }catch(Exception $e){
+                    return redirect('/pengajuan')->with('failed','Data gagal ditambahkan!');
                 }
                 $jabatanbaru=Jabatan::where('nama_jabatan',$jabatan)->get();
                 foreach($jabatanbaru as $jb){}
@@ -128,7 +141,7 @@ class PengajuanController extends Controller
                 $data_pengaju=[
                     'idpengaju'=>$request->idpengaju,
                     'idpenyetuju'=>null,
-                    'status'=>'Belum dicek',
+                    'status'=>'Pengajuan dengan jabatan baru',
                     'idjabatan'=>$jb->id,
                     'jumlah'=>$request->jumlah,
                     'pendidikan_terakhir'=>$request->pendidikan,
@@ -168,7 +181,12 @@ class PengajuanController extends Controller
      */
     public function edit($id)
     {
-        //
+        $pengajuan=Pengajuan::where('id',$id)->get();
+        $jabatan=Jabatan::get();
+        $pendidikan=Bataspensiun::get();
+        // dump($pengajuan);
+        // dd('text');
+        return view('pengajuan.edit_pengajuan',compact('pengajuan','id','jabatan','pendidikan'));
     }
 
     /**
@@ -180,7 +198,68 @@ class PengajuanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $jabatan=$request->jabatan;
+        $bool = ( !is_int($jabatan) ? (ctype_digit($jabatan)) : true );
+        // dd($bool);
+        // dump($bool);
+            if ($bool==true){
+                $data_pengaju=[
+                    'idpengaju'=>$request->idpengaju,
+                    'status'=>'Pengajuan',
+                    'idjabatan'=>$jabatan,
+                    'jumlah'=>$request->jumlah,
+                    'pendidikan_terakhir'=>$request->pendidikan,
+                    'profesi'=>$request->profesi,
+                    'max_usia'=>$request->max_usia,
+                    'jenis_kelamin'=>$request->jenis_kelamin,
+                    'updated_at'=>date('Y-m-d H:i:s'),
+                ];
+                 try{
+                    Pengajuan::where('id',$id)->update($data_pengaju);
+                    return redirect('/pengajuan')->with('success','Data berhasil ditambahkan!');
+                }catch(Exception $e){
+                    dd($e);
+                    return redirect('/pengajuan')->with('failed','Data gagal ditambahkan!');
+                }
+            }else{
+                $data_jabatan=[
+                    'nama_jabatan'=>$jabatan,
+                    'departemen'=>null,
+                    'bagian'=>null,
+                    'sie'=>null,
+                    'level'=>null,
+                    'pid'=>null,
+                    'tags'=>null,
+                    'updateby'=>Auth::user()->id,
+                ];
+                try{
+                    Jabatan::insert($data_jabatan);
+                }catch(Exception $e){
+                    return redirect('/pengajuan')->with('failed','Data gagal ditambahkan!');
+                }
+                $jabatanbaru=Jabatan::where('nama_jabatan',$jabatan)->get();
+                foreach($jabatanbaru as $jb){}
+                // dump($jabatanbaru);
+                $data_pengaju=[
+                    'idpengaju'=>$request->idpengaju,
+                    'status'=>'Belum dicek',
+                    'idjabatan'=>$jb->id,
+                    'jumlah'=>$request->jumlah,
+                    'pendidikan_terakhir'=>$request->pendidikan,
+                    'profesi'=>$request->profesi,
+                    'max_usia'=>$request->max_usia,
+                    'jenis_kelamin'=>$request->jenis_kelamin,
+                    'updated_at'=>date('Y-m-d H:i:s'),
+
+                ];
+                 try{
+                    Pengajuan::where('id',$id)->update($data_pengaju);
+                    return redirect('/pengajuan')->with('success','Data berhasil ditambahkan!');
+                }catch(Exception $e){
+                    return redirect('/pengajuan')->with('failed','Data gagal ditambahkan!');
+                }
+
+            }
     }
 
     /**
@@ -192,5 +271,67 @@ class PengajuanController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function persetujuan(Request $request){
+        $id=$request->id;
+        $data1=[
+            'idpenyetuju'=>Auth::user()->id,
+            'updateby'=>Auth::user()->id,
+        ];
+        $data2=[
+            'id_pengajuan'=>$id,
+            'id_user'=>Auth::user()->id,
+            'deskripsi'=>'telah menyetujui',
+            'status'=>'setuju',
+        ];
+        DB::beginTransaction();
+        try{
+            Pengajuan::where('id',$id)->update($data1);
+            Riwayatpengajuan::insert($data2);
+
+            DB::commit();
+            //alert berhasil
+            return back()->with('success','Data berhasil ditambahkan!');
+        }catch(Exception $e){
+            // dd($e);
+            DB::rollback();
+            //alert gagal
+            return back()->with('failed','Data gagal ditambahkan!');
+        }
+    }
+    public function tolakpengajuan(Request $request){
+        $id=$request->id_pengajuan;
+        $data1=[
+            'idpenyetuju'=>Auth::user()->id,
+            'status'=>'ditolak',
+            'updateby'=>Auth::user()->id,
+        ];
+
+        if($request->alasan!=''){
+            $catatan='telah menolak dengan catatan '.$request->alasan;
+        }else{
+            $catatan='telah menolak';
+        }
+        $data2=[
+            'id_pengajuan'=>$id,
+            'id_user'=>Auth::user()->id,
+            'deskripsi'=>$catatan,
+            'status'=>'ditolak',
+        ];
+        DB::beginTransaction();
+        try{
+            Pengajuan::where('id',$id)->update($data1);
+            Riwayatpengajuan::insert($data2);
+
+            DB::commit();
+            //alert berhasil
+            return back()->with('success','Data berhasil ditambahkan!');
+        }catch(Exception $e){
+            // dd($e);
+            DB::rollback();
+            //alert gagal
+            return back()->with('failed','Data gagal ditambahkan!');
+        }
     }
 }

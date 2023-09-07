@@ -68,7 +68,7 @@
                                 <td>{{ $p->status }}</td>
                                 <td>
                                     <div class="d-flex justify-content-between">
-                                        <a href="pengajuanpribadi/edit/{{ $p->id }}">
+                                        <a href="pengajuan/edit/{{ $p->id }}">
                                             <button class="btn btn-sm btn-primary">
                                                 <i class="bi bi-pencil-square"></i>
                                             </button>
@@ -101,7 +101,7 @@
                             <th data-priority="3">Maksimal Usia</th>
                             <th data-priority="3">Jenis Kelamin</th>
                             <th data-priority="3">Status</th>
-                            <th data-priority="3">Aksi</th>
+                            <th data-priority="1" style="width:160px">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -121,14 +121,18 @@
                                 <td>{{ $pp['status'] }}</td>
                                 <td>
                                     <div class="d-flex justify-content-between">
-                                        <a href="pengajuanpribadi/edit/{{ $p->id }}">
-                                            <button class="btn btn-sm btn-success">
+                                        <div>
+                                            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#setujui" onclick="setujui({{ $pp['id'] }})">
                                                 Setujui
                                             </button>
-                                        </a>
-                                        <button class="btn btn-sm btn-danger">
-                                            Tolak
-                                        </button>
+                                        </div>
+                                        <div>
+                                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#tolak" onclick="tolak({{ $pp['id'] }})">
+                                                Tolak
+                                            </button>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>
@@ -140,6 +144,8 @@
         @include('partials.footer')
     </main>
     @include('partials.navdown')
+    @include('pengajuan.setujui')
+    @include('pengajuan.tolak')
 
 </body>
 

@@ -120,6 +120,7 @@
 @include('MasterKaryawan.tambah_master')
 @include('MasterKaryawan.edit_master')
 @include('MasterKaryawan.hapus_master')
+@include('sweetalert::alert')
 <script src="../assets/js/jquery-1.11.3.min.js"></script>
 {{-- <script src="../assets/ui/jquery-3.6.1/jquery-3.6.1.min.js"></script> --}}
 <script type="text/javascript" src="../assets/DataTables/datatables.min.js"></script>
@@ -187,5 +188,4 @@
 
     });
 </script>
-
 </html>

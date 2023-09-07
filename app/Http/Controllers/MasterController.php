@@ -297,6 +297,8 @@ class MasterController extends Controller
         $data1=[
             'nama'=>$request->nama,
             'nik'=>$request->nik,
+            'nokk'=>$request->nokk,
+            'norekening'=>$request->norekening,
             'tempat_lahir'=>$request->tempat_lahir,
             'tanggal_lahir'=>$request->tanggal_lahir,
             'jenis_kelamin'=>$request->jenis_kelamin,
@@ -317,6 +319,7 @@ class MasterController extends Controller
             'deskripsi'=>'karyawan baru',
             'keterangan'=>'',
             'tanggal'=>$request->awal_kerja,
+            'updated_at'=>date("Y-m-d H:i:s"),
         ];
         // dd($data1,$data2);
         // dd($data2);
@@ -324,12 +327,12 @@ class MasterController extends Controller
         try{
             master::insert($data1);
             riwayatkaryawan::insert($data2);
-
+            
             DB::commit();
             //alert berhasil
             return back()->with('success','Data berhasil ditambahkan!');
         }catch(Exception $e){
-            dd($e);
+            // dd($e);
             DB::rollback();
             //alert gagal
             return back()->with('failed','Data gagal ditambahkan!');
@@ -370,6 +373,8 @@ class MasterController extends Controller
         $data=[
             'nama'=>$request->nama,
             'nik'=>$request->nik,
+            'nokk'=>$request->nokk,
+            'norekening'=>$request->norekening,
             'tempat_lahir'=>$request->tempat_lahir,
             'tanggal_lahir'=>$request->tanggal_lahir,
             'jenis_kelamin'=>$request->jenis_kelamin,
@@ -381,7 +386,7 @@ class MasterController extends Controller
         // dd($id);
         try {
             master::where('id',$id)->update($data);
-            return back()->with('success','Data berhasil diedit!');
+            return back()->with('success', 'Data Berhasil diedit');
         }catch(Exception $e){
             return back()->with('failed','Data gagal diedit!');
         }

@@ -276,11 +276,13 @@
                                 Absensi Karyawan
                             </div>
                             @isset($countabsen)
-                                <div class="position-absolute notif">
-                                    <div id="pengajuan">
-                                        {{ $countabsen }}
+                                @if ($countabsen != 0)
+                                    <div class="position-absolute notif">
+                                        <div id="pengajuan">
+                                            {{ $countabsen }}
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
                             @endisset
                         </a>
                     </li>
@@ -294,11 +296,13 @@
                                 Pengajuan Karyawan
                             </div>
                             @isset($countpengajuan)
-                                <div class="position-absolute notif">
-                                    <div id="pengajuan">
-                                        {{ $countpengajuan }}
+                                @if ($countpengajuan != 0)
+                                    <div class="position-absolute notif">
+                                        <div id="pengajuan">
+                                            {{ $countpengajuan }}
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
                             @endisset
                         </a>
                     </li>

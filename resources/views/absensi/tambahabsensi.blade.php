@@ -34,7 +34,7 @@
                                 <label for="">Pilih Karyawan</label>
                             </div>
                             <div class="col-lg-9">
-                                <select class="form-select" name="id_master" required>
+                                <select class="form-select" name="id_master" id="id_master" required>
                                     <option value="0" disabled selected>Pilih nama</option>
                                     @foreach ($master as $m)
                                         <option value="{{ $m->id }}">{{ $m->nama }}</option>
@@ -47,7 +47,7 @@
                                 <label for="">Jenis</label>
                             </div>
                             <div class="col-lg-9">
-                                <select class="form-select" name="jenis" required>
+                                <select class="form-select" name="jenis" id="jenis" required>
                                     <option value="" disabled selected>Pilih Jenis</option>
                                     <option value="ijin">Ijin</option>
                                     <option value="sakit">Sakit</option>

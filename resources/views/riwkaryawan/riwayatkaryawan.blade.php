@@ -23,8 +23,7 @@
             </header>
             @include('alert')
             <div class="pb-3">
-                <button data-bs-toggle="modal" data-bs-target="#tambahriwayatkaryawan" onclick="tambahriwayatkaryawan"
-                    class="btn btn-sm btn-secondary">
+                <button data-bs-toggle="modal" data-bs-target="#tambahriwayatkaryawan" class="btn btn-sm btn-secondary">
                     <i class="bi bi-plus-square-fill"></i>
                     Riwayat Karyawan
                 </button>

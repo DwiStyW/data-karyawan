@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BpjskesController;
 use App\Http\Controllers\BpjstkController;
@@ -10,11 +11,16 @@ use App\Http\Controllers\HistoryPekerjaanController;
 use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\PendidikanController;
+use App\Http\Controllers\PengajuanController;
 use App\Http\Controllers\RiwayatController;
 use App\Http\Controllers\RiwayatKaryawanController;
 use App\Http\Controllers\SimpleController;
 use App\Http\Controllers\StrukturController;
 use App\Http\Controllers\RiwkaryawanController;
+use App\Http\Controllers\BagianController;
+use App\Http\Controllers\DataController;
+use App\Http\Controllers\HakAksesController;
+use App\Http\Controllers\SectionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,20 +44,24 @@ Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('/auth', [AuthController::class, 'auth']);
 Route::get('/logout', [AuthController::class, 'logout']);
 
-Route::get('dashboard', [DashboardController::class, 'index'])->middleware('auth');
+Route::get('dashboard-personalia', [DashboardController::class, 'index'])->middleware('auth');
+Route::get('dashboard-kabag', [DashboardController::class, 'dashboardkabag'],[DataController::class, 'pengajuan'])->middleware('auth');
 
 //Filter perdepartemen&bagian
 Route::get('perdepart/{id}', [MasterController::class, 'perdepartemen'])->middleware('auth');
 Route::get('perbagian/{id}', [MasterController::class, 'perbagian'])->middleware('auth');
-//Filter pergolongan
+Route::get('persie/{id}', [MasterController::class, 'persie'])->middleware('auth');
 Route::get('pergolongan/{gol}', [MasterController::class, 'pergolongan'])->middleware('auth');
+Route::get('perjabatan/{id}', [MasterController::class, 'perjabatan'])->middleware('auth');
 
 //master
 Route::get('master', [MasterController::class, 'index'])->middleware('auth');
 Route::get('/getMaster', [MasterController::class, 'getMaster'])->name('getMaster');
 Route::post('/postMaster', [MasterController::class, 'store']);
 Route::post('/updateMaster', [MasterController::class, 'update']);
-Route::post('/hapusMaster', [MasterController::class, 'destroy']);
+Route::post('/hapusMasterResign', [MasterController::class, 'destroyresign']);
+Route::post('/hapusMasterPensiun', [MasterController::class, 'destroypensiun']);
+Route::get('master-kabag', [MasterController::class, 'masterkabag'])->middleware('auth');
 
 Route::get('detailmaster/{id_master}', [MasterController::class, 'detailmaster'])->middleware('auth');
 Route::get('print/{id_master}', [MasterController::class, 'print'])->middleware('auth');
@@ -77,6 +87,8 @@ Route::post('/updatebpjstk', [BpjstkController::class, 'update']);
 Route::post('/hapusbpjstk', [BpjstkController::class, 'destroy']);
 
 Route::get('departement', [DepartementController::class, 'index'])->middleware('auth');
+Route::get('bagian', [BagianController::class, 'index'])->middleware('auth');
+Route::get('section', [SectionController::class, 'index'])->middleware('auth');
 Route::get('golongan', [GolonganController::class, 'index']);
 
 Route::get('/riwkaryawan', [RiwkaryawanController::class, 'index'])->middleware('auth');
@@ -84,6 +96,7 @@ Route::get('/riwayatkaryawan', [RiwayatkaryawanController::class, 'index'])->mid
 Route::post('/postriwayatkaryawan', [RiwayatKaryawanController::class, 'store'])->middleware('auth');
 
 Route::get('jabatan', [JabatanController::class, 'index']);
+Route::get('filterjabatan', [JabatanController::class, 'index']);
 Route::get('/getJabatan', [JabatanController::class, 'getJabatan'])->name('getJabatan');
 Route::post('/postJabatan', [JabatanController::class, 'store']);
 Route::post('/updatejabatan', [JabatanController::class, 'update']);
@@ -101,3 +114,28 @@ Route::post('/edituser',[AuthController::class, 'edituser']);
 Route::get('riwayatbpjskes', [RiwayatController::class, 'riwayatbpjskes']);
 Route::get('printkes/{date}', [RiwayatController::class, 'printriwayatbpjskes']);
 Route::get('simpandatabpjskes', [RiwayatController::class, 'simpandatabpjskes']);
+
+Route::get('/absensi', [AbsensiController::class, 'index'])->middleware('auth');
+Route::get('/absensiperhari', [AbsensiController::class, 'absensiperhari'])->middleware('auth');
+Route::post('/postabsensi', [AbsensiController::class, 'store'])->middleware('auth');
+Route::post('/updateabsensi', [AbsensiController::class, 'update']);
+Route::post('/hapusabsensi', [AbsensiController::class, 'destroy']);
+Route::get('/rekapabsensi', [AbsensiController::class, 'rekap']);
+Route::get('/rekapabsensi/{id}', [AbsensiController::class, 'rekapabsensipermaster']);
+Route::get('/absensi-perdiv', [AbsensiController::class, 'absensiperdiv'])->middleware('auth');
+Route::get('/distribusi-absensi/{strtime}', [AbsensiController::class, 'distribusiabsen'])->middleware('auth');
+Route::get('/rekappotongan', [AbsensiController::class, 'rekappotongan']);
+Route::get('/daftardistribusiabsen', [AbsensiController::class, 'daftardistribusiabsen']);
+Route::post('/daftardistribusiabsen', [AbsensiController::class, 'daftardistribusiabsenpost'])->name('daftardistribusiabsen.post');
+
+Route::get('pengajuan', [PengajuanController::class, 'index']);
+Route::get('pengajuan/add', [PengajuanController::class, 'create']);
+Route::post('pengajuan/post', [PengajuanController::class, 'store']);
+Route::get('pengajuan/edit/{id}', [PengajuanController::class, 'edit']);
+Route::post('pengajuan/update/{id}', [PengajuanController::class, 'update']);
+Route::post('/persetujuan', [PengajuanController::class, 'persetujuan']);
+Route::post('/tolakpengajuan', [PengajuanController::class, 'tolakpengajuan']);
+
+Route::get('hakakses', [HakAksesController::class, 'index'])->middleware('auth');
+Route::get('tambahhakakses', [HakAksesController::class, 'create'])->middleware('auth');
+Route::post('/posthakakses', [HakAksesController::class, 'store'])->middleware('auth');

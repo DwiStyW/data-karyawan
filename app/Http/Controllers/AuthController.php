@@ -23,8 +23,15 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/dashboard');
+
+            if(Auth::user()->role=='personalia'){
+                return redirect()->intended('/dashboard-personalia');
+            }else if(Auth::user()->role=='pimpinan'){
+                return redirect()->intended('/dashboard-kabag');
+            }
+
         }
+        // return dd($credentials);
         return redirect('/login');
     }
 
@@ -59,17 +66,17 @@ class AuthController extends Controller
             ];
         }
 
-        $cek = DB::table('users')->where('name',$request->name)->count();
-        if ($cek==0) {
+        // $cek = DB::table('users')->where('name',$request->name)->count();
+        // if ($cek==0) {
             try {
                 DB::table('users')->where('id', $request->id)->update($user);
                 return back()->with('success', 'Update pengguna berhasil!');
             } catch(Exception $e) {
                 return back()->with('failed', 'Update pengguna gagal!');
             }
-        }
-        else{
-            return back()->with('failed', 'Username telah dipakai!');
-        }
+        // }
+        // else{
+        //     return back()->with('failed', 'Username telah dipakai!');
+        // }
     }
 }

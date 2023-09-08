@@ -29,7 +29,7 @@
                             <i class="bi bi-printer"></i>
                         </a>
                         <button data-bs-toggle="modal" data-bs-target="#editmaster" class="btn btn-md btn-secondary"
-                            onclick="editmaster({{ $id_master }},'{{ $m->nama }}','{{ $m->nik }}','{{ $m->alamat }}','{{ $m->tempat_lahir }}','{{ $m->tanggal_lahir }}','{{ $m->jenis_kelamin }}','{{ $m->agama }}','{{ $m->no_hp }}')">
+                            onclick="editmaster({{ $id_master }},'{{ $m->nama }}','{{ $m->nik }}','{{ $m->alamat }}','{{ $m->tempat_lahir }}','{{ $m->tanggal_lahir }}','{{ $m->jenis_kelamin }}','{{ $m->agama }}','{{ $m->no_hp }}','{{ $m->nokk }}','{{ $m->norekening }}')">
                             <i class="bi bi-pencil-square"></i>
                         </button>
                     </div>
@@ -74,10 +74,37 @@
 
                         <div class="row mb-3">
                             <div class="col-md-3">
+                                <h6 class="form-label text-form"><b>No KK</b></h6>
+                            </div>
+                            <div class="col-md-9">
+                                <label class="form-control" style="min-height: 35px">{{ $m->nokk }}</label>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-3">
                                 <h6 class="form-label text-form"><b>No KTP</b></h6>
                             </div>
                             <div class="col-md-9">
                                 <label class="form-control" style="min-height: 35px">{{ $m->nik }}</label>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <h6 class="form-label text-form"><b>No Rekening</b></h6>
+                            </div>
+                            <div class="col-md-9">
+                                <label class="form-control" style="min-height: 35px">{{ $m->norekening }}</label>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <h6 class="form-label text-form"><b>No Telp</b></h6>
+                            </div>
+                            <div class="col-md-9">
+                                <label class="form-control" style="min-height: 35px">{{ $m->no_hp }}</label>
                             </div>
                         </div>
 
@@ -120,7 +147,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-control"
-                                            style="min-height: 35px">{{ $m->tanggal_lahir }}</label>
+                                            style="min-height: 35px">{{ date('d/m/Y', strtotime($m->tanggal_lahir)) }}</label>
                                     </div>
                                 </div>
                             </div>
@@ -150,8 +177,13 @@
                                         <h6 class="form-label text-form"><b>Tanggal Bergabung</b></h6>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-control"
-                                            style="min-height: 35px">{{ $m->tanggal }}</label>
+                                        <label class="form-control" style="min-height: 35px">
+                                            @if ($m->tanggal != '0000-00-00')
+                                                {{ date('d/m/Y', strtotime($m->tanggal)) }}
+                                            @else
+                                                {{ $m->tanggal }}
+                                            @endif
+                                        </label>
                                     </div>
                                 </div>
                             </div>
@@ -175,7 +207,140 @@
                                 </div>
                             </div>
                         </div>
+                        @if (count($cekriwkontrak) != 0 && count($cekriwtetap) != 0)
+                            @foreach ($cekriwkontrak as $rk)
+                            @endforeach
+                            @foreach ($cekriwtetap as $rt)
+                            @endforeach
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <h6 class="form-label text-form"><b>Tanggal Kontrak</b></h6>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-control" style="min-height: 35px">
+                                                @if ($rk->tanggal != '0000-00-00')
+                                                    {{ date('d/m/Y', strtotime($rk->tanggal)) }}
+                                                @else
+                                                    {{ $rk->tanggal }}
+                                                @endif
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <h6 class="form-label text-form"><b>Masa Kerja Kontrak</b></h6>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <label class="form-control" style="min-height: 35px">
+                                                @php
+                                                    // $sekarang = strtotime(date('Y-m-d'));
+                                                    $tglgabung = strtotime($rk->tanggal);
+                                                    $awal = date_create($rk->tanggal);
+                                                    $akhir = date_create($rt->tanggal);
+                                                    $diff = date_diff($akhir, $awal);
+                                                    echo $hari = $diff->y . ' Tahun ' . $diff->m . ' Bulan';
+                                                @endphp
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                        @if (count($cekriwkontrak) != 0 && count($cekriwtetap) == 0)
+                            @foreach ($cekriwkontrak as $rk)
+                            @endforeach
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <h6 class="form-label text-form"><b>Tanggal Kontrak</b></h6>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-control" style="min-height: 35px">
+                                                @if ($rk->tanggal != '0000-00-00')
+                                                    {{ date('d/m/Y', strtotime($rk->tanggal)) }}
+                                                @else
+                                                    {{ $rk->tanggal }}
+                                                @endif
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <h6 class="form-label text-form"><b>Masa Kerja Kontrak</b></h6>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <label class="form-control" style="min-height: 35px">
+                                                @php
+                                                    // $sekarang = strtotime(date('Y-m-d'));
+                                                    $tglgabung = strtotime($rk->tanggal);
+                                                    $awal = date_create($rk->tanggal);
+                                                    $akhir = date_create();
+                                                    $diff = date_diff($akhir, $awal);
+                                                    echo $hari = $diff->y . ' Tahun ' . $diff->m . ' Bulan';
+                                                @endphp
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                        @if (count($cekriwtetap) != 0)
+                            @foreach ($cekriwtetap as $rt)
+                            @endforeach
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <h6 class="form-label text-form"><b>Tanggal Tetap</b></h6>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-control" style="min-height: 35px">
+                                                @if ($rt->tanggal != '0000-00-00')
+                                                    {{ date('d/m/Y', strtotime($rt->tanggal)) }}
+                                                @else
+                                                    {{ $rt->tanggal }}
+                                                @endif
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <h6 class="form-label text-form"><b>Masa Kerja Tetap</b></h6>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <label class="form-control" style="min-height: 35px">
+                                                @php
+                                                    $sekarang = strtotime(date('Y-m-d'));
+                                                    $tglgabung = strtotime($rt->tanggal);
+                                                    $awal = date_create($rt->tanggal);
+                                                    $akhir = date_create();
+                                                    $diff = date_diff($akhir, $awal);
+                                                    echo $hari = $diff->y . ' Tahun ' . $diff->m . ' Bulan';
+                                                @endphp
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
                     </div>
+                </div>
+                <div class="float-lg-end">
+                    <a href="/rekapabsensi/{{ $id_master }}">
+                        <button class="btn btn-sm btn-secondary">
+                            <i class="bi bi-card-heading"></i>
+                            Rekap Absensi</button>
+                    </a>
                 </div>
                 <div class="row col-lg-12 pt-3" style="margin-right: 0px !important">
                     <div class="col-lg-6 col-md-12">
@@ -197,6 +362,7 @@
                                         <th>Jurusan</th>
                                         <th>Tahun Masuk</th>
                                         <th>Tahun Keluar</th>
+                                        <th>Sertifikat</th>
                                         <th>aksi</th>
                                     </tr>
                                 </thead>
@@ -214,6 +380,14 @@
                                             <td>{{ $p->jurusan }}</td>
                                             <td>{{ $p->tgl_awal }}</td>
                                             <td>{{ $p->tgl_akhir }}</td>
+                                            <td>
+                                                @if ($p->sertifikat != '')
+                                                    <a href="/assets/img/sertifikat/{{ $p->sertifikat }}"
+                                                        target="_blank">
+                                                        <i class="bi bi-image"></i>
+                                                    </a>
+                                                @endif
+                                            </td>
                                             <td>
                                                 <div class="row justify-content-center">
                                                     <div style="max-width:60px">
@@ -266,8 +440,8 @@
                                         <tr>
                                             <td>{{ $h->nama_perusahaan }}</td>
                                             <td>{{ $h->alamat }}</td>
-                                            <td>{{ $h->tahun_masuk }}</td>
-                                            <td>{{ $h->tahun_keluar }}</td>
+                                            <td>{{ date('d/m/Y', strtotime($h->tahun_masuk)) }}</td>
+                                            <td>{{ date('d/m/Y', strtotime($h->tahun_keluar)) }}</td>
                                             <td>{{ $h->jabatan_terakhir }}</td>
                                             <td>{{ $h->alasan_pindah }}</td>
                                             <td>
@@ -375,7 +549,7 @@
                                     @foreach ($bpjstk as $tk)
                                         <tr>
                                             <td>{{ $tk->no_bpjs_tk }}</td>
-                                            <td>{{ $tk->tgl_kepesertaan }}</td>
+                                            <td>{{ date('d/m/Y', strtotime($tk->tgl_kepesertaan)) }}</td>
                                             <td>{{ $tk->iuran }}</td>
                                             <td>
                                                 <div class="row justify-content-center">
@@ -434,15 +608,28 @@
                                 @foreach ($riwayatkaryawan as $rk)
                                     <tr>
                                         <td>{{ $no++ }}</td>
-                                        <td>{{ $rk->tanggal }}</td>
+                                        <td>{{ date('d/m/Y', strtotime($rk->tanggal)) }}</td>
                                         <td>{{ $rk->jenis }}</td>
                                         <td>{{ $rk->deskripsi }}</td>
                                         <td>
-                                            @if ($rk->keterangan == '')
-                                                {{ '-' }}
+                                            @if ($rk->jenis == 'Penghargaan')
+                                                @if ($rk->keterangan == '')
+                                                    {{ '-' }}
+                                                @else
+                                                    {{ $rk->keterangan }}
+                                                @endif
+                                                <a href="/assets/img/sertifikat/{{ $rk->sertifikat }}"
+                                                    target="_blank">
+                                                    <i class="bi bi-image"></i>
+                                                </a>
                                             @else
-                                                {{ $rk->keterangan }}
+                                                @if ($rk->keterangan == '')
+                                                    {{ '-' }}
+                                                @else
+                                                    {{ $rk->keterangan }}
+                                                @endif
                                             @endif
+
                                         </td>
                                         {{-- <td>
                                             <div class="row justify-content-center">

@@ -25,7 +25,7 @@
 
                 <div>
                     @if (count($period) != 0)
-                        <h6 class="mt-2"><b>Preiode :</b>
+                        <h6 class="mt-2"><b>Periode :</b>
                             <select name="period" id="period" onchange="periode()">
                                 @foreach ($period as $p)
                                     @if ($p->date == $date)

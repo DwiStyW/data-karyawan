@@ -12,6 +12,7 @@
                     <form action="updatejabatan" enctype="multipart/form-data" method="post">
                         @csrf
                         <input type="hidden" class="form-control" required name="id_jabatan" id="id_jabatan">
+                        <input type="hidden" class="form-control" required name="updateby" id="updateby">
                         <div class="row mb-3">
                             <div class="col-lg-3">
                                 <label for="">Nama Jabatan</label>
@@ -28,7 +29,7 @@
                             <div class="col-lg-9">
                                 <select class="form-select" name="departemen" id="departemen"
                                     onchange="selectdepartemenn()">
-                                    <option value="0" selected>Pilih Departemen</option>
+                                    <option value="" selected>Pilih Departemen</option>
                                     @foreach ($departemen as $d)
                                         <option value="{{ $d->id }}">{{ $d->nama_departemen }}</option>
                                     @endforeach
@@ -41,7 +42,7 @@
                             </div>
                             <div class="col-lg-9">
                                 <select class="form-select" name="bagian" id="bagian" onchange="selectbagiann()">
-                                    <option value="0" selected>Pilih Bagian</option>
+                                    <option value="" selected>Pilih Bagian</option>
                                     @foreach ($bagian as $b)
                                         <option value="{{ $b->id }}">{{ $b->nama_bagian }}</option>
                                     @endforeach
@@ -54,7 +55,7 @@
                             </div>
                             <div class="col-lg-9">
                                 <select class="form-select" name="sie" id="sie">
-                                    <option value="0" selected>Pilih Sie</option>
+                                    <option value="" selected>Pilih Sie</option>
                                     @foreach ($sie as $s)
                                         <option value="{{ $s->id }}">{{ $s->nama_sie }}</option>
                                     @endforeach
@@ -111,7 +112,7 @@
         var filterderpartemen = bagian.filter(b => b.id_departemen == departemen);
         console.log(filterderpartemen);
         str = "<select class='form-select' name='bagian' id='bagian'>";
-        str += "<option value='0' selected>Pilih Bagian</option>";
+        str += "<option value='' selected>Pilih Bagian</option>";
 
         for (let index = 0; index < filterderpartemen.length; index++) {
             //const element = array[index];
@@ -125,7 +126,7 @@
 
         console.log(sie);
         strsie = "<select class='form-select' name='sie' id='sie'>";
-        strsie += "<option value='0' selected>Pilih Sie</option>";
+        strsie += "<option value='' selected>Pilih Sie</option>";
 
         for (let index = 0; index < sie.length; index++) {
             //const element = array[index];
@@ -145,7 +146,7 @@
         var filtersie = sie.filter(b => b.id_bagian == bagian);
         console.log(filtersie);
         str = "<select class='form-select' name='sie' id='sie'>";
-        str += "<option value='0' selected>Pilih Sie</option>";
+        str += "<option value='' selected>Pilih Sie</option>";
 
         for (let index = 0; index < filtersie.length; index++) {
             //const element = array[index];
@@ -158,11 +159,12 @@
         document.getElementById('sie').innerHTML = str;
     }
 
-    function editjabatan(id, nama_jabatan, departemen, bagian, sie, level, pid) {
-        console.log(id, nama_jabatan, departemen, bagian, sie);
+    function editjabatan(id, nama_jabatan, departemen, bagian, sie, level, pid, updateby) {
+        console.log(id, nama_jabatan, departemen, bagian, sie, updateby);
         document.getElementById('id_jabatan').value = id;
         document.getElementById('pidd').value = pid;
         document.getElementById('levell').value = level;
+        document.getElementById('updateby').value = updateby;
 
         if (nama_jabatan != 'null') {
             document.getElementById('nama_jabatan').value = nama_jabatan;

@@ -22,19 +22,6 @@
                 <h3 class="title-pages fw-bold">Data Master {{ $namafilter }} </h3>
             </header>
             @include('alert')
-            <div class="pb-3">
-                <button data-bs-toggle="modal" data-bs-target="#tambah_master" class="btn btn-sm btn-secondary">
-                    <i class="bi bi-plus-square-fill"></i>
-                    Karyawan
-                </button>
-                <a href="/jabatan" class="btn btn-sm btn-secondary">
-                    Jabatan
-                </a>
-                <a href="/struktur" class="btn btn-sm btn-secondary">
-                    Struktur
-                </a>
-            </div>
-
             <div>
                 <table id='mTable' width='100%' class="table table-striped table-bordered ">
                     <thead>
@@ -49,7 +36,7 @@
                             <th data-priority="3">No Hp</th>
                             <th data-priority="3">Agama</th>
                             <th data-priority="3">Jabatan</th>
-                            <th data-priority="3">Status</th>
+                            <th data-priority="3">Status/Golongan</th>
                             <th data-priority="2" class="text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -60,10 +47,10 @@
                         @foreach ($Tmaster as $Tm)
                             <tr>
                                 <td>{{ $no++ }}</td>
-                                <td><a href="detailmaster/{{ $Tm->id }}">{{ $Tm->nama }}</a></td>
+                                <td><a href="/detailmaster/{{ $Tm->id }}">{{ $Tm->nama }}</a></td>
                                 <td>{{ $Tm->nik }}</td>
                                 <td>{{ $Tm->tempat_lahir }}</td>
-                                <td>{{ $Tm->tanggal_lahir }}</td>
+                                <td>{{ date('d/m/Y', strtotime($Tm->tanggal_lahir)) }}</td>
                                 <td>{{ $Tm->jenis_kelamin }}</td>
                                 <td>{{ $Tm->alamat }}</td>
                                 <td>{{ $Tm->no_hp }}</td>

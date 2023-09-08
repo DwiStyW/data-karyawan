@@ -1,4 +1,13 @@
 <!-- Modal Input Master -->
+<style>
+    .select2 {
+        width: 100% !important;
+    }
+
+    .modal-body {
+        overflow-x: hidden !important;
+    }
+</style>
 <div class="modal fade" id="tambah_master" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
@@ -21,12 +30,22 @@
                         </div>
                         <div class="row">
                             <div class="col-lg-6 mt-3">
-                                <label for="">NIK</label>
-                                <input type="text" class="form-control" required name="nik" placeholder="nik">
+                                <label for="">No. KK</label>
+                                <input type="number" class="form-control" required name="nokk" placeholder="No. kk">
                             </div>
                             <div class="col-lg-6 mt-3">
-                                <label for="">No. HP</label>
-                                <input type="text" class="form-control" required name="no_hp" placeholder="no hp">
+                                <label for="">No. KTP</label>
+                                <input type="number" class="form-control" required name="nik"
+                                    placeholder="No. KTP">
+                            </div>
+                            <div class="col-lg-6 mt-3">
+                                <label for="">No. Telp</label>
+                                <input type="number" class="form-control" name="no_hp" placeholder="No. Telp">
+                            </div>
+                            <div class="col-lg-6 mt-3">
+                                <label for="">No. Rekening</label>
+                                <input type="number" class="form-control" required name="norekening"
+                                    placeholder="No. Rekening">
                             </div>
                         </div>
                         <div class="row">

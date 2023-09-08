@@ -34,7 +34,7 @@
                                 <form action="auth" method="post">
                                     @csrf
                                     <div class="form-outline form-white mb-3">
-                                        <label class="form-label" for="name">Usaername</label>
+                                        <label class="form-label" for="name">Username</label>
                                         <input type="text" id="name" name="name"
                                             class="form-control form-control-lg" />
                                     </div>

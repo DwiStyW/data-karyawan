@@ -12,6 +12,20 @@
     <link rel="stylesheet" href="../assets/js/select2-master/dist/css/select2.min.css" />
 
 </head>
+<style>
+    @media (min-width:768px) {
+        .tabel-lg {
+            min-width: 2000px;
+        }
+    }
+
+
+    @media (min-width:1370px) {
+        .tabel-lg {
+            min-width: 2500px;
+        }
+    }
+</style>
 
 <body>
     @include('partials.sidebar')
@@ -27,9 +41,20 @@
                     <i class="bi bi-plus-square-fill"></i>
                     Karyawan
                 </button>
-                <a href="/jabatan" class="btn btn-sm btn-secondary">
-                    Jabatan
-                </a>
+                @if (count($jtnblmaprove) != 0)
+                    <a href="/jabatan" class="btn btn-sm btn-secondary position-relative">
+                        <div class="bg-danger position-absolute rounded-circle"
+                            style="right:-5px !important;top:-10px !important; width:20px;hight:20px">
+                            {{ count($jtnblmaprove) }}</div>
+                        Jabatan
+                    </a>
+                @else
+                    <a href="/jabatan">
+                        <button class="btn btn-sm btn-secondary">
+                            Jabatan
+                        </button>
+                    </a>
+                @endif
                 <a href="/struktur" class="btn btn-sm btn-secondary">
                     Struktur
                 </a>
@@ -42,6 +67,8 @@
                             <th data-priority="1">No</th>
                             <th data-priority="1">Nama</th>
                             <th data-priority="3">No KTP</th>
+                            <th data-priority="3">No KK</th>
+                            <th data-priority="3">No Rekening</th>
                             <th data-priority="3">Tempat Lahir</th>
                             <th data-priority="3">Tanggal Lahir</th>
                             <th data-priority="3">Jenis Kelamin</th>
@@ -49,7 +76,9 @@
                             <th data-priority="3">No Hp</th>
                             <th data-priority="3">Agama</th>
                             <th data-priority="3">Jabatan</th>
-                            <th data-priority="3">Status</th>
+                            <th data-priority="3">Status/Golongan</th>
+                            <th data-priority="2">BPJS Kes</th>
+                            <th data-priority="2">BPJS Tk</th>
                             <th data-priority="2" class="text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -60,27 +89,31 @@
                         @foreach ($Tmaster as $Tm)
                             <tr>
                                 <td>{{ $no++ }}</td>
-                                <td><a href="detailmaster/{{ $Tm->id }}">{{ $Tm->nama }}</a></td>
-                                <td>{{ $Tm->nik }}</td>
-                                <td>{{ $Tm->tempat_lahir }}</td>
-                                <td>{{ $Tm->tanggal_lahir }}</td>
-                                <td>{{ $Tm->jenis_kelamin }}</td>
-                                <td>{{ $Tm->alamat }}</td>
-                                <td>{{ $Tm->no_hp }}</td>
-                                <td>{{ $Tm->agama }}</td>
-                                <td>{{ $Tm->nama_jabatan }}</td>
-                                <td>{{ $Tm->golongan }}</td>
+                                <td><a href="detailmaster/{{ $Tm['id'] }}">{{ $Tm['nama'] }}</a></td>
+                                <td>{{ $Tm['nik'] }}</td>
+                                <td>{{ $Tm['nokk'] }}</td>
+                                <td>{{ $Tm['norekening'] }}</td>
+                                <td>{{ $Tm['tempat_lahir'] }}</td>
+                                <td>{{ date('d/m/Y', strtotime($Tm['tanggal_lahir'])) }}</td>
+                                <td>{{ $Tm['jenis_kelamin'] }}</td>
+                                <td>{{ $Tm['alamat'] }}</td>
+                                <td>{{ $Tm['no_hp'] }}</td>
+                                <td>{{ $Tm['agama'] }}</td>
+                                <td>{{ $Tm['nama_jabatan'] }}</td>
+                                <td>{{ $Tm['golongan'] }}</td>
+                                <td>{{ $Tm['bpjskes'] }}</td>
+                                <td>{{ $Tm['bpjstk'] }}</td>
                                 <td>
                                     <div class="row justify-content-center" style="min-width:110px;">
                                         <div style="max-width:60px"><button type="button"
                                                 class="btn btn-primary btn-block" data-bs-toggle="modal"
                                                 data-bs-target="#edit_master"
-                                                onclick="edit({{ $Tm->id }},'{{ $Tm->nama }}','{{ $Tm->nik }}','{{ $Tm->alamat }}','{{ $Tm->tempat_lahir }}','{{ $Tm->tanggal_lahir }}','{{ $Tm->jenis_kelamin }}','{{ $Tm->agama }}','{{ $Tm->no_hp }}')"><i
+                                                onclick="edit({{ $Tm['id'] }},'{{ $Tm['nama'] }}','{{ $Tm['nik'] }}','{{ $Tm['alamat'] }}','{{ $Tm['tempat_lahir'] }}','{{ $Tm['tanggal_lahir'] }}','{{ $Tm['jenis_kelamin'] }}','{{ $Tm['agama'] }}','{{ $Tm['no_hp'] }}','{{ $Tm['nokk'] }}','{{ $Tm['norekening'] }}')"><i
                                                     class="bi bi-pencil-square"></i></button></div>
                                         <div style="max-width:60px"><button type="button"
                                                 class="btn btn-danger btn-block" data-bs-toggle="modal"
                                                 data-bs-target="#hapus_master"
-                                                onclick="hapus({{ $Tm->id }},'{{ $Tm->nama }}')"><i
+                                                onclick="hapus({{ $Tm['id'] }},'{{ $Tm['nama'] }}')"><i
                                                     class="bi bi-trash3-fill"></i></button></div>
                                     </div>
                                 </td>
@@ -100,11 +133,13 @@
 @include('MasterKaryawan.hapus_master')
 <script src="../assets/js/jquery-1.11.3.min.js"></script>
 {{-- <script src="../assets/ui/jquery-3.6.1/jquery-3.6.1.min.js"></script> --}}
+<script type="text/javascript" src="../assets/DataTables/datatables.min.js"></script>
 <script src="../assets/js/select2-master/dist/js/select2.min.js"></script>
+
 <script>
     $(document).ready(function() {
-        $('.select2').select2({
-            placeholder: "Please Select",
+        $('.form-select').select2({
+            dropdownParent: $('#tambah_master')
         });
     });
 </script>
@@ -123,7 +158,7 @@
     });
 </script>
 {{-- <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script> --}}
-<script type="text/javascript" src="../assets/DataTables/datatables.min.js"></script>
+
 <!-- Script -->
 <script type="text/javascript">
     $(document).ready(function() {

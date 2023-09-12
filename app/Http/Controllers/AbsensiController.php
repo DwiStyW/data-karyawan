@@ -226,7 +226,8 @@ class AbsensiController extends Controller
             ];
         }
         // dd($data);
-        return view('absensi.absensi-perdiv',compact('data','disabsen'));
+        $countpengajuan=DataController::pengajuan();
+        return view('absensi.absensi-perdiv',compact('data','disabsen','countpengajuan'));
     }
     public function distribusiabsen($strtime){
         $ts=$strtime/1000;

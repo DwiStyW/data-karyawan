@@ -23,7 +23,8 @@
                 <h3 class="title-pages fw-semibold">Form Pengajuan Karyawan</h3>
             </header>
             <div class="p-3">
-                <form action="/pengajuan/post">
+                <form action="/pengajuan/post" method="POST">
+                    @csrf
                     <input class="form-control" type="hidden" name="idpengaju" id="idpengaju" readonly
                         value="{{ Auth()->user()->id }}">
                     <div class="row mb-3">

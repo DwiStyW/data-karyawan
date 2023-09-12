@@ -2,7 +2,8 @@
     tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
     <div class="offcanvas-header d-block text-center position-relative py-4">
         <div class="position-relative d-inline-block mb-1">
-            <img src="../assets/img/logo/logo.png" width="140" alt="" style="padding: .35rem;">
+            <img src="{{ URL::asset('/assets/img/logo/logo.png') }}" width="140" alt=""
+                style="padding: .35rem;">
         </div>
         <h6 class="offcanvas-title mb-1" id="sidebarLabel" style="color:#444941"><b>Sistem Informasi</b></h6>
         <p class="offcanvas-title mb-1" id="sidebarLabel" style="color:#444941">Data Karyawan</p>
@@ -36,7 +37,7 @@
                         </a>
                     </li>
                     <li class="list-group-item">
-                        <a class="nav-link btn position-relative {{ Request::is('departement') ? 'active' : '' }}{{ Request::is('bagian') ? 'active' : '' }}{{ Request::is('section') ? 'active' : '' }}{{ Request::is('jabatan') ? 'active' : '' }}{{ Request::is('golongan') ? 'active' : '' }}"
+                        <a class="nav-link btn position-relative {{ Request::is('departement') ? 'active' : '' }}{{ Request::is('bagian') ? 'active' : '' }}{{ Request::is('section') ? 'active' : '' }}{{ Request::is('filterjabatan') ? 'active' : '' }}{{ Request::is('golongan') ? 'active' : '' }}"
                             href="#">
                             <div class="btn-header me-3 d-flex align-items-center">
                                 <i class="bi bi-building"></i>
@@ -49,7 +50,7 @@
                             </div>
                         </a>
                         <ul
-                            class="submenu collapse {{ Request::is('departement') ? 'show' : '' }}{{ Request::is('bagian') ? 'show' : '' }}{{ Request::is('section') ? 'show' : '' }}{{ Request::is('jabatan') ? 'show' : '' }}{{ Request::is('golongan') ? 'show' : '' }}"style="padding-inline-start: 0px !important;">
+                            class="submenu collapse {{ Request::is('departement') ? 'show' : '' }}{{ Request::is('bagian') ? 'show' : '' }}{{ Request::is('section') ? 'show' : '' }}{{ Request::is('filterjabatan') ? 'show' : '' }}{{ Request::is('golongan') ? 'show' : '' }}"style="padding-inline-start: 0px !important;">
                             <li class="list-group-item bg-light">
                                 <a class="btn py-1 {{ Request::is('departement') ? 'active' : '' }}"
                                     href="/departement" id="navDAR">
@@ -84,8 +85,8 @@
                                 </a>
                             </li>
                             <li class="list-group-item bg-light">
-                                <a class="btn py-1 {{ Request::is('jabatan') ? 'active' : '' }}" href="/jabatan"
-                                    id="navDAR">
+                                <a class="btn py-1 {{ Request::is('filterjabatan') ? 'active' : '' }}"
+                                    href="/filterjabatan" id="navDAR">
                                     <div class="btn-header me-1">
                                         <i class="bi bi-dot"></i>
                                     </div>
@@ -140,7 +141,7 @@
                         </a>
                     </li>
                     <li class="list-group-item">
-                        <a class="nav-link btn position-relativess {{ Request::is('absensi') ? 'active' : '' }}{{ Request::is('rekapabsensi') ? 'active' : '' }}{{ Request::is('rekappotongan') ? 'active' : '' }}{{ Request::is('jabatan') ? 'active' : '' }}{{ Request::is('golongan') ? 'active' : '' }}"
+                        <a class="nav-link btn position-relativess {{ Request::is('absensi') ? 'active' : '' }}{{ Request::is('rekapabsensi') ? 'active' : '' }}{{ Request::is('rekappotongan') ? 'active' : '' }}"
                             href="#">
                             <div class="btn-header me-3 d-flex align-items-center">
                                 <i class="bi bi-clock-history"></i>
@@ -153,7 +154,7 @@
                             </div>
                         </a>
                         <ul
-                            class="submenu collapse {{ Request::is('absensi') ? 'show' : '' }}{{ Request::is('rekapabsensi') ? 'show' : '' }}{{ Request::is('rekappotongan') ? 'show' : '' }}{{ Request::is('jabatan') ? 'show' : '' }}{{ Request::is('golongan') ? 'show' : '' }}"style="padding-inline-start: 0px !important;">
+                            class="submenu collapse {{ Request::is('absensi') ? 'show' : '' }}{{ Request::is('rekapabsensi') ? 'show' : '' }}{{ Request::is('rekappotongan') ? 'show' : '' }}"style="padding-inline-start: 0px !important;">
                             <li class="list-group-item bg-light">
                                 <a class="btn py-1 {{ Request::is('absensi') ? 'active' : '' }}" href="/absensi"
                                     id="navDAR">
@@ -274,6 +275,15 @@
                             <div class="btn-body">
                                 Absensi Karyawan
                             </div>
+                            @isset($countabsen)
+                                @if ($countabsen != 0)
+                                    <div class="position-absolute notif">
+                                        <div id="pengajuan">
+                                            {{ $countabsen }}
+                                        </div>
+                                    </div>
+                                @endif
+                            @endisset
                         </a>
                     </li>
                     <li class="list-group-item">
@@ -285,6 +295,15 @@
                             <div class="btn-body">
                                 Pengajuan Karyawan
                             </div>
+                            @isset($countpengajuan)
+                                @if ($countpengajuan != 0)
+                                    <div class="position-absolute notif">
+                                        <div id="pengajuan">
+                                            {{ $countpengajuan }}
+                                        </div>
+                                    </div>
+                                @endif
+                            @endisset
                         </a>
                     </li>
                 @endif
@@ -294,6 +313,21 @@
     </div>
 </div>
 <style>
+    .notif {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background-color: rgb(219, 0, 0);
+        color: ghostwhite;
+        right: 0;
+        text-align: center;
+        align-items: center;
+        padding: 2px;
+        margin-right: 10px;
+        border-color: rgb(133, 0, 0);
+        font-size: 11px;
+    }
+
     #sidebar {
         max-width: 320px;
     }

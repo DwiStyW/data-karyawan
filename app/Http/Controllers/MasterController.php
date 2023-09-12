@@ -27,7 +27,8 @@ class MasterController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        $jabatan=Jabatan::get();
+        $jabatan=Jabatan::leftjoin('users','users.id','=','updateby')->where('role','personalia')->select('jabatan.*')->get();
+        $jtnblmaprove=Jabatan::leftjoin('users','users.id','=','updateby')->where('role','pimpinan')->get();
         $master=DB::select('SELECT master.*, nama_jabatan from master join jabatan on jabatan.id=master.id_jabatan where status="Aktif" order by id DESC');
         foreach($master as $tm){
             $idmaster=$tm->id;
@@ -71,7 +72,7 @@ class MasterController extends Controller
         }
         // dd($Tmaster);
          // Load index view
-         return view('MasterKaryawan.master',compact('jabatan','Tmaster'));
+         return view('MasterKaryawan.master',compact('jabatan','Tmaster','jtnblmaprove'));
      }
 
      public function perdepartemen($id){
@@ -297,8 +298,8 @@ class MasterController extends Controller
         $data1=[
             'nama'=>$request->nama,
             'nik'=>$request->nik,
-            'nokk'=>$request->nokk,
-            'norekening'=>$request->norekening,
+            'nokk'=>$request->nik,
+            'norekening'=>$request->nik,
             'tempat_lahir'=>$request->tempat_lahir,
             'tanggal_lahir'=>$request->tanggal_lahir,
             'jenis_kelamin'=>$request->jenis_kelamin,
@@ -318,8 +319,8 @@ class MasterController extends Controller
             'jabatan'=>$request->id_jabatan,
             'deskripsi'=>'karyawan baru',
             'keterangan'=>'',
+            'sertifikat'=>'',
             'tanggal'=>$request->awal_kerja,
-            'updated_at'=>date("Y-m-d H:i:s"),
         ];
         // dd($data1,$data2);
         // dd($data2);
@@ -327,12 +328,12 @@ class MasterController extends Controller
         try{
             master::insert($data1);
             riwayatkaryawan::insert($data2);
-            
+
             DB::commit();
             //alert berhasil
             return back()->with('success','Data berhasil ditambahkan!');
         }catch(Exception $e){
-            // dd($e);
+            dd($e);
             DB::rollback();
             //alert gagal
             return back()->with('failed','Data gagal ditambahkan!');
@@ -373,8 +374,8 @@ class MasterController extends Controller
         $data=[
             'nama'=>$request->nama,
             'nik'=>$request->nik,
-            'nokk'=>$request->nokk,
-            'norekening'=>$request->norekening,
+            'nokk'=>$request->nik,
+            'norekening'=>$request->nik,
             'tempat_lahir'=>$request->tempat_lahir,
             'tanggal_lahir'=>$request->tanggal_lahir,
             'jenis_kelamin'=>$request->jenis_kelamin,
@@ -386,7 +387,7 @@ class MasterController extends Controller
         // dd($id);
         try {
             master::where('id',$id)->update($data);
-            return back()->with('success', 'Data Berhasil diedit');
+            return back()->with('success','Data berhasil diedit!');
         }catch(Exception $e){
             return back()->with('failed','Data gagal diedit!');
         }
@@ -520,7 +521,9 @@ class MasterController extends Controller
             }
         }
         // dd($Tmaster);
-        return view('MasterKaryawan.master-kabag',compact('Tmaster'));
+        $countpengajuan=DataController::pengajuan();
+        $countabsen=DataController::absen();
+        return view('MasterKaryawan.master-kabag',compact('Tmaster','countpengajuan','countabsen'));
 
     }
 }

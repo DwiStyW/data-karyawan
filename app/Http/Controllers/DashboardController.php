@@ -246,7 +246,9 @@ class DashboardController extends Controller
             }
             // dd($absen);
         }
-        return view('dashboard.dashboard-kabag',compact('data','Tmaster'));
+        $countpengajuan=DataController::pengajuan();
+        $countabsen=DataController::absen();
+        return view('dashboard.dashboard-kabag',compact('data','Tmaster','countpengajuan','countabsen'));
     }
     /**
      * Show the form for creating a new resource.

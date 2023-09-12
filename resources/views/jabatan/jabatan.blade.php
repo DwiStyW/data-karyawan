@@ -22,20 +22,65 @@
                 <h3 class="title-pages fw-bold">Data Jabatan</h3>
             </header>
             @include('alert')
-            <div class="pb-3">
-                <button data-bs-toggle="modal" data-bs-target="#tambah_Jabatan" class="btn btn-sm btn-secondary">
-                    <i class="bi bi-plus-square-fill"></i>
-                    Jabatan
-                </button>
+            @if (Request::is('jabatan'))
+                <div class="pb-3">
+                    <button data-bs-toggle="modal" data-bs-target="#tambah_Jabatan" class="btn btn-sm btn-secondary">
+                        <i class="bi bi-plus-square-fill"></i>
+                        Jabatan
+                    </button>
 
-                <a href="/struktur" class="btn btn-sm btn-secondary">
-                    Struktur
-                </a>
-                <a href="master" class="btn btn-sm btn-secondary">
-                    Karyawan
-                </a>
-            </div>
-
+                    <a href="/struktur" class="btn btn-sm btn-secondary">
+                        Struktur
+                    </a>
+                    <a href="master" class="btn btn-sm btn-secondary">
+                        Karyawan
+                    </a>
+                </div>
+            @endif
+            @if (count($jtnblmaprove) != 0)
+                <div class="mb-5">
+                    <table class="table table-striped table-bordered ">
+                        <thead>
+                            <tr style="background-color:#5F7A61;color:#ddd;font-weight:bold">
+                                <th data-priority="1" style="width: 50px !important">No</th>
+                                <th data-priority="1">Nama Jabatan</th>
+                                <th data-priority="3">Pengaju</th>
+                                <th data-priority="3" class="text-center" style="width: 120px !important">AKsi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php
+                                $nomor = 1;
+                            @endphp
+                            @foreach ($jtnblmaprove as $ja)
+                                <tr>
+                                    <td>{{ $nomor++ }}</td>
+                                    <td>{{ $ja->nama_jabatan }}</td>
+                                    <td>{{ $ja->name }}</td>
+                                    <td>
+                                        <div class="row justify-content-center" style="min-width:110px;">
+                                            <div style="max-width:60px"><button type="button"
+                                                    class="btn btn-sm btn-primary btn-block" data-bs-toggle="modal"
+                                                    data-bs-target="#editjabatan"
+                                                    onclick="editjabatan({{ $ja->id }},'{{ $ja->nama_jabatan }}','{{ $ja->departemen }}','{{ $ja->bagian }}','{{ $ja->sie }}','{{ $ja->level }}','{{ $ja->pid }}','{{ $ja->updateby }}')">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </button>
+                                            </div>
+                                            <div style="max-width:60px"><button type="button"
+                                                    class="btn btn-sm btn-danger btn-block" data-bs-toggle="modal"
+                                                    data-bs-target="#hapusjabatan"
+                                                    onclick="hapusjabatan({{ $ja->id }},'{{ $ja->nama_jabatan }}')"><i
+                                                        class="bi bi-trash3-fill"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @endif
             <div>
                 <table id='table' width='100%' class="table table-striped table-bordered ">
                     <thead>
@@ -64,7 +109,7 @@
                                         <div style="max-width:60px"><button type="button"
                                                 class="btn btn-sm btn-primary btn-block" data-bs-toggle="modal"
                                                 data-bs-target="#editjabatan"
-                                                onclick="editjabatan({{ $j->id }},'{{ $j->nama_jabatan }}','{{ $j->departemen }}','{{ $j->bagian }}','{{ $j->sie }}','{{ $j->level }}','{{ $j->pid }}')">
+                                                onclick="editjabatan({{ $j->id }},'{{ $j->nama_jabatan }}','{{ $j->departemen }}','{{ $j->bagian }}','{{ $j->sie }}','{{ $j->level }}','{{ $j->pid }}','{{ $j->updateby }}')">
                                                 <i class="bi bi-pencil-square"></i></button></div>
                                         <div style="max-width:60px"><button type="button"
                                                 class="btn btn-sm btn-danger btn-block" data-bs-toggle="modal"

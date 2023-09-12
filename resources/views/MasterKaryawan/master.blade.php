@@ -41,9 +41,20 @@
                     <i class="bi bi-plus-square-fill"></i>
                     Karyawan
                 </button>
-                <a href="/jabatan" class="btn btn-sm btn-secondary">
-                    Jabatan
-                </a>
+                @if (count($jtnblmaprove) != 0)
+                    <a href="/jabatan" class="btn btn-sm btn-secondary position-relative">
+                        <div class="bg-danger position-absolute rounded-circle"
+                            style="right:-5px !important;top:-10px !important; width:20px;hight:20px">
+                            {{ count($jtnblmaprove) }}</div>
+                        Jabatan
+                    </a>
+                @else
+                    <a href="/jabatan">
+                        <button class="btn btn-sm btn-secondary">
+                            Jabatan
+                        </button>
+                    </a>
+                @endif
                 <a href="/struktur" class="btn btn-sm btn-secondary">
                     Struktur
                 </a>
@@ -120,7 +131,6 @@
 @include('MasterKaryawan.tambah_master')
 @include('MasterKaryawan.edit_master')
 @include('MasterKaryawan.hapus_master')
-@include('sweetalert::alert')
 <script src="../assets/js/jquery-1.11.3.min.js"></script>
 {{-- <script src="../assets/ui/jquery-3.6.1/jquery-3.6.1.min.js"></script> --}}
 <script type="text/javascript" src="../assets/DataTables/datatables.min.js"></script>
@@ -188,4 +198,5 @@
 
     });
 </script>
+
 </html>

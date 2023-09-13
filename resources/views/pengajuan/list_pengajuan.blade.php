@@ -48,6 +48,7 @@
                             <th data-priority="3">Maksimal Usia</th>
                             <th data-priority="3">Jenis Kelamin</th>
                             <th data-priority="3">Status</th>
+                            <th data-priority="3">penyetuju</th>
                             <th data-priority="3">Aksi</th>
                         </tr>
                     </thead>
@@ -58,17 +59,18 @@
                         @foreach ($pengajuanpribadi as $p)
                             <tr>
                                 <td>{{ $no++ }}</td>
-                                <td>{{ $p->name }}</td>
-                                <td>{{ $p->nama_jabatan }}</td>
-                                <td>{{ $p->jumlah }}</td>
-                                <td>{{ $p->pendidikan_terakhir }}</td>
-                                <td>{{ $p->profesi }}</td>
-                                <td>{{ $p->max_usia }}</td>
-                                <td>{{ $p->jenis_kelamin }}</td>
-                                <td>{{ $p->status }}</td>
+                                <td>{{ $p['name'] }}</td>
+                                <td>{{ $p['nama_jabatan'] }}</td>
+                                <td>{{ $p['jumlah'] }}</td>
+                                <td>{{ $p['pendidikan_terakhir'] }}</td>
+                                <td>{{ $p['profesi'] }}</td>
+                                <td>{{ $p['max_usia'] }}</td>
+                                <td>{{ $p['jenis_kelamin'] }}</td>
+                                <td>{{ $p['status'] }}</td>
+                                <td>{{ $p['nama_penyetuju'] }}</td>
                                 <td>
                                     <div class="d-flex justify-content-between">
-                                        <a href="pengajuan/edit/{{ $p->id }}">
+                                        <a href="pengajuan/edit/{{ $p['id'] }}">
                                             <button class="btn btn-sm btn-primary">
                                                 <i class="bi bi-pencil-square"></i>
                                             </button>
@@ -83,63 +85,68 @@
                     </tbody>
                 </table>
             </div>
-            <div class="mb-5">
-                <table id='tabelpp' width='100%' class="table table-striped table-bordered ">
-                    <caption style="caption-side: top;">
-                        <div class="text-center">
-                            <p><b>Tabel Permintaan Persetujuan</b></p>
-                        </div>
-                    </caption>
-                    <thead>
-                        <tr style="background-color:#5F7A61;color:#ddd;font-weight:bold">
-                            <th data-priority="1">No</th>
-                            <th data-priority="1">Pengaju</th>
-                            <th data-priority="3">Jabatan Yang Dibutuhkan</th>
-                            <th data-priority="3">Jumlah</th>
-                            <th data-priority="3">Pendidikan Terakhir</th>
-                            <th data-priority="3">Profesi</th>
-                            <th data-priority="3">Maksimal Usia</th>
-                            <th data-priority="3">Jenis Kelamin</th>
-                            <th data-priority="3">Status</th>
-                            <th data-priority="1" style="width:160px">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php
-                            $no = 1;
-                        @endphp
-                        @foreach ($pengajuanpersetujuan as $pp)
-                            <tr>
-                                <td>{{ $no++ }}</td>
-                                <td>{{ $pp['name'] }}</td>
-                                <td>{{ $pp['nama_jabatan'] }}</td>
-                                <td>{{ $pp['jumlah'] }}</td>
-                                <td>{{ $pp['pendidikan_terakhir'] }}</td>
-                                <td>{{ $pp['profesi'] }}</td>
-                                <td>{{ $pp['max_usia'] }}</td>
-                                <td>{{ $pp['jenis_kelamin'] }}</td>
-                                <td>{{ $pp['status'] }}</td>
-                                <td>
-                                    <div class="d-flex justify-content-between">
-                                        <div>
-                                            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#setujui" onclick="setujui({{ $pp['id'] }})">
-                                                Setujui
-                                            </button>
-                                        </div>
-                                        <div>
-                                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#tolak" onclick="tolak({{ $pp['id'] }})">
-                                                Tolak
-                                            </button>
-                                        </div>
-                                    </div>
-                                </td>
+            @if (count($pengajuanpersetujuan) != 0)
+
+                <div class="mb-5">
+                    <table id='tabelpp' width='100%' class="table table-striped table-bordered ">
+                        <caption style="caption-side: top;">
+                            <div class="text-center">
+                                <p><b>Tabel Permintaan Persetujuan</b></p>
+                            </div>
+                        </caption>
+                        <thead>
+                            <tr style="background-color:#5F7A61;color:#ddd;font-weight:bold">
+                                <th data-priority="1">No</th>
+                                <th data-priority="1">Pengaju</th>
+                                <th data-priority="3">Jabatan Yang Dibutuhkan</th>
+                                <th data-priority="3">Jumlah</th>
+                                <th data-priority="3">Pendidikan Terakhir</th>
+                                <th data-priority="3">Profesi</th>
+                                <th data-priority="3">Maksimal Usia</th>
+                                <th data-priority="3">Jenis Kelamin</th>
+                                <th data-priority="3">Status</th>
+                                <th data-priority="1" style="width:160px">Aksi</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+                        </thead>
+                        <tbody>
+                            @php
+                                $no = 1;
+                            @endphp
+                            @foreach ($pengajuanpersetujuan as $pp)
+                                <tr>
+                                    <td>{{ $no++ }}</td>
+                                    <td>{{ $pp['name'] }}</td>
+                                    <td>{{ $pp['nama_jabatan'] }}</td>
+                                    <td>{{ $pp['jumlah'] }}</td>
+                                    <td>{{ $pp['pendidikan_terakhir'] }}</td>
+                                    <td>{{ $pp['profesi'] }}</td>
+                                    <td>{{ $pp['max_usia'] }}</td>
+                                    <td>{{ $pp['jenis_kelamin'] }}</td>
+                                    <td>{{ $pp['status'] }}</td>
+                                    <td>
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <button type="button" class="btn btn-success btn-sm"
+                                                    data-bs-toggle="modal" data-bs-target="#setujui"
+                                                    onclick="setujui({{ $pp['id'] }})">
+                                                    Setujui
+                                                </button>
+                                            </div>
+                                            <div>
+                                                <button type="button" class="btn btn-danger btn-sm"
+                                                    data-bs-toggle="modal" data-bs-target="#tolak"
+                                                    onclick="tolak({{ $pp['id'] }})">
+                                                    Tolak
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @endif
         </div>
         @include('partials.footer')
     </main>

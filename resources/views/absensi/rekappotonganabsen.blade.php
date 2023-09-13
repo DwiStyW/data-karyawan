@@ -98,7 +98,7 @@
         let number = no++;
         for (let b = 0; b < values.length; b++) {
             if (values[b].status != 'Tetap' && values[b].surat == 'ada' || values[b].status != 'Tetap' && values[b]
-                .surat == 'tidak') {
+                .surat == 'tidak' || values[b].status == 'Tetap' && values[b].surat == 'tidak') {
                 dataabsensi.push({
                     no: number,
                     nama: nama,
@@ -164,8 +164,8 @@
         for (let [nama, values] of Object.entries(groupByname(newarr))) {
             let number = no++;
             for (let b = 0; b < values.length; b++) {
-                if (values[b].golongan != 'tetap' && values[b].surat == 'ada' || values[b].golongan != 'tetap' &&
-                    values[b].surat == 'tidak') {
+                if (values[b].statustetap != 'tetap' && values[b].surat == 'ada' || values[b].statustetap != 'tetap' &&
+                    values[b].surat == 'tidak' || values[b].statustetap == 'Tetap' && values[b].surat == 'tidak') {
                     dataabsenbaru.push({
                         no: number,
                         nama: nama,

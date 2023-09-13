@@ -127,7 +127,11 @@ Route::get('/distribusi-absensi/{strtime}', [AbsensiController::class, 'distribu
 Route::get('/rekappotongan', [AbsensiController::class, 'rekappotongan']);
 Route::get('/daftardistribusiabsen', [AbsensiController::class, 'daftardistribusiabsen']);
 Route::post('/daftardistribusiabsen', [AbsensiController::class, 'daftardistribusiabsenpost'])->name('daftardistribusiabsen.post');
+Route::get('/rekapdistribusiabsen', [AbsensiController::class, 'rekapdistribusiabsen']);
+Route::post('/rekapdistribusiabsen', [AbsensiController::class, 'rekapdistribusiabsenpost'])->name('rekapdistribusiabsen.post');
+Route::post('/absensi', [AbsensiController::class, 'absensipost'])->name('absensi.post');
 
+// pimpinan
 Route::get('pengajuan', [PengajuanController::class, 'index']);
 Route::get('pengajuan/add', [PengajuanController::class, 'create']);
 Route::post('pengajuan/post', [PengajuanController::class, 'store']);
@@ -135,6 +139,8 @@ Route::get('pengajuan/edit/{id}', [PengajuanController::class, 'edit']);
 Route::post('pengajuan/update/{id}', [PengajuanController::class, 'update']);
 Route::post('/persetujuan', [PengajuanController::class, 'persetujuan']);
 Route::post('/tolakpengajuan', [PengajuanController::class, 'tolakpengajuan']);
+// personalia
+Route::get('/pengajuankaryawan', [PengajuanController::class, 'pengajuan_karyawan']);
 
 Route::get('hakakses', [HakAksesController::class, 'index'])->middleware('auth');
 Route::get('tambahhakakses', [HakAksesController::class, 'create'])->middleware('auth');

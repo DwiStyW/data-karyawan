@@ -63,9 +63,6 @@
                 <div class="mt-3">
                     <div class="float-end">
                         <div class="d-flex">
-                            <a href="/absensi">
-                                <button class="btn btn-sm btn-secondary m-1">kembali</button>
-                            </a>
                             <button class="btn btn-sm btn-primary m-1" onclick="carirekap()">cari</button>
                         </div>
                     </div>

@@ -68,7 +68,44 @@ class PengajuanController extends Controller
             }
         }
         // dump($akses);
+<<<<<<< HEAD
         $pengajuanpribadi=Pengajuan::leftjoin('users','users.id','=','idpengaju')->leftjoin('jabatan','jabatan.id','=','idjabatan')->where('idpengaju',$iduser)->select('pengajuan_karyawan.*','nama_jabatan','name')->get();
+=======
+        $pengajuanpribadi=[];
+        $pengajuanp=Pengajuan::leftjoin('users','users.id','=','idpengaju')
+        ->leftjoin('jabatan','jabatan.id','=','idjabatan')
+        ->where('idpengaju',$iduser)
+        ->select('pengajuan_karyawan.*','nama_jabatan','name')
+        ->get();
+        foreach($pengajuanp as $pp){
+            $idpenyetuju=$pp->idpenyetuju;
+            if($idpenyetuju!=null){
+                $penyetuju=User::where('id',$idpenyetuju)->get();
+                foreach($penyetuju as $py){}
+                $nama_penyetuju=$py->name;
+            }else{
+                $nama_penyetuju='-';
+            }
+            $pengajuanpribadi[]=[
+                'id'=>$pp->id,
+                'idpengaju'=>$pp->idpengaju,
+                'idpenyetuju'=>$pp->idpenyetuju,
+                'idjabatan'=>$pp->idjabatan,
+                'status'=>$pp->status,
+                'jumlah'=>$pp->jumlah,
+                'pendidikan_terakhir'=>$pp->pendidikan_terakhir,
+                'profesi'=>$pp->profesi,
+                'max_usia'=>$pp->max_usia,
+                'jenis_kelamin'=>$pp->jenis_kelamin,
+                'updated_at'=>$pp->updated_at,
+                'nama_jabatan'=>$pp->nama_jabatan,
+                'name'=>$pp->name,
+                'nama_penyetuju'=>$nama_penyetuju
+            ];
+        }
+        // dump($pengajuanp);
+        // dd($pengajuanpribadi);
+>>>>>>> wibi
         $countabsen=DataController::absen();
         return view('pengajuan.list_pengajuan',compact('pengajuanpribadi','pengajuanpersetujuan','countabsen'));
     }
@@ -334,4 +371,41 @@ class PengajuanController extends Controller
             return back()->with('failed','Data gagal ditambahkan!');
         }
     }
+<<<<<<< HEAD
+=======
+
+    public function pengajuan_karyawan(){
+        $pengajuankaryawwan=Pengajuan::leftjoin('users','users.id','=','idpengaju')
+        ->leftjoin('jabatan','jabatan.id','=','idjabatan')
+        ->where('pengajuan_karyawan.status','!=','ditolak')
+        ->where('pengajuan_karyawan.updateby','7')
+        ->select('pengajuan_karyawan.*','nama_jabatan','name')
+        ->get();
+        $datapengajuan=[];
+        foreach ($pengajuankaryawwan as $p) {
+            $idpenyetuju=$p->idpenyetuju;
+            $penyetuju=User::where('id',$idpenyetuju)->get();
+            foreach($penyetuju as $py){}
+            $datapengajuan[]=[
+                'id'=>$p->id,
+                'idpengaju'=>$p->idpengaju,
+                'idpenyetuju'=>$p->idpenyetuju,
+                'idjabatan'=>$p->idjabatan,
+                'status'=>$p->status,
+                'jumlah'=>$p->jumlah,
+                'pendidikan_terakhir'=>$p->pendidikan_terakhir,
+                'profesi'=>$p->profesi,
+                'max_usia'=>$p->max_usia,
+                'jenis_kelamin'=>$p->jenis_kelamin,
+                'updated_at'=>$p->updated_at,
+                'nama_jabatan'=>$p->nama_jabatan,
+                'name'=>$p->name,
+                'nama_penyetuju'=>$py->name
+            ];
+        }
+
+        // dump($pengajuankaryawwan);
+        return view('pengajuan.pengajuan',compact('datapengajuan'));
+    }
+>>>>>>> wibi
 }

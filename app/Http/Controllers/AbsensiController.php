@@ -287,7 +287,13 @@ class AbsensiController extends Controller
             ];
         }
         // dd($periode);
-        $alldata=Absen::leftjoin('master','master.id','=','absen.id_master')->select('absen.*','master.nama','master.golongan')->orderby('nama','desc')->get();
+        $alldata=Absen::leftjoin('master','master.id','=','absen.id_master')
+        ->leftjoin('riwayat_karyawan','riwayat_karyawan.id_master','=','absen.id_master')
+        ->where('riwayat_karyawan.jenis','Tetap')
+        ->select('absen.*','master.nama','master.golongan','riwayat_karyawan.jenis as statustetap')
+        ->orderby('nama','desc')
+        ->get();
+        // dd($alldata);
 
         return view('absensi.rekappotonganabsen',compact('month','dataabsenbulan','per','alldata'));
     }
@@ -344,4 +350,89 @@ class AbsensiController extends Controller
         }
         return response()->json($data);
     }
+<<<<<<< HEAD
+=======
+
+    public function rekapdistribusiabsen(){
+        return view('absensi.rekapdistribusiabsen');
+    }
+
+    public function rekapdistribusiabsenpost(Request $request){
+        $start=$request->start;
+        $end=$request->end;
+        $data=[];
+        $userhk=[];
+
+        $query=Absen::whereBetween('tanggal', [$start, $end])->groupby('tanggal')->get('tanggal');
+        foreach($query as $q){
+            $date=$q->tanggal;
+            $absen=Absen::leftjoin('master','master.id','=','id_master')
+            ->where('tanggal',$date)
+            ->select('absen.*','id_jabatan')
+            ->get();
+            if(count($absen)!=0){
+                foreach($absen as $a){
+                    $idjabatan=$a->id_jabatan;
+                    $uhk=Hakakses::leftjoin('users','users.id','=','id_user')
+                    ->where('akses_jabatan.id_jabatan',$idjabatan)
+                    ->select('akses_jabatan.*','name')
+                    ->get();
+                    foreach($uhk as $uk){
+                        $userhk[]=[
+                            'id_user'=>$uk->id_user,
+                            'nama_user'=>$uk->name
+                        ];
+                    }
+                }
+
+                $iduser_penerima = array_reduce($userhk, function($carry, $item){
+                    if(!isset($carry[$item['id_user']])){
+                        $carry[$item['id_user']] = [
+                            'id_user'=>$item['id_user'],
+                            'nama_user'=>$item['nama_user']
+                        ];
+                    }
+                    return $carry;
+                });
+                foreach($iduser_penerima as $r){
+                    $iduser=$r['id_user'];
+                    $namauser=$r['nama_user'];
+                    $distribusi=Distribusiabsen::leftjoin('users','users.id','=','distribusi_absen.id_user')
+                        ->where('id_user',$iduser)
+                        ->where('tanggal',$date)
+                        ->get();
+                    $penerimapertanggal=Distribusiabsen::leftjoin('users','users.id','=','distribusi_absen.id_user')
+                        ->where('tanggal',$date)
+                        ->get();
+                    if(count($distribusi)==0){
+                        $status='Belum Mengetahui';
+                    }else{
+                        $status='Sudah Mengetahui';
+                    }
+                    if(count($iduser_penerima)==count($penerimapertanggal)){
+                        $statusdistribusi='Done';
+                    }else{
+                        $statusdistribusi='Deliver';
+                    }
+                    $data[]=[
+                        'tanggal'=>$date,
+                        'id_user'=>$iduser,
+                        'nama'=>$namauser,
+                        'status'=>$status,
+                        'statusdistribusi'=>$statusdistribusi,
+                    ];
+                }
+            }else{
+                $data=[];
+            }
+        }
+        return response()->json($data);
+    }
+
+    public function absensipost(Request $request){
+        $tanggal=$request->tanggal;
+        $absensi=Absen::leftjoin('master','master.id','=','absen.id_master')->where('tanggal',$tanggal)->select('absen.*','master.nama','master.golongan')->get();
+        return response()->json($absensi);
+    }
+>>>>>>> wibi
 }

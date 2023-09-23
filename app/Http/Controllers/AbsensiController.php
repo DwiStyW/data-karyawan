@@ -350,8 +350,6 @@ class AbsensiController extends Controller
         }
         return response()->json($data);
     }
-<<<<<<< HEAD
-=======
 
     public function rekapdistribusiabsen(){
         return view('absensi.rekapdistribusiabsen');
@@ -434,5 +432,4 @@ class AbsensiController extends Controller
         $absensi=Absen::leftjoin('master','master.id','=','absen.id_master')->where('tanggal',$tanggal)->select('absen.*','master.nama','master.golongan')->get();
         return response()->json($absensi);
     }
->>>>>>> wibi
 }

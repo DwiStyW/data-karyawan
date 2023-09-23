@@ -139,11 +139,8 @@ Route::get('pengajuan/edit/{id}', [PengajuanController::class, 'edit']);
 Route::post('pengajuan/update/{id}', [PengajuanController::class, 'update']);
 Route::post('/persetujuan', [PengajuanController::class, 'persetujuan']);
 Route::post('/tolakpengajuan', [PengajuanController::class, 'tolakpengajuan']);
-<<<<<<< HEAD
-=======
 // personalia
 Route::get('/pengajuankaryawan', [PengajuanController::class, 'pengajuan_karyawan']);
->>>>>>> wibi
 
 Route::get('hakakses', [HakAksesController::class, 'index'])->middleware('auth');
 Route::get('tambahhakakses', [HakAksesController::class, 'create'])->middleware('auth');

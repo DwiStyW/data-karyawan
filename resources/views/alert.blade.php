@@ -1,35 +1,31 @@
 {{-- alert message --}}
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @if (Session::get('success'))
+    <div id="berhasil" onload="time()">
+        <div class="alert alert-success alert-dismissible" role="alert">
+            <i class="bi bi-check-circle-fill"></i> {{ Session::get('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
     <script>
-    Swal.fire({
-      icon: 'success',
-      title:'<h3 style="color:white">Berhasil!</h3>',
-      html: '<h5 style="color:white">{{Session::get("success")}}</h5>',
-      showConfirmButton: false,
-      timer: 2000,
-      timerProgressBar: true,
-      iconColor:'white',
-      textColor:'white',
-      customClass: {
-        popup: 'bg-success'
-      },
-    })
+        const waktu = setTimeout(time, 5000);
+
+        function time() {
+            document.getElementById('berhasil').innerHTML = '';
+        }
     </script>
 @endif
 @if (Session::get('failed'))
+    <div id="gagal" onload="time()">
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <i class="bi bi-exclamation-triangle-fill"></i> {{ Session::get('failed') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
     <script>
-    Swal.fire({
-      icon: 'error',
-      title:'<h3 style="color:white">Gagal!</h3>',
-      html: '<h5 style="color:white">{{Session::get("failed")}}</h5>',
-      showConfirmButton: false,
-      timer: 2000,
-      timerProgressBar: true,
-      iconColor:'white',
-      customClass: {
-        popup: 'bg-danger'
-      },
-    })
+        const waktu = setTimeout(time, 5000);
+
+        function time() {
+            document.getElementById('gagal').innerHTML = '';
+        }
     </script>
 @endif

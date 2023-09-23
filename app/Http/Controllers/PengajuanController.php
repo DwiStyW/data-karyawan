@@ -68,9 +68,6 @@ class PengajuanController extends Controller
             }
         }
         // dump($akses);
-<<<<<<< HEAD
-        $pengajuanpribadi=Pengajuan::leftjoin('users','users.id','=','idpengaju')->leftjoin('jabatan','jabatan.id','=','idjabatan')->where('idpengaju',$iduser)->select('pengajuan_karyawan.*','nama_jabatan','name')->get();
-=======
         $pengajuanpribadi=[];
         $pengajuanp=Pengajuan::leftjoin('users','users.id','=','idpengaju')
         ->leftjoin('jabatan','jabatan.id','=','idjabatan')
@@ -105,7 +102,6 @@ class PengajuanController extends Controller
         }
         // dump($pengajuanp);
         // dd($pengajuanpribadi);
->>>>>>> wibi
         $countabsen=DataController::absen();
         return view('pengajuan.list_pengajuan',compact('pengajuanpribadi','pengajuanpersetujuan','countabsen'));
     }
@@ -371,8 +367,6 @@ class PengajuanController extends Controller
             return back()->with('failed','Data gagal ditambahkan!');
         }
     }
-<<<<<<< HEAD
-=======
 
     public function pengajuan_karyawan(){
         $pengajuankaryawwan=Pengajuan::leftjoin('users','users.id','=','idpengaju')
@@ -407,5 +401,4 @@ class PengajuanController extends Controller
         // dump($pengajuankaryawwan);
         return view('pengajuan.pengajuan',compact('datapengajuan'));
     }
->>>>>>> wibi
 }

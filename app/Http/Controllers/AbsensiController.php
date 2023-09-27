@@ -226,8 +226,14 @@ class AbsensiController extends Controller
             ];
         }
         // dd($data);
+        $carilevel=User::leftjoin('jabatan','jabatan.id','=','id_jabatan')
+        ->where('users.id',$iduser)
+        ->select('users.*','level')
+        ->get();
+        foreach($carilevel as $c){}
+        $level=$c->level;
         $countpengajuan=DataController::pengajuan();
-        return view('absensi.absensi-perdiv',compact('data','disabsen','countpengajuan'));
+        return view('absensi.absensi-perdiv',compact('data','disabsen','countpengajuan','level'));
     }
     public function distribusiabsen($strtime){
         $ts=$strtime/1000;
@@ -298,6 +304,7 @@ class AbsensiController extends Controller
         return view('absensi.rekappotonganabsen',compact('month','dataabsenbulan','per','alldata'));
     }
      public function daftardistribusiabsen(){
+
         return view('absensi.distribusiabsen');
      }
 

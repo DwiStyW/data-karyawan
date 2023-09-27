@@ -310,6 +310,7 @@ class MasterController extends Controller
             'golongan'=>$request->golongan,
             'status'=>'Aktif',
             'foto' => $name,
+            'id_pengajuan' => '',
             'updated_at'=>date("Y-m-d H:i:s")
         ];
 

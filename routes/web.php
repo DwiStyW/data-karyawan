@@ -141,6 +141,7 @@ Route::post('/persetujuan', [PengajuanController::class, 'persetujuan']);
 Route::post('/tolakpengajuan', [PengajuanController::class, 'tolakpengajuan']);
 // personalia
 Route::get('/pengajuankaryawan', [PengajuanController::class, 'pengajuan_karyawan']);
+Route::post('/tambahkaryawanbaru', [PengajuanController::class, 'tambah_karyawan']);
 
 Route::get('hakakses', [HakAksesController::class, 'index'])->middleware('auth');
 Route::get('tambahhakakses', [HakAksesController::class, 'create'])->middleware('auth');

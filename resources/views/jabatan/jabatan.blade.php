@@ -59,16 +59,19 @@
                                     <td>{{ $ja->name }}</td>
                                     <td>
                                         <div class="row justify-content-center" style="min-width:110px;">
-                                            <div style="max-width:60px"><button type="button"
-                                                    class="btn btn-sm btn-primary btn-block" data-bs-toggle="modal"
-                                                    data-bs-target="#editjabatan"
+                                            <div style="max-width:60px">
+                                                <button type="button" class="btn btn-sm btn-primary btn-block"
+                                                    data-bs-toggle="modal" data-bs-target="#editjabatan"
                                                     onclick="editjabatan({{ $ja->id }},'{{ $ja->nama_jabatan }}','{{ $ja->departemen }}','{{ $ja->bagian }}','{{ $ja->sie }}','{{ $ja->level }}','{{ $ja->pid }}','{{ $ja->updateby }}')">
                                                     <i class="bi bi-pencil-square"></i>
                                                 </button>
                                             </div>
-                                            <div style="max-width:60px"><button type="button"
-                                                    class="btn btn-sm btn-danger btn-block" data-bs-toggle="modal"
-                                                    data-bs-target="#hapusjabatan"
+                                            <div style="max-width:60px"
+                                                @if ($ja->idpenyetuju != null) tabindex="0" data-toggle="tooltip"
+                                                data-placement="bottom" title="Jabatan dalam proses pengajuan" @endif>
+                                                <button type="button" class="btn btn-sm btn-danger btn-block"
+                                                    @if ($ja->idpenyetuju != null) disabled @endif
+                                                    data-bs-toggle="modal" data-bs-target="#hapusjabatan"
                                                     onclick="hapusjabatan({{ $ja->id }},'{{ $ja->nama_jabatan }}')"><i
                                                         class="bi bi-trash3-fill"></i>
                                                 </button>
@@ -111,11 +114,15 @@
                                                 data-bs-target="#editjabatan"
                                                 onclick="editjabatan({{ $j->id }},'{{ $j->nama_jabatan }}','{{ $j->departemen }}','{{ $j->bagian }}','{{ $j->sie }}','{{ $j->level }}','{{ $j->pid }}','{{ $j->updateby }}')">
                                                 <i class="bi bi-pencil-square"></i></button></div>
-                                        <div style="max-width:60px"><button type="button"
+                                        <div style="max-width:60px"
+                                            @if ($j->jumlah != 0) tabindex="0" data-toggle="tooltip"
+                                                data-placement="bottom" title="Terdapat karyawan pada jabatan tersebut" @endif>
+                                            <button type="button" @if ($j->jumlah != 0) disabled @endif
                                                 class="btn btn-sm btn-danger btn-block" data-bs-toggle="modal"
                                                 data-bs-target="#hapusjabatan"
                                                 onclick="hapusjabatan({{ $j->id }},'{{ $j->nama_jabatan }}')"><i
-                                                    class="bi bi-trash3-fill"></i></button></div>
+                                                    class="bi bi-trash3-fill"></i></button>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>
@@ -181,6 +188,10 @@
             responsive: true,
             dom: '<"rowt justify-content-between"<l><"rowt"<f><B>>><t><"rowt justify-content-between"ip>',
         });
+    });
+
+    $(document).ready(function() {
+        $('[data-toggle="tooltip"]').tooltip();
     });
 </script>
 @include('jabatan.tambahjabatan')

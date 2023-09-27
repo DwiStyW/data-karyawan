@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="../assets/ui/bootstrap-5.2.1-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/ui/bootstrap-icons-1.10.2/bootstrap-icons.css">
     <link rel="stylesheet" href="../assets/ui/css/global.css">
-
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.1/css/selectize.bootstrap3.min.css" />
 
 </head>
 
@@ -30,13 +31,14 @@
                             <th data-priority="1">Pengaju</th>
                             <th data-priority="3">Jabatan Yang Dibutuhkan</th>
                             <th data-priority="3">Jumlah</th>
+                            <th data-priority="3">Karyawan Masuk</th>
                             <th data-priority="3">Pendidikan Terakhir</th>
                             <th data-priority="3">Profesi</th>
                             <th data-priority="3">Maksimal Usia</th>
                             <th data-priority="3">Jenis Kelamin</th>
-                            <th data-priority="3">Status</th>
-                            <th data-priority="3">penyetuju</th>
-                            <th data-priority="3">Aksi</th>
+                            <th data-priority="2">Status</th>
+                            <th data-priority="2">penyetuju</th>
+                            <th data-priority="1">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -49,6 +51,7 @@
                                 <td>{{ $p['name'] }}</td>
                                 <td>{{ $p['nama_jabatan'] }}</td>
                                 <td>{{ $p['jumlah'] }}</td>
+                                <td>{{ $p['karyawan_masuk'] }}</td>
                                 <td>{{ $p['pendidikan_terakhir'] }}</td>
                                 <td>{{ $p['profesi'] }}</td>
                                 <td>{{ $p['max_usia'] }}</td>
@@ -56,7 +59,13 @@
                                 <td>{{ $p['status'] }}</td>
                                 <td>{{ $p['nama_penyetuju'] }}</td>
                                 <td>
-                                    <button class="btn btn-primary">aksi</button>
+                                    @if ($p['jumlah'] != $p['karyawan_masuk'])
+                                        <button class="btn btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#tambahkaryawan"
+                                            onclick="tambahkaryawan({{ $p['id'] }},{{ $p['id_jabatan'] }},{{ $p['jumlah'] }},{{ $p['karyawan_masuk'] }},'{{ $p['nama_jabatan'] }}')">
+                                            <i class="bi bi-person-add"></i>
+                                        </button>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -67,16 +76,15 @@
         @include('partials.footer')
     </main>
     @include('partials.navdown')
-    @include('pengajuan.setujui')
-    @include('pengajuan.tolak')
+    @include('pengajuan.tambah_karyawan')
 
 </body>
 
 </html>
 
 <script src="../assets/js/jquery-1.11.3.min.js"></script>
-{{-- <script src="../assets/ui/jquery-3.6.1/jquery-3.6.1.min.js"></script> --}}
 <script type="text/javascript" src="../assets/DataTables/datatables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.1/js/standalone/selectize.min.js"></script>
 <script>
     $(document).ready(function() {
         $('#tabelpk').DataTable({

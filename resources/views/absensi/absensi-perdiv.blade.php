@@ -23,19 +23,34 @@
             </header>
             @include('alert')
             <div>
-                <table id='mTable' width='100%' class="table bg-white table-bordered ">
-                    <thead>
-                        <tr style="background-color:#5F7A61;color:#ddd;font-weight:bold;text-align:center">
-                            <th data-priority="1">No</th>
-                            <th data-priority="1">Tanggal</th>
-                            <th data-priority="3">Nama</th>
-                            <th data-priority="3">Jenis</th>
-                            <th data-priority="3">Keterangan</th>
-                            <th data-priority="3">Surat</th>
-                            <th data-priority="1">Aksi</th>
-                        </tr>
-                    </thead>
-                </table>
+                @if ($level < 2)
+                    <table id='mTable' width='100%' class="table bg-white table-bordered ">
+                        <thead>
+                            <tr style="background-color:#5F7A61;color:#ddd;font-weight:bold;text-align:center">
+                                <th data-priority="1">No</th>
+                                <th data-priority="1">Tanggal</th>
+                                <th data-priority="3">Nama</th>
+                                <th data-priority="3">Jenis</th>
+                                <th data-priority="3">Keterangan</th>
+                                <th data-priority="3">Surat</th>
+                            </tr>
+                        </thead>
+                    </table>
+                @else
+                    <table id='mTablekabag' width='100%' class="table bg-white table-bordered ">
+                        <thead>
+                            <tr style="background-color:#5F7A61;color:#ddd;font-weight:bold;text-align:center">
+                                <th data-priority="1">No</th>
+                                <th data-priority="1">Tanggal</th>
+                                <th data-priority="3">Nama</th>
+                                <th data-priority="3">Jenis</th>
+                                <th data-priority="3">Keterangan</th>
+                                <th data-priority="3">Surat</th>
+                                <th data-priority="1">Aksi</th>
+                            </tr>
+                        </thead>
+                    </table>
+                @endif
             </div>
         </div>
         @include('partials.footer')
@@ -63,8 +78,10 @@
 </script>
 <script type="text/javascript">
     var disabsen = @json($disabsen);
+    var level = @json($level);
     let data = @json($data);
     data.sort((a, b) => b.tanggal - a.tanggal);
+    console.log(disabsen)
     console.log(data)
     var datafilterabsen = data;
     if (disabsen.length != 0) {
@@ -117,6 +134,7 @@
 
     const groupBytanggal = groupBy(['tanggal']);
     let dataabsensi = [];
+    let dataabsensikabag = [];
     var no = 1;
     for (let [tanggal, values] of Object.entries(groupBytanggal(dataeliminasi))) {
         var ts = Number(tanggal);
@@ -125,83 +143,154 @@
         date = "'" + tanggal + "'";
         let number = no++;
         for (let b = 0; b < values.length; b++) {
-            dataabsensi.push({
-                no: number,
-                nama: values[b].nama,
-                tanggal: tgl,
-                jenis: values[b].jenis,
-                ket: values[b].ket,
-                surat: values[b].surat,
-                button: '<button class="btn btn-sm btn-warning" type="button" class="btn btn-danger btn-block" data-bs-toggle="modal" data-bs-target="#mengetahui_absensi" onclick="mengetahui(' +
-                    ts +
-                    ')">Mengetahui</button>',
-            })
+            if (level < 2) {
+                dataabsensi.push({
+                    no: number,
+                    nama: values[b].nama,
+                    tanggal: tgl,
+                    jenis: values[b].jenis,
+                    ket: values[b].ket,
+                    surat: values[b].surat,
+                });
+            } else {
+                dataabsensikabag.push({
+                    no: number,
+                    nama: values[b].nama,
+                    tanggal: tgl,
+                    jenis: values[b].jenis,
+                    ket: values[b].ket,
+                    surat: values[b].surat,
+                    button: '<button class="btn btn-sm btn-warning" type="button" class="btn btn-danger btn-block" data-bs-toggle="modal" data-bs-target="#mengetahui_absensi" onclick="mengetahui(' +
+                        ts +
+                        ')">Mengetahui</button>',
+                });
+            }
+
         }
     }
-    console.log(datafilterabsen);
-    console.log(dataeliminasi);
+    // console.log(datafilterabsen);
     console.log(dataabsensi);
+    console.log(dataabsensikabag);
+    console.log(level);
+
+    // DataTable
     $(document).ready(function() {
-        // DataTable
-        $('#mTable').DataTable({
-            data: dataabsensi,
-            processing: false,
-            deferRender: true,
-            "lengthMenu": [
-                [10, 25, 50, -1],
-                [10, 25, 50, "All"]
-            ],
-            buttons: [{
-                    extend: 'excelHtml5',
-                    title: 'Data export Karyawan'
-                },
-                {
-                    extend: 'pdfHtml5',
-                    title: 'Data export Karyawan'
-                }
-            ],
-            columns: [{
-                    data: 'no',
-                    className: 'text-center'
-                },
-                {
-                    data: 'tanggal',
-                },
-                {
-                    data: 'nama',
-                },
-                {
-                    data: 'jenis',
-                },
-                {
-                    data: 'ket',
-                },
-                {
-                    data: 'surat',
-                },
-                {
-                    data: 'button',
-                    className: 'text-center'
-                },
-            ],
-            language: {
-                paginate: {
-                    previous: '‹',
-                    next: '›'
-                },
-                aria: {
-                    paginate: {
-                        previous: 'Previous',
-                        next: 'Next'
+        if (level < 2) {
+            $('#mTable').DataTable({
+                data: dataabsensi,
+                processing: false,
+                deferRender: true,
+                "lengthMenu": [
+                    [10, 25, 50, -1],
+                    [10, 25, 50, "All"]
+                ],
+                buttons: [{
+                        extend: 'excelHtml5',
+                        title: 'Data export Karyawan'
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        title: 'Data export Karyawan'
                     }
-                }
-            },
-            rowsGroup: [0, 1, 5],
-            responsive: true,
-            dom: '<"rowt justify-content-between"<><"rowt"<f><B>>>t<"rowt justify-content-between"i>',
-        });
+                ],
+                columns: [{
+                        data: 'no',
+                        className: 'text-center'
+                    },
+                    {
+                        data: 'tanggal',
+                    },
+                    {
+                        data: 'nama',
+                    },
+                    {
+                        data: 'jenis',
+                    },
+                    {
+                        data: 'ket',
+                    },
+                    {
+                        data: 'surat',
+                    },
+                ],
+                language: {
+                    paginate: {
+                        previous: '‹',
+                        next: '›'
+                    },
+                    aria: {
+                        paginate: {
+                            previous: 'Previous',
+                            next: 'Next'
+                        }
+                    }
+                },
+                rowsGroup: [0, 1],
+                responsive: true,
+                dom: '<"rowt justify-content-between"<><"rowt"<f><B>>>t<"rowt justify-content-between"i>',
+            });
+        } else {
+            $('#mTablekabag').DataTable({
+                data: dataabsensikabag,
+                processing: false,
+                deferRender: true,
+                "lengthMenu": [
+                    [10, 25, 50, -1],
+                    [10, 25, 50, "All"]
+                ],
+                buttons: [{
+                        extend: 'excelHtml5',
+                        title: 'Data export Karyawan'
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        title: 'Data export Karyawan'
+                    }
+                ],
+                columns: [{
+                        data: 'no',
+                        className: 'text-center'
+                    },
+                    {
+                        data: 'tanggal',
+                    },
+                    {
+                        data: 'nama',
+                    },
+                    {
+                        data: 'jenis',
+                    },
+                    {
+                        data: 'ket',
+                    },
+                    {
+                        data: 'surat',
+                    },
+                    {
+                        data: 'button',
+                        className: 'text-center'
+                    },
+                ],
+                language: {
+                    paginate: {
+                        previous: '‹',
+                        next: '›'
+                    },
+                    aria: {
+                        paginate: {
+                            previous: 'Previous',
+                            next: 'Next'
+                        }
+                    }
+                },
+                rowsGroup: [0, 1, 6],
+                responsive: true,
+                dom: '<"rowt justify-content-between"<><"rowt"<f><B>>>t<"rowt justify-content-between"i>',
+            });
+        }
 
     });
+
 
     // function mengetahui(timenumber) {
     //     console.log(timenumber)

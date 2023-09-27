@@ -213,7 +213,8 @@
                         </ul>
                     </li>
                     <li class="list-group-item">
-                        <a class="btn" href="/pengajuankaryawan" id="navDAR">
+                        <a class="btn  {{ Request::is('pengajuankaryawan') ? 'active' : '' }}"
+                            href="/pengajuankaryawan" id="navDAR">
                             <div class="btn-header me-3 d-flex align-items-center">
                                 <i class="bi bi-person-add"></i>
                             </div>

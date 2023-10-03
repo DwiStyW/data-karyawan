@@ -293,13 +293,33 @@ class AbsensiController extends Controller
             ];
         }
         // dd($periode);
-        $alldata=Absen::leftjoin('master','master.id','=','absen.id_master')
-        ->leftjoin('riwayat_karyawan','riwayat_karyawan.id_master','=','absen.id_master')
-        ->where('riwayat_karyawan.jenis','Tetap')
-        ->select('absen.*','master.nama','master.golongan','riwayat_karyawan.jenis as statustetap')
+        $aldat=Absen::leftjoin('master','master.id','=','absen.id_master')
+        // ->join('riwayat_karyawan','riwayat_karyawan.id_master','=','absen.id_master')
+        // ->where('riwayat_karyawan.jenis','Tetap')
+        ->select('absen.*','master.nama','master.golongan')
         ->orderby('nama','desc')
         ->get();
-        // dd($alldata);
+        $alldata=[];
+        foreach($aldat as $al){
+            $idm=$al->id_master;
+            $riwkar=Riwayatkaryawan::where('id_master',$idm)->where('jenis','Tetap')->get();
+            if(count($riwkar)!=0){
+                $statustetap='Tetap';
+            }else{
+                $statustetap='Tidak Tetap';
+            }
+            $alldata[]=[
+                'nama'=>$al->nama,
+                'tanggal'=>$al->tanggal,
+                'jenis'=>$al->jenis,
+                'ket'=>$al->ket,
+                'surat'=>$al->surat,
+                'filesurat'=>$al->filesurat,
+                'status'=>$al->status,
+                'statustetap'=>$statustetap,
+            ];
+        }
+        // dd($aldat);
 
         return view('absensi.rekappotonganabsen',compact('month','dataabsenbulan','per','alldata'));
     }
@@ -337,19 +357,27 @@ class AbsensiController extends Controller
             foreach($iduser_penerima as $r){
                 $iduser=$r['id_user'];
                 $namauser=$r['nama_user'];
+                $lvl=User::leftjoin('jabatan','jabatan.id','=','id_jabatan')
+                    ->where('users.id',$iduser)
+                    ->select('users.*','level')->get();
                 $distribusi=Distribusiabsen::leftjoin('users','users.id','=','distribusi_absen.id_user')
                     ->where('id_user',$iduser)
                     ->where('tanggal',$date)
                     ->get();
-                if(count($distribusi)==0){
+
+                foreach($lvl as $l){}
+                if(count($distribusi)==0 && $l->level>2){
                     $status='Belum Mengetahui';
-                }else{
+                }else if(count($distribusi)==0 && $l->level>2){
                     $status='Sudah Mengetahui';
+                }else{
+                    $status='Sudah Terkirim';
                 }
                 $data[]=[
                     'id_user'=>$iduser,
                     'nama'=>$namauser,
-                    'status'=>$status
+                    'status'=>$status,
+                    'level'=>$l->level,
                 ];
             }
         }else{

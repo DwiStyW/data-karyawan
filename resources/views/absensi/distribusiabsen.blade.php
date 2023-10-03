@@ -78,7 +78,7 @@
                     str += '        <tr>';
                     str += '            <td>' + no++ + '</td>';
                     str += '            <td>' + data[i].nama + '</td>';
-                    if (data[i].status == "Sudah Mengetahui") {
+                    if (data[i].status == "Sudah Mengetahui" || data[i].status == "Sudah Terkirim") {
                         str += '        <td class="text-success">' + data[i].status + '</td>';
                     } else {
                         str += '        <td class="text-warning">' + data[i].status + '</td>';

@@ -273,16 +273,36 @@ class MasterController extends Controller
      */
     public function store(Request $request)
     {
-
-        if($request->hasFile('image')){
-            $resorce       = $request->file('image');
-            $name   = $resorce->getClientOriginalName();
-            $resorce->move(\base_path() ."/public/assets/img/karyawan", $name);
-            echo "Gambar berhasil di upload";
+        if($_FILES["image"]["name"] !=''){
+            $allowed_ext = array("jpg", "png");
+            $ext = explode('.', $_FILES["image"]["name"]);
+            $file_extension = end($ext);
+            if(in_array($file_extension, $allowed_ext)){
+                $resorce       = $request->file('image');
+                $name = $request->nama. '.' . $file_extension;
+			    $path = "../public/assets/upload/karyawan/". $name;
+                $resorce->move(\base_path() ."/public/assets/upload/karyawan", $name);
+                echo "Gambar berhasil di upload";
+            }else{
+                $name="";
+                echo "Gagal upload gambar";
+            }
         }else{
             $name="";
             echo "Gagal upload gambar";
         }
+        // dd($name);
+
+        // if($request->hasFile('image')){
+        //     $resorce       = $request->file('image');
+        //     $name   = $resorce->getClientOriginalName();
+        //     $resorce->move(\base_path() ."/public/assets/upload/karyawan", $name);
+
+        // }else{
+        //     $name="";
+        //     echo "Gagal upload gambar";
+        // }
+
         $cek=Master::count();
         // dd($cek);
         $id_master=DB::select('SELECT id from master order by id DESC limit 1');

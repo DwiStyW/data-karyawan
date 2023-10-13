@@ -61,7 +61,7 @@ class DocumentMasterController extends Controller
     {
         // dump($request);
         if($_FILES["file"]["name"] !=''){
-            $allowed_ext = array("jpg", "png", "pdf");
+            $allowed_ext = array("jpg", "png", "pdf","docx","doc","xlsx","xls");
             $ext = explode('.', $_FILES["file"]["name"]);
             $file_extension = end($ext);
             if(in_array($file_extension, $allowed_ext)){

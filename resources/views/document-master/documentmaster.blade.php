@@ -89,10 +89,8 @@
                                         <div data-bs-toggle="modal" data-bs-target="#tampildokumen"
                                             onclick="foto({{ $d['id'] }},'{{ $d['keterangan'] }}','{{ $d['file'] }}')"
                                             class="d-flex align-items-center justify-content-center">
-                                            {{-- <a target="_blank" href="../assets/upload/document/{{ $d['file'] }}"> --}}
                                             <img style="object-fit: cover;max-width:280px"
                                                 src="../assets/upload/document/{{ $d['file'] }}" height="150px">
-                                            {{-- </a> --}}
                                         </div>
                                     @endif
                                 </div>
@@ -143,6 +141,7 @@
                                     placeholder="Keterangan dokumen CV / KTP dll." required name="keterangan">
                             </div>
                         </div>
+
                         <div class="row mb-3">
                             <div class="col-lg-3">
                                 <label for="">Dokumen</label>
@@ -153,6 +152,7 @@
                         </div>
                         <input type="hidden" class="form-control" id="id_master" name="id_master"
                             value="{{ $id }}">
+
                 </div>
             </div>
             <div class="modal-footer">
@@ -189,15 +189,16 @@
                                 style="object-fit: cover !important;">
                         </div>
                     </div>
-                    <div class="w-100">
-                        <div class="d-flex align-items-right justify-content-end">
-                            <a target="_blank" href="../assets/upload/document/{{ $d['file'] }}"><button
-                                    class="btn btn-warning btn-sm" type="submit">
-                                    <i class="bi bi-zoom-in"></i>
-                                </button></a>
+                    @if (count($data) != 0)
+                        <div class="w-100">
+                            <div class="d-flex align-items-right justify-content-end">
+                                <a target="_blank" href="../assets/upload/document/{{ $d['file'] }}"><button
+                                        class="btn btn-warning btn-sm" type="submit">
+                                        <i class="bi bi-zoom-in"></i>
+                                    </button></a>
+                            </div>
                         </div>
-                    </div>
-
+                    @endif
                 </div>
             </div>
             <div class="modal-footer">
@@ -218,6 +219,7 @@
         document.getElementById('namadokumen').innerHTML = 'Dokumen ' + keterangan;
         document.getElementById('iddoc').value = id;
         document.getElementById('img').src = '../assets/upload/document/' + nama;
+        document.getElementById('file').value = file;
     }
 </script>
 <style>

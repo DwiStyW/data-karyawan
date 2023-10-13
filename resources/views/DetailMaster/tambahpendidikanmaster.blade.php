@@ -90,16 +90,16 @@
                                             name="keluar{{ $bp->tingkatan_pendidikan }}">
                                     </div>
                                 </div>
-                                {{-- <div class="row">
-                                    <div class="col-lg-2">
+                                <div class="row">
+                                    <div class="col-lg-3">
                                         <label for="">Ijasah</label>
                                     </div>
-                                    <div class="col-lg-10 mb-3">
+                                    <div class="col-lg-9 mb-3">
                                         <input type="file" class="form-control"
-                                            id="ijasa{{ $bp->tingkatan_pendidikan }}"
-                                            name="ijasa{{ $bp->tingkatan_pendidikan }}">
+                                            id="sertifikat{{ $bp->tingkatan_pendidikan }}"
+                                            name="sertifikat{{ $bp->tingkatan_pendidikan }}">
                                     </div>
-                                </div> --}}
+                                </div>
                             </div>
                         @endforeach
                         <input type="hidden" class="form-control" id="master" name="id_master"

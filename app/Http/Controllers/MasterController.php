@@ -7,15 +7,16 @@ use App\Models\Bagian;
 use App\Models\Bataspensiun;
 use App\Models\Bpjskes;
 use App\Models\Bpjstk;
+use App\Models\Hakakses;
 use App\Models\Historypekerjaan;
 use App\Models\Jabatan;
 use App\Models\Master;
-use App\Models\Sie;
 use App\Models\Pendidikan;
 use App\Models\Riwayatkaryawan;
 use Exception;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class MasterController extends Controller
@@ -26,77 +27,43 @@ class MasterController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        $jabatan=Jabatan::get();
+        $jabatan=Jabatan::leftjoin('users','users.id','=','updateby')->where('role','personalia')->select('jabatan.*')->get();
+        $jtnblmaprove=Jabatan::leftjoin('users','users.id','=','updateby')->where('role','pimpinan')->get();
         $master=DB::select('SELECT master.*, nama_jabatan from master join jabatan on jabatan.id=master.id_jabatan where status="Aktif" order by id DESC');
         foreach($master as $tm){
             $idmaster=$tm->id;
             $bpjskes=Bpjskes::where('id_master',$idmaster)->get();
             $bpjstk=Bpjstk::where('id_master',$idmaster)->get();
             if(count($bpjskes)!=0 && count($bpjstk)!=0){
-                $Tmaster[]=[
-                    'id'=>$tm->id,
-                    'nama'=>$tm->nama,
-                    'nik'=>$tm->nik,
-                    'tempat_lahir'=>$tm->tempat_lahir,
-                    'tanggal_lahir'=>$tm->tanggal_lahir,
-                    'jenis_kelamin'=>$tm->jenis_kelamin,
-                    'alamat'=>$tm->alamat,
-                    'no_hp'=>$tm->no_hp,
-                    'agama'=>$tm->agama,
-                    'nama_jabatan'=>$tm->nama_jabatan,
-                    'golongan'=>$tm->golongan,
-                    'bpjskes'=>'Terdaftar',
-                    'bpjstk'=>'Terdaftar',
-                ];
+                $bkes='Terdaftar';
+                $btk='Terdaftar';
             }elseif(count($bpjskes)!=0){
-                $Tmaster[]=[
-                    'id'=>$tm->id,
-                    'nama'=>$tm->nama,
-                    'nik'=>$tm->nik,
-                    'tempat_lahir'=>$tm->tempat_lahir,
-                    'tanggal_lahir'=>$tm->tanggal_lahir,
-                    'jenis_kelamin'=>$tm->jenis_kelamin,
-                    'alamat'=>$tm->alamat,
-                    'no_hp'=>$tm->no_hp,
-                    'agama'=>$tm->agama,
-                    'nama_jabatan'=>$tm->nama_jabatan,
-                    'golongan'=>$tm->golongan,
-                    'bpjskes'=>'Terdaftar',
-                    'bpjstk'=>'Belum Terdaftar',
-                ];
+                $bkes='Terdaftar';
+                $btk='Belum Terdaftar';
             }elseif(count($bpjstk)!=0){
-                $Tmaster[]=[
-                    'id'=>$tm->id,
-                    'nama'=>$tm->nama,
-                    'nik'=>$tm->nik,
-                    'tempat_lahir'=>$tm->tempat_lahir,
-                    'tanggal_lahir'=>$tm->tanggal_lahir,
-                    'jenis_kelamin'=>$tm->jenis_kelamin,
-                    'alamat'=>$tm->alamat,
-                    'no_hp'=>$tm->no_hp,
-                    'agama'=>$tm->agama,
-                    'nama_jabatan'=>$tm->nama_jabatan,
-                    'golongan'=>$tm->golongan,
-                    'bpjskes'=>'Belum Terdaftar',
-                    'bpjstk'=>'Terdaftar',
-                ];
+                $bkes='Belum Terdaftar';
+                $btk='Terdaftar';
             }else{
-                $Tmaster[]=[
-                    'id'=>$tm->id,
-                    'nama'=>$tm->nama,
-                    'nik'=>$tm->nik,
-                    'tempat_lahir'=>$tm->tempat_lahir,
-                    'tanggal_lahir'=>$tm->tanggal_lahir,
-                    'jenis_kelamin'=>$tm->jenis_kelamin,
-                    'alamat'=>$tm->alamat,
-                    'no_hp'=>$tm->no_hp,
-                    'agama'=>$tm->agama,
-                    'nama_jabatan'=>$tm->nama_jabatan,
-                    'golongan'=>$tm->golongan,
-                    'bpjskes'=>'Belum Terdaftar',
-                    'bpjstk'=>'Belum Terdaftar',
-                ];
+                $bkes='Belum Terdaftar';
+                $btk='Belum Terdaftar';
             }
+            $Tmaster[]=[
+                'id'=>$tm->id,
+                'nama'=>$tm->nama,
+                'nik'=>$tm->nik,
+                'nokk'=>$tm->nokk,
+                'norekening'=>$tm->norekening,
+                'tempat_lahir'=>$tm->tempat_lahir,
+                'tanggal_lahir'=>$tm->tanggal_lahir,
+                'jenis_kelamin'=>$tm->jenis_kelamin,
+                'alamat'=>$tm->alamat,
+                'no_hp'=>$tm->no_hp,
+                'agama'=>$tm->agama,
+                'nama_jabatan'=>$tm->nama_jabatan,
+                'golongan'=>$tm->golongan,
+                'bpjskes'=>$bkes,
+                'bpjstk'=>$btk,
+            ];
             // $cekriw=Riwayatkaryawan::where('id_master',$idmaster)->where('jenis','masuk')->get();
             // if(count($cekriw)==0){
             //     $test[]=$idmaster;
@@ -105,7 +72,7 @@ class MasterController extends Controller
         }
         // dd($Tmaster);
          // Load index view
-         return view('MasterKaryawan.master',compact('jabatan','Tmaster'));
+         return view('MasterKaryawan.master',compact('jabatan','Tmaster','jtnblmaprove'));
      }
 
      public function perdepartemen($id){
@@ -146,6 +113,17 @@ class MasterController extends Controller
         endforeach;
         $Tmaster=DB::select("SELECT master.*, nama_jabatan from master join jabatan on jabatan.id=master.id_jabatan where status='Aktif' AND jabatan.sie='$id' order by id DESC");
         // dd($Tmaster);
+         // Load index view
+         return view('MasterKaryawan.masterfilter',compact('jabatan','Tmaster','namafilter'));
+     }
+     public function perjabatan($id){
+        $jabatan=Jabatan::get();
+        $fil = Jabatan::where('id',$id)->get();
+        foreach($fil as $fil):
+            $namafilter = $fil->nama_jabatan;
+        endforeach;
+        $Tmaster=DB::select("SELECT master.*, nama_jabatan from master join jabatan on jabatan.id=master.id_jabatan where status='Aktif' AND jabatan.id='$id' order by id DESC");
+        // dd($namafilter);
          // Load index view
          return view('MasterKaryawan.masterfilter',compact('jabatan','Tmaster','namafilter'));
      }
@@ -226,12 +204,20 @@ class MasterController extends Controller
         ->join('master','pendidikan.id_master','=','master.id')
         ->orderby('batas_pensiun.id','ASC')
         ->count();
-        $master=DB::select("SELECT master.*,nama_jabatan,nama_departemen,tanggal from master
-        join jabatan on jabatan.id = master.id_jabatan
-        left join departemen on departemen.id = jabatan.departemen
-        join riwayat_karyawan on riwayat_karyawan.id_master = master.id
-        where riwayat_karyawan.jenis = 'masuk' and master.id = $id_master order by tanggal ASC limit 1
-        ");
+        $cekriwmasuk=Riwayatkaryawan::where('id_master',$id_master)->where('jenis','masuk')->get();
+        if(count($cekriwmasuk)!=0){
+            $master=DB::select("SELECT master.*,nama_jabatan,nama_departemen,tanggal from master
+            join jabatan on jabatan.id = master.id_jabatan
+            left join departemen on departemen.id = jabatan.departemen
+            join riwayat_karyawan on riwayat_karyawan.id_master = master.id
+            where riwayat_karyawan.jenis = 'masuk' and master.id = $id_master order by tanggal ASC limit 1
+            ");
+        }else{
+            $master=DB::select("SELECT master.*,nama_jabatan,nama_departemen,'0000-00-00' as tanggal from master
+            join jabatan on jabatan.id = master.id_jabatan
+            left join departemen on departemen.id = jabatan.departemen
+            where master.id = $id_master order by tanggal ASC limit 1");
+        }
         $pendidikan=Pendidikan::where('pendidikan.id_master',$id_master)//echo data pendidikan
         ->leftJoin('batas_pensiun','pendidikan.tingkat_pendidikan','=','batas_pensiun.tingkatan_pendidikan')
         ->orderby('batas_pensiun.id','DESC')
@@ -265,7 +251,7 @@ class MasterController extends Controller
         ->get();
         // $riwayatkaryawan=DB::select("SELECT riwayat_karyawan.*,nama_jabatan from riwayat_karyawan
         // join jabatan on jabatan.id=riwayat_karyawan.jabatan where id_master=$id_master");
-        // dd($riwayatkaryawan);
+        // dd($master);
 
         return view('DetailMaster.print',compact('master','pendidikanterakhir','id_master','jabatan','bataspensiun','pendidikan','historykerja','bpjskes','bpjstk','riwayatkaryawan','cekriwkontrak','cekriwtetap'));
     }
@@ -287,16 +273,36 @@ class MasterController extends Controller
      */
     public function store(Request $request)
     {
-
-        if($request->hasFile('image')){
-            $resorce       = $request->file('image');
-            $name   = $resorce->getClientOriginalName();
-            $resorce->move(\base_path() ."/public/assets/img/karyawan", $name);
-            echo "Gambar berhasil di upload";
+        if($_FILES["image"]["name"] !=''){
+            $allowed_ext = array("jpg", "png");
+            $ext = explode('.', $_FILES["image"]["name"]);
+            $file_extension = end($ext);
+            if(in_array($file_extension, $allowed_ext)){
+                $resorce       = $request->file('image');
+                $name = $request->nama. '.' . $file_extension;
+			    $path = "../public/assets/upload/karyawan/". $name;
+                $resorce->move(\base_path() ."/public/assets/upload/karyawan", $name);
+                echo "Gambar berhasil di upload";
+            }else{
+                $name="";
+                echo "Gagal upload gambar";
+            }
         }else{
             $name="";
             echo "Gagal upload gambar";
         }
+        // dd($name);
+
+        // if($request->hasFile('image')){
+        //     $resorce       = $request->file('image');
+        //     $name   = $resorce->getClientOriginalName();
+        //     $resorce->move(\base_path() ."/public/assets/upload/karyawan", $name);
+
+        // }else{
+        //     $name="";
+        //     echo "Gagal upload gambar";
+        // }
+
         $cek=Master::count();
         // dd($cek);
         $id_master=DB::select('SELECT id from master order by id DESC limit 1');
@@ -312,6 +318,8 @@ class MasterController extends Controller
         $data1=[
             'nama'=>$request->nama,
             'nik'=>$request->nik,
+            'nokk'=>$request->nik,
+            'norekening'=>$request->nik,
             'tempat_lahir'=>$request->tempat_lahir,
             'tanggal_lahir'=>$request->tanggal_lahir,
             'jenis_kelamin'=>$request->jenis_kelamin,
@@ -322,33 +330,44 @@ class MasterController extends Controller
             'golongan'=>$request->golongan,
             'status'=>'Aktif',
             'foto' => $name,
+            'id_pengajuan' => '',
             'updated_at'=>date("Y-m-d H:i:s")
         ];
 
-        $data2=[
-            'id_master'=>$id+1,
-            'jenis'=>'Masuk',
-            'jabatan'=>$request->id_jabatan,
-            'deskripsi'=>'karyawan baru',
-            'keterangan'=>'',
-            'tanggal'=>$request->awal_kerja,
-        ];
         // dd($data1,$data2);
         // dd($data2);
         DB::beginTransaction();
         try{
             master::insert($data1);
-            riwayatkaryawan::insert($data2);
-
+            // riwayatkaryawan::insert($data2);
             DB::commit();
             //alert berhasil
-            return back()->with('success','Data berhasil ditambahkan!');
+            // return back()->with('success','Data berhasil ditambahkan!');
         }catch(Exception $e){
             dd($e);
             DB::rollback();
             //alert gagal
             return back()->with('failed','Data gagal ditambahkan!');
         }
+        $master=master::where($data1)->get();
+        foreach($master as $m){}
+        // dd($master);
+        $data2=[
+            'id_master'=>$m->id,
+            'jenis'=>'Masuk',
+            'jabatan'=>$request->id_jabatan,
+            'deskripsi'=>'karyawan baru',
+            'keterangan'=>'',
+            'sertifikat'=>'',
+            'tanggal'=>$request->awal_kerja,
+        ];
+        try{
+            riwayatkaryawan::insert($data2);
+            return back()->with('success','Data berhasil ditambahkan!');
+        }catch(Exception $e){
+            return back()->with('failed','Data gagal ditambahkan!');
+        }
+        // dd($master);
     }
 
     /**
@@ -385,6 +404,8 @@ class MasterController extends Controller
         $data=[
             'nama'=>$request->nama,
             'nik'=>$request->nik,
+            'nokk'=>$request->nik,
+            'norekening'=>$request->nik,
             'tempat_lahir'=>$request->tempat_lahir,
             'tanggal_lahir'=>$request->tanggal_lahir,
             'jenis_kelamin'=>$request->jenis_kelamin,
@@ -404,17 +425,37 @@ class MasterController extends Controller
 
 
     public function gantifoto(Request $request){
-        $id=$request->id_masterfoto;
+        // if()
 
-        if($request->hasFile('image')){
-            $resorce= $request->file('image');
-            $name   = $resorce->getClientOriginalName();
-            $resorce->move(\base_path() ."/public/assets/img/karyawan", $name);
-            echo "Gambar berhasil di upload";
+        $id=$request->id_masterfoto;
+        $master=master::where('id',$id)->get();
+        foreach($master as $m){}
+        // $nama=$m->nama;
+        if($m->foto!=""){
+            $files = glob('../public/assets/upload/karyawan/'.$m->foto);
+            if($files != []){
+                unlink('../public/assets/upload/karyawan/'.$m->foto);
+            }
+        }
+        if($_FILES["image"]["name"] !=''){
+            $allowed_ext = array("jpg", "png");
+            $ext = explode('.', $_FILES["image"]["name"]);
+            $file_extension = end($ext);
+            if(in_array($file_extension, $allowed_ext)){
+                $resorce       = $request->file('image');
+                $name = $request->namamaster. '.' . $file_extension;
+			    $path = "../public/assets/upload/karyawan/". $name;
+                $resorce->move(\base_path() ."/public/assets/upload/karyawan", $name);
+                echo "Gambar berhasil di upload";
+            }else{
+                $name="";
+                echo "Gagal upload gambar";
+            }
         }else{
+            $name="";
             echo "Gagal upload gambar";
         }
-
+        // dd($name);
         try {
             master::where('id',$id)->update(['foto'=>$name]);
             return back()->with('success','Data berhasil diedit!');
@@ -424,6 +465,16 @@ class MasterController extends Controller
 
     }
     public function hapusfoto($id){
+        $master=master::where('id',$id)->get();
+        foreach($master as $m){}
+        // $nama=$m->nama;
+        $files = glob('../public/assets/upload/karyawan/'.$m->foto);
+        $sem = glob('../public/assets/upload/karyawan/*');
+
+        if($files != []){
+            unlink('../public/assets/upload/karyawan/'.$m->foto);
+        }
+        // dd($master);
         try {
             master::where('id',$id)->update(['foto'=>'']);
             return back()->with('success','Data berhasil diedit!');
@@ -481,27 +532,58 @@ class MasterController extends Controller
 
     foreach($jabatanlama as $jl){
     }
-    $data=[
-        'id_master'=>$id_master,
-        'tanggal'=>date('Y-m-d'),
-        'jenis'=>'Non Aktif',
-        'jabatan'=>$jl->id_jabatan,
-        'deskripsi'=>'Keluar karena pensiun',
-        'keterangan'=>'',
-    ];
-    // dd($data);
-    DB::beginTransaction();
-    try{
-        master::where(['id'=>$id_master])->update(['status'=>'Non Aktif']);
-        Bpjstk::where(['id_master'=>$id_master])->update(['status'=>'Non Aktif']);
-        Bpjskes::where(['id_master'=>$id_master])->update(['status'=>'Pengajuan','alasan_nonaktif'=>'master dinonaktifkan karena pensiun']);
-        Riwayatkaryawan::insert($data);
-        DB::commit();
-        return back()->with('success','Data berhasil dihapus!');
-    }catch(Exception $e){
-        // dd($e);
-        DB::rollBack();
-        return back()->with('failed','Data gagal dihapus!');
+        $data=[
+            'id_master'=>$id_master,
+            'tanggal'=>date('Y-m-d'),
+            'jenis'=>'Non Aktif',
+            'jabatan'=>$jl->id_jabatan,
+            'deskripsi'=>'Keluar karena pensiun',
+            'keterangan'=>'',
+            'sertifikat'=>'',
+        ];
+        // dd($data);
+        DB::beginTransaction();
+        try{
+            master::where(['id'=>$id_master])->update(['status'=>'Non Aktif']);
+            Bpjstk::where(['id_master'=>$id_master])->update(['status'=>'Non Aktif']);
+            Bpjskes::where(['id_master'=>$id_master])->update(['status'=>'Pengajuan','alasan_nonaktif'=>'master dinonaktifkan karena pensiun']);
+            Riwayatkaryawan::insert($data);
+            DB::commit();
+            return back()->with('success','Data berhasil dihapus!');
+        }catch(Exception $e){
+            dd($e);
+            DB::rollBack();
+            return back()->with('failed','Data gagal dihapus!');
+        }
     }
+
+    public function masterkabag(){
+        $Tmaster=[];
+        $iduser=Auth::user()->id;
+        $hks=Hakakses::where('id_user',$iduser)->get();
+        foreach($hks as $hk){
+            $idjabatan=$hk->id_jabatan;
+            $master=Master::leftjoin('jabatan','jabatan.id','=','id_jabatan')->where('id_jabatan',$idjabatan)->where('status','aktif')->select('master.*','nama_jabatan')->get();
+            foreach($master as $m){
+                $Tmaster[]=[
+                    'id'=>$m->id,
+                    'nama'=>$m->nama,
+                    'nik'=>$m->nik,
+                    'tempat_lahir'=>$m->tempat_lahir,
+                    'tanggal_lahir'=>$m->tanggal_lahir,
+                    'jenis_kelamin'=>$m->jenis_kelamin,
+                    'alamat'=>$m->alamat,
+                    'no_hp'=>$m->no_hp,
+                    'agama'=>$m->agama,
+                    'nama_jabatan'=>$m->nama_jabatan,
+                    'golongan'=>$m->golongan,
+                ];
+            }
+        }
+        // dd($Tmaster);
+        $countpengajuan=DataController::pengajuan();
+        $countabsen=DataController::absen();
+        return view('MasterKaryawan.master-kabag',compact('Tmaster','countpengajuan','countabsen'));
+
     }
 }

@@ -41,9 +41,20 @@
                     <i class="bi bi-plus-square-fill"></i>
                     Karyawan
                 </button>
-                <a href="/jabatan" class="btn btn-sm btn-secondary">
-                    Jabatan
-                </a>
+                @if (count($jtnblmaprove) != 0)
+                    <a href="/jabatan" class="btn btn-sm btn-secondary position-relative">
+                        <div class="bg-danger position-absolute rounded-circle"
+                            style="right:-5px !important;top:-10px !important; width:20px;hight:20px">
+                            {{ count($jtnblmaprove) }}</div>
+                        Jabatan
+                    </a>
+                @else
+                    <a href="/jabatan">
+                        <button class="btn btn-sm btn-secondary">
+                            Jabatan
+                        </button>
+                    </a>
+                @endif
                 <a href="/struktur" class="btn btn-sm btn-secondary">
                     Struktur
                 </a>
@@ -56,6 +67,8 @@
                             <th data-priority="1">No</th>
                             <th data-priority="1">Nama</th>
                             <th data-priority="3">No KTP</th>
+                            <th data-priority="3">No KK</th>
+                            <th data-priority="3">No Rekening</th>
                             <th data-priority="3">Tempat Lahir</th>
                             <th data-priority="3">Tanggal Lahir</th>
                             <th data-priority="3">Jenis Kelamin</th>
@@ -78,6 +91,8 @@
                                 <td>{{ $no++ }}</td>
                                 <td><a href="detailmaster/{{ $Tm['id'] }}">{{ $Tm['nama'] }}</a></td>
                                 <td>{{ $Tm['nik'] }}</td>
+                                <td>{{ $Tm['nokk'] }}</td>
+                                <td>{{ $Tm['norekening'] }}</td>
                                 <td>{{ $Tm['tempat_lahir'] }}</td>
                                 <td>{{ date('d/m/Y', strtotime($Tm['tanggal_lahir'])) }}</td>
                                 <td>{{ $Tm['jenis_kelamin'] }}</td>
@@ -93,7 +108,7 @@
                                         <div style="max-width:60px"><button type="button"
                                                 class="btn btn-primary btn-block" data-bs-toggle="modal"
                                                 data-bs-target="#edit_master"
-                                                onclick="edit({{ $Tm['id'] }},'{{ $Tm['nama'] }}','{{ $Tm['nik'] }}','{{ $Tm['alamat'] }}','{{ $Tm['tempat_lahir'] }}','{{ $Tm['tanggal_lahir'] }}','{{ $Tm['jenis_kelamin'] }}','{{ $Tm['agama'] }}','{{ $Tm['no_hp'] }}')"><i
+                                                onclick="edit({{ $Tm['id'] }},'{{ $Tm['nama'] }}','{{ $Tm['nik'] }}','{{ $Tm['alamat'] }}','{{ $Tm['tempat_lahir'] }}','{{ $Tm['tanggal_lahir'] }}','{{ $Tm['jenis_kelamin'] }}','{{ $Tm['agama'] }}','{{ $Tm['no_hp'] }}','{{ $Tm['nokk'] }}','{{ $Tm['norekening'] }}')"><i
                                                     class="bi bi-pencil-square"></i></button></div>
                                         <div style="max-width:60px"><button type="button"
                                                 class="btn btn-danger btn-block" data-bs-toggle="modal"

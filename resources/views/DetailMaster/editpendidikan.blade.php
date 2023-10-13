@@ -40,25 +40,23 @@
                                     <label for="">Masuk</label>
                                 </div>
                                 <div class="col-lg-4 mb-3">
-                                    <input type="date" class="form-control" id="tglawal" name="tglawal">
+                                    <input type="number" class="form-control" id="tglawal" name="tglawal">
                                 </div>
                                 <div class="col-lg-2">
                                     <label for="">Keluar</label>
                                 </div>
                                 <div class="col-lg-4 mb-3">
-                                    <input type="date" class="form-control" id="tglakhir" name="tglakhir">
+                                    <input type="number" class="form-control" id="tglakhir" name="tglakhir">
                                 </div>
                             </div>
-                            {{-- <div class="row">
-                                    <div class="col-lg-2">
-                                        <label for="">Ijasah</label>
-                                    </div>
-                                    <div class="col-lg-10 mb-3">
-                                        <input type="file" class="form-control"
-                                            id="ijasa"
-                                            name="ijasa">
-                                    </div>
-                                </div> --}}
+                            <div class="row">
+                                <div class="col-lg-2">
+                                    <label for="">Ijasah</label>
+                                </div>
+                                <div class="col-lg-10 mb-3">
+                                    <input type="file" class="form-control" id="sertifikat" name="sertifikat">
+                                </div>
+                            </div>
                         </div>
                         <input type="hidden" class="form-control" id="master" name="id_master"
                             value="{{ $id_master }}">

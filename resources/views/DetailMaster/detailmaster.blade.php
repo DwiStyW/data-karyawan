@@ -29,7 +29,7 @@
                             <i class="bi bi-printer"></i>
                         </a>
                         <button data-bs-toggle="modal" data-bs-target="#editmaster" class="btn btn-md btn-secondary"
-                            onclick="editmaster({{ $id_master }},'{{ $m->nama }}','{{ $m->nik }}','{{ $m->alamat }}','{{ $m->tempat_lahir }}','{{ $m->tanggal_lahir }}','{{ $m->jenis_kelamin }}','{{ $m->agama }}','{{ $m->no_hp }}')">
+                            onclick="editmaster({{ $id_master }},'{{ $m->nama }}','{{ $m->nik }}','{{ $m->alamat }}','{{ $m->tempat_lahir }}','{{ $m->tanggal_lahir }}','{{ $m->jenis_kelamin }}','{{ $m->agama }}','{{ $m->no_hp }}','{{ $m->nokk }}','{{ $m->norekening }}')">
                             <i class="bi bi-pencil-square"></i>
                         </button>
                     </div>
@@ -45,14 +45,14 @@
                                 <img src="../assets/img/user.png" style="object-fit: cover;border: 1px solid black;"
                                     width="177px" height="236px" alt="">
                                 <?php } else{?>
-                                <img src="../assets/img/karyawan/{{ $m->foto }}"
+                                <img src="../assets/upload/karyawan/{{ $m->foto }}"
                                     style="object-fit: cover;border: 1px solid black;" width="177px" height="236px"
                                     alt="">
                                 <?php } ?>
                             </div>
                             <div class="d-flex justify-content-center mt-3 mb-5">
-                                <a type="button" onclick="ganti_foto({{ $id_master }})" data-bs-toggle="modal"
-                                    data-bs-target="#ganti_foto" class="btn btn-sm btn-primary">
+                                <a type="button" onclick="ganti_foto({{ $id_master }},'{{ $m->nama }}')"
+                                    data-bs-toggle="modal" data-bs-target="#ganti_foto" class="btn btn-sm btn-primary">
                                     Ganti Foto
                                 </a>
                                 <a href="/hapusFotoMaster/{{ $id_master }}" class="btn btn-sm btn-danger">
@@ -74,10 +74,37 @@
 
                         <div class="row mb-3">
                             <div class="col-md-3">
+                                <h6 class="form-label text-form"><b>No KK</b></h6>
+                            </div>
+                            <div class="col-md-9">
+                                <label class="form-control" style="min-height: 35px">{{ $m->nokk }}</label>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-3">
                                 <h6 class="form-label text-form"><b>No KTP</b></h6>
                             </div>
                             <div class="col-md-9">
                                 <label class="form-control" style="min-height: 35px">{{ $m->nik }}</label>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <h6 class="form-label text-form"><b>No Rekening</b></h6>
+                            </div>
+                            <div class="col-md-9">
+                                <label class="form-control" style="min-height: 35px">{{ $m->norekening }}</label>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <h6 class="form-label text-form"><b>No Telp</b></h6>
+                            </div>
+                            <div class="col-md-9">
+                                <label class="form-control" style="min-height: 35px">{{ $m->no_hp }}</label>
                             </div>
                         </div>
 
@@ -308,11 +335,16 @@
 
                     </div>
                 </div>
-                <div class="float-lg-end">
-                    <a href="/rekapabsensi/{{ $id_master }}">
+                <div class="float-lg-end ">
+                    <a href="/rekapabsensi/{{ $id_master }}" class="text-decoration-none">
                         <button class="btn btn-sm btn-secondary">
                             <i class="bi bi-card-heading"></i>
                             Rekap Absensi</button>
+                    </a>
+                    <a href="/documentmaster/{{ $id_master }}" class="text-decoration-none">
+                        <button class="btn btn-sm btn-secondary">
+                            <i class="bi bi-card-heading"></i>
+                            Dokumen Karyawan</button>
                     </a>
                 </div>
                 <div class="row col-lg-12 pt-3" style="margin-right: 0px !important">
@@ -335,6 +367,7 @@
                                         <th>Jurusan</th>
                                         <th>Tahun Masuk</th>
                                         <th>Tahun Keluar</th>
+                                        <th>Sertifikat</th>
                                         <th>aksi</th>
                                     </tr>
                                 </thead>
@@ -352,8 +385,14 @@
                                             <td>{{ $p->jurusan }}</td>
                                             <td>{{ $p->tgl_awal }}</td>
                                             <td>{{ $p->tgl_akhir }}</td>
-                                            {{-- <td>{{ date('d/m/Y', strtotime($p->tgl_awal)) }}</td>
-                                            <td>{{ date('d/m/Y', strtotime($p->tgl_akhir)) }}</td> --}}
+                                            <td>
+                                                @if ($p->sertifikat != '')
+                                                    <a href="/assets/upload/sertifikatpend/{{ $p->sertifikat }}"
+                                                        target="_blank">
+                                                        <i class="bi bi-image"></i>
+                                                    </a>
+                                                @endif
+                                            </td>
                                             <td>
                                                 <div class="row justify-content-center">
                                                     <div style="max-width:60px">
@@ -578,12 +617,35 @@
                                         <td>{{ $rk->jenis }}</td>
                                         <td>{{ $rk->deskripsi }}</td>
                                         <td>
-                                            @if ($rk->keterangan == '')
-                                                {{ '-' }}
+                                            @if ($rk->jenis == 'Penghargaan')
+                                                @if ($rk->keterangan == '')
+                                                    {{ '-' }}
+                                                @else
+                                                    {{ $rk->keterangan }}
+                                                @endif
+                                                <a href="/assets/upload/sertifikatriw/{{ $rk->sertifikat }}"
+                                                    target="_blank">
+                                                    <i class="bi bi-image"></i>
+                                                </a>
                                             @else
-                                                {{ $rk->keterangan }}
+                                                @if ($rk->keterangan == '')
+                                                    {{ '-' }}
+                                                @else
+                                                    {{ $rk->keterangan }}
+                                                @endif
                                             @endif
+
                                         </td>
+                                        {{-- <td>
+                                            <div style="max-width:60px">
+                                                <button type="button" data-bs-toggle="modal"
+                                                    data-bs-target="#editriwayatkaryawan"
+                                                    onclick="editriwayatkaryawan({{ $rk->id }},'{{ $rk->jenis }}','{{ $rk->jabatan }}','{{ $rk->keterangan }}','{{ $rk->tanggal }}','{{ $m->nama_jabatan }}')"
+                                                    class="btn btn-sm btn-primary btn-block">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </button>
+                                            </div>
+                                        </td> --}}
                                         {{-- <td>
                                             <div class="row justify-content-center">
                                                 <div style="max-width:60px">
@@ -649,5 +711,6 @@
 @include('DetailMaster.editbpjstk')
 @include('DetailMaster.hapusbpjstk')
 @include('DetailMaster.tambahriwayatkaryawan')
+@include('DetailMaster.editriwayatkaryawan')
 
 </html>

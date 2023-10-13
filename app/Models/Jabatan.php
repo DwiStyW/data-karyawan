@@ -18,6 +18,7 @@ class Jabatan extends Model
         'level',
         'pid',
         'tags',
+        'updateby',
     ];
 
     // static function getPid(){

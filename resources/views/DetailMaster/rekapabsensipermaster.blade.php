@@ -74,6 +74,7 @@
 <script src="../assets/js/jquery-1.11.3.min.js"></script>
 {{-- <script src="../assets/ui/jquery-3.6.1/jquery-3.6.1.min.js"></script> --}}
 <script type="text/javascript" src="../assets/DataTables/datatables.min.js"></script>
+<script src="//cdn.rawgit.com/ashl1/datatables-rowsgroup/v1.0.0/dataTables.rowsGroup.js"></script>
 <script src="../assets/js/select2-master/dist/js/select2.min.js"></script>
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js">
 </script>
@@ -115,7 +116,7 @@
             filterabsen = absen.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == jenis &&
                 a.id_master == master);
         }
-        // console.log(filterabsen);
+        console.log(filterabsen);
 
         // grupby
         const groupBy = (keys) => (array) =>
@@ -128,45 +129,65 @@
         const groupByname = groupBy(['nama']);
         let dataabsensi = [];
         var no = 1;
-        for (let [groupName, values] of Object.entries(groupByname(filterabsen))) {
-            // console.log(`${groupName}: ${values.length}`);
-            var s = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'sakit'),
-                i = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'ijin'),
-                c = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'cuti'),
-                a = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'alpha');
-            // var valket = _.pluck(values, 'ket'),
-            //     valjenis = _.pluck(values, 'jenis');
-            var ket = values.map(function(item) {
-                return item['tanggal'] + ' (' + item['jenis'] + ') : ' + item['ket'] + '<br>';
-            });
+        // for (let [groupName, values] of Object.entries(groupByname(filterabsen))) {
+        //     // console.log(`${groupName}: ${values.length}`);
+        //     var s = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'sakit'),
+        //         i = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'ijin'),
+        //         c = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'cuti'),
+        //         a = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'alpha');
+        //     // var valket = _.pluck(values, 'ket'),
+        //     //     valjenis = _.pluck(values, 'jenis');
+        //     var ket = values.map(function(item) {
+        //         return item['tanggal'] + ' (' + item['jenis'] + ') : ' + item['ket'] + '<br>';
+        //     });
 
-            console.log(ket.join(''));
+        //     console.log(ket.join(''));
+        //     dataabsensi.push({
+        //         no: no++,
+        //         nama: groupName,
+        //         sakit: s.length,
+        //         ijin: i.length,
+        //         cuti: c.length,
+        //         alpha: a.length,
+        //         jumlah: values.length,
+        //         keterangan: ket.join(''),
+        //         values
+        //     })
+        // }
+        for (let b = 0; b < filterabsen.length; b++) {
+            var s = filterabsen.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'sakit'),
+                i = filterabsen.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'ijin'),
+                c = filterabsen.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'cuti'),
+                a = filterabsen.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'alpha');
+            console.log(s.length, i.length, c.length, a.length)
             dataabsensi.push({
                 no: no++,
-                nama: groupName,
+                tanggal: filterabsen[b].tanggal,
+                jenis: filterabsen[b].jenis,
+                keterangan: filterabsen[b].ket,
                 sakit: s.length,
                 ijin: i.length,
                 cuti: c.length,
                 alpha: a.length,
-                jumlah: values.length,
-                keterangan: ket.join(''),
-                values
-            })
+                jumlah: filterabsen.length
+            });
         }
-        console.log(dataabsensi)
+        // console.log(dataabsensi)
 
         var tabel = '';
         tabel += '<table id="mTable" width="100%" class="table table-striped table-bordered">';
         tabel += '  <thead>';
         tabel += '      <tr style="background-color:#5F7A61;color:#ddd;font-weight:bold">';
         tabel += '          <th data-priority="1">No</th>';
-        tabel += '          <th data-priority="1">Nama</th>';
-        tabel += '          <th data-priority="1">Sakit</th>';
-        tabel += '          <th data-priority="1">Ijin</th>';
-        tabel += '          <th data-priority="1">Cuti</th>';
-        tabel += '          <th data-priority="1">Alpha</th>';
+        // tabel += '          <th data-priority="1">Nama</th>';
+        tabel += '          <th data-priority="1">Tanggal</th>';
+        tabel += '          <th data-priority="1">Jenis</th>';
+        tabel += '          <th data-priority="1">Keterangan</th>';
+        tabel += '          <th data-priority="2">Sakit</th>';
+        tabel += '          <th data-priority="2">Ijin</th>';
+        tabel += '          <th data-priority="2">Cuti</th>';
+        tabel += '          <th data-priority="2">Alpha</th>';
         tabel += '          <th data-priority="3">jumlah</th>';
-        tabel += '          <th data-priority="3">Keterangan</th>';
         tabel += '      </tr>';
         tabel += '  </thead>';
         // tabel += '  <tbody>';
@@ -197,8 +218,18 @@
                 columns: [{
                         data: 'no',
                     },
+                    // {
+                    //     data: 'nama',
+                    // },
+
                     {
-                        data: 'nama',
+                        data: 'tanggal',
+                    },
+                    {
+                        data: 'jenis',
+                    },
+                    {
+                        data: 'keterangan',
                     },
                     {
                         data: 'sakit',
@@ -215,10 +246,8 @@
                     {
                         data: 'jumlah',
                     },
-                    {
-                        data: 'keterangan',
-                    },
                 ],
+                rowsGroup: [4, 5, 6, 7, 8],
                 data: data,
                 pageLength: '10',
                 processing: true,

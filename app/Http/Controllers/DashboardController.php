@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Absen;
+use App\Models\Hakakses;
+use App\Models\Jabatan;
+use App\Models\Master;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -93,13 +98,14 @@ class DashboardController extends Controller
         }
         //jumlah karyawan
         $jumkar = DB::table('master')->where('status','Aktif')->count();
+        $dataap=[];
         //karyawan apoteker
         $apoteker=DB::select("SELECT * from pendidikan where tingkat_pendidikan = 'Lainnya' and jurusan='Apoteker'");
         if(count($apoteker)!=0){
             foreach($apoteker as $ap){
                 $idmaster=$ap->id_master;
                 $masterap=DB::select("SELECT master.*, nama_jabatan from master join jabatan on jabatan.id=master.id_jabatan where master.id = $idmaster and master.status='Aktif'");
-                if(count($masterap)){
+                // if(count($masterap)!=0){
                     foreach($masterap as $map){
                         $dataap[]=[
                             'id'=>$map->id,
@@ -113,12 +119,13 @@ class DashboardController extends Controller
                             'agama'=>$map->agama,
                             'nama_jabatan'=>$map->nama_jabatan,
                             'golongan'=>$map->golongan,
+                            'status'=>$map->status,
                         ];
                     }
-                }
-                else{
-                     $dataap=[];
-                }
+                // }
+                // else{
+                //      $dataap=[];
+                // }
             }
         }else{
             $dataap=[];
@@ -140,7 +147,7 @@ class DashboardController extends Controller
             $jarak[]=['jarak'=>(int)$jp,'id'=>$pen['id_master']];
             $jarakumur[]=(int)$jp;
 
-            if($jp<=0){
+            if($jp==0){
                 $id= $pen['id_master'];
                 $masterp=DB::select("SELECT master.*, nama_jabatan from master join jabatan on jabatan.id=master.id_jabatan where master.id = $id");
                     foreach($masterp as $m){
@@ -169,9 +176,13 @@ class DashboardController extends Controller
                 $totalpensiun[]=$pensiun[$a];
             }
         }
-// dd(array_sum($testing));
-
-        return view('dashboard',compact('datagender','datapend','jumkar','apoteker','totalpensiun','dataap','datamp','masterap'));
+// dd(array_sum($datamp));
+        // absensi
+        $date=date('Y-m-d');
+        // dd($date);
+        $absen=Absen::leftjoin('master','master.id','=','absen.id_master')->leftjoin('jabatan','jabatan.id','=','master.id_jabatan')->where('tanggal',$date)->get();
+        // dd($absen);
+        return view('dashboard.dashboard-personalia',compact('datagender','datapend','jumkar','apoteker','totalpensiun','dataap','datamp','masterap','absen'));
     }
     function cari($data, $data2)
     {
@@ -197,6 +208,48 @@ class DashboardController extends Controller
     }
 
 
+
+    function dashboardkabag(){
+        $date=date('Y-m-d');
+
+        $data=[];
+        $Tmaster=[];
+        $iduser=Auth::user()->id;
+        $hks=Hakakses::where('id_user',$iduser)->get();
+        foreach($hks as $hk){
+            $idjabatan=$hk->id_jabatan;
+            $master=Master::leftjoin('jabatan','jabatan.id','=','id_jabatan')->where('id_jabatan',$idjabatan)->where('status','aktif')->select('master.*','nama_jabatan')->get();
+            foreach($master as $m){
+                $Tmaster[]=[
+                    'id'=>$m->id,
+                    'nama'=>$m->nama,
+                    'nik'=>$m->nik,
+                    'tempat_lahir'=>$m->tempat_lahir,
+                    'tanggal_lahir'=>$m->tanggal_lahir,
+                    'jenis_kelamin'=>$m->jenis_kelamin,
+                    'alamat'=>$m->alamat,
+                    'no_hp'=>$m->no_hp,
+                    'agama'=>$m->agama,
+                    'nama_jabatan'=>$m->nama_jabatan,
+                    'golongan'=>$m->golongan,
+                ];
+            }
+        }
+        foreach($Tmaster as $tm){
+            $id_master=$tm['id'];
+            $absen=Absen::leftjoin('master','master.id','=','absen.id_master')->leftjoin('jabatan','jabatan.id','=','master.id_jabatan')->where('tanggal',$date)->where('absen.id_master',$id_master)->get();
+            foreach($absen as $a){
+                $data[]=[
+                    'nama'=>$a->nama,
+                    'jenis'=>$a->jenis,
+                ];
+            }
+            // dd($absen);
+        }
+        $countpengajuan=DataController::pengajuan();
+        $countabsen=DataController::absen();
+        return view('dashboard.dashboard-kabag',compact('data','Tmaster','countpengajuan','countabsen'));
+    }
     /**
      * Show the form for creating a new resource.
      *

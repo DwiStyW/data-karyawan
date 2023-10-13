@@ -63,9 +63,6 @@
                 <div class="mt-3">
                     <div class="float-end">
                         <div class="d-flex">
-                            <a href="/absensi">
-                                <button class="btn btn-sm btn-secondary m-1">kembali</button>
-                            </a>
                             <button class="btn btn-sm btn-primary m-1" onclick="carirekap()">cari</button>
                         </div>
                     </div>
@@ -83,6 +80,7 @@
 <script src="../assets/js/jquery-1.11.3.min.js"></script>
 {{-- <script src="../assets/ui/jquery-3.6.1/jquery-3.6.1.min.js"></script> --}}
 <script type="text/javascript" src="../assets/DataTables/datatables.min.js"></script>
+<script src="//cdn.rawgit.com/ashl1/datatables-rowsgroup/v2.0.0/dataTables.rowsGroup.js"></script>
 <script src="../assets/js/select2-master/dist/js/select2.min.js"></script>
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js">
 </script>
@@ -114,7 +112,7 @@
         var end = document.getElementById('end').value;
         var master = document.getElementById('master').value;
         var jenis = document.getElementById('jenis').value;
-        // console.log(start, end, master, jenis);
+        console.log(start, end, master, jenis);
 
         var absen = @json($absensi);
         var filterabsen = [];
@@ -128,7 +126,7 @@
             filterabsen = absen.filter(a => a.tanggal >= start && a.tanggal <= end && a.id_master == master &&
                 a.jenis == jenis);
         }
-        // console.log(filterabsen);
+        console.log(filterabsen);
 
         // grupby
         const groupBy = (keys) => (array) =>
@@ -139,38 +137,34 @@
             }, {});
         // const arr = filterabsen;
         const groupByname = groupBy(['nama']);
-        console.log(groupByname(filterabsen));
         let dataabsensi = [];
         var no = 1;
-        for (let [groupName, values] of Object.entries(groupByname(filterabsen))) {
-            // console.log(`${groupName}: ${values.length}`);
+        for (let [nama, values] of Object.entries(groupByname(filterabsen))) {
             var s = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'sakit'),
                 i = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'ijin'),
                 c = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'cuti'),
                 a = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'alpha');
-            // var valket = _.pluck(values, 'ket'),
-            //     valjenis = _.pluck(values, 'jenis');
-            var ket = values.map(function(item) {
-                return item['tanggal'] + ' (' + item['jenis'] + ') : ' + item['ket'] + '<br>';
-            });
+            console.log(nama)
+            let number = no++;
+            for (let b = 0; b < values.length; b++) {
+                dataabsensi.push({
+                    no: number,
+                    nama: nama,
+                    sakit: s.length,
+                    ijin: i.length,
+                    cuti: c.length,
+                    alpha: a.length,
+                    jumlah: values.length,
+                    keterangan: values[b].tanggal + ' ( <b>' + values[b].jenis + '</b> ) : ' + values[b].ket,
+                    surat: values[b].surat,
+                })
+            }
 
-            // console.log(ket.join(''));
-            dataabsensi.push({
-                no: no++,
-                nama: groupName,
-                sakit: s.length,
-                ijin: i.length,
-                cuti: c.length,
-                alpha: a.length,
-                jumlah: values.length,
-                keterangan: ket.join(''),
-                values
-            })
         }
-        // console.log(dataabsensi)
+        // console.log(groupByname(filterabsen))
 
         var tabel = '';
-        tabel += '<table id="mTable" width="100%" class="table table-striped table-bordered">';
+        tabel += '<table id="mTable" width="100%" class="table table-bordered">';
         tabel += '  <thead>';
         tabel += '      <tr style="background-color:#5F7A61;color:#ddd;font-weight:bold">';
         tabel += '          <th data-priority="1">No</th>';
@@ -181,26 +175,9 @@
         tabel += '          <th data-priority="1">Alpha</th>';
         tabel += '          <th data-priority="3">jumlah</th>';
         tabel += '          <th data-priority="3">Keterangan</th>';
+        tabel += '          <th data-priority="3">Surat</th>';
         tabel += '      </tr>';
         tabel += '  </thead>';
-        // tabel += '  <tbody>';
-        // for (let [groupName, values] of Object.entries(groupByname(arr))) {
-        //     console.log(`${groupName}: ${values.length}`);
-        //     tabel += '      <tr>';
-        //     tabel += '          <td rowspan="' + values.length + '">' + no++ + '</td>';
-        //     tabel += '          <td rowspan="' + values.length + '">' + groupName + '</td>';
-        //     tabel += '          <td rowspan="' + values.length + '">' + groupName + '</td>';
-        //     tabel += '          <td>' + groupName + '</td>';
-        //     tabel += '          <td>' + groupName + '</td>';
-        //     tabel += '      </tr>';
-        //     for (let j = 1; j < values.length; j++) {
-        //         tabel += '      <tr>';
-        //         tabel += '          <td>' + groupName + '</td>';
-        //         tabel += '          <td>' + groupName + '</td>';
-        //         tabel += '      </tr>';
-        //     }
-        // }
-        // tabel += '  </tbody>';
         tabel += '</table>';
 
         $(document).ready(function() {
@@ -208,6 +185,7 @@
             var data = dataabsensi;
             // console.log(data[0].no);
             $('#mTable').DataTable({
+
                 columns: [{
                         data: 'no',
                     },
@@ -232,7 +210,11 @@
                     {
                         data: 'keterangan',
                     },
+                    {
+                        data: 'surat',
+                    },
                 ],
+                rowsGroup: [0, 1, 2, 3, 4, 5, 6],
                 data: data,
                 pageLength: '10',
                 processing: true,

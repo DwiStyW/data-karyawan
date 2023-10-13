@@ -20,13 +20,15 @@
             <header class="mb-3">
                 <h3 class="title-pages fw-bold">Data Absensi Karyawan</h3>
             </header>
+            {{-- <a href="" download="file"></a> --}}
             @include('alert')
             <div class="pb-3">
                 <button data-bs-toggle="modal" data-bs-target="#tambahabsensi" class="btn btn-sm btn-secondary">
                     <i class="bi bi-plus-square-fill"></i>
                     Absensi
                 </button>
-                <a href="/rekapabsensi" class="btn btn-sm btn-secondary">Rekap Absensi</a>
+                {{-- <a href="/rekapabsensi" class="btn btn-sm btn-secondary">Rekap Absensi</a>
+                <a href="/rekappotongan" class="btn btn-sm btn-secondary">Rekap Potongan Absen</a> --}}
             </div>
             <div>
                 <table id='mTable' width='100%' class="table table-striped table-bordered ">
@@ -36,6 +38,7 @@
                             <th data-priority="1">Nama</th>
                             <th data-priority="3">Tanggal</th>
                             <th data-priority="3">Jenis</th>
+                            <th data-priority="3">Surat</th>
                             <th data-priority="3">Keterangan</th>
                             <th data-priority="1">Aksi</th>
                         </tr>
@@ -50,6 +53,13 @@
                                 <td>{{ $a->nama }}</td>
                                 <td>{{ $a->tanggal }}</td>
                                 <td>{{ $a->jenis }}</td>
+                                <td>{{ $a->surat }}
+                                    @if ($a->surat == 'ada')
+                                        <a href="/assets/img/surat-izin/{{ $a->filesurat }}" target="_blank">
+                                            <i class="bi bi-image"></i>
+                                        </a>
+                                    @endif
+                                </td>
                                 <td>{{ $a->ket }}</td>
                                 <td>
                                     <div class="row justify-content-center" style="min-width:110px;">

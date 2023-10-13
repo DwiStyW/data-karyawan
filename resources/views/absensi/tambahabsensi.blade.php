@@ -61,7 +61,27 @@
                                 <label for="">Keterangan</label>
                             </div>
                             <div class="col-lg-9">
+                                <div class="row mb-1">
+                                    <div class="w-auto">
+                                        <input type="radio" class="radio" name="surat" value="ada">
+                                    </div>
+                                    <div class="w-auto">
+                                        <label class="ps-0" for="radio">Dengan Surat</label>
+                                    </div>
+                                    <div class="w-auto">
+                                        <input type="radio" class="radio" name="surat" value="tidak">
+                                    </div>
+                                    <div class="w-auto">
+                                        <label class="ps-0" for="radio">Tanpa Surat</label>
+                                    </div>
+
+                                </div>
                                 <textarea class="form-control" name="ket" rows="4" placeholder="Keterangan"></textarea>
+                                <div id="surat" style="display:none">
+                                    <div class="w-auto mt-1">
+                                        <input type="file" class="form-control" name="suratizin">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                 </div>
@@ -74,3 +94,17 @@
         </div>
     </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.radio').click(function() {
+            var val = this.value;
+            console.log(this.value);
+            if (val == 'ada') {
+                document.getElementById('surat').style.display = "block";
+            } else {
+                document.getElementById('surat').style.display = "none";
+            }
+        });
+    });
+</script>

@@ -14,6 +14,7 @@
                         <label for="" class="mt-3">Upload Foto</label>
                         <input type="file" class="form-control" id="image" name="image">
                         <input type="hidden" class="form-control" id="id_masterfoto" name="id_masterfoto">
+                        <input type="hidden" class="form-control" id="namamaster" name="namamaster">
                 </div>
             </div>
             <div class="modal-footer">
@@ -26,8 +27,8 @@
 </div>
 
 <script>
-    function ganti_foto(id) {
+    function ganti_foto(id, nama) {
         document.getElementById('id_masterfoto').value = id;
-        console.dir(id);
+        document.getElementById('namamaster').value = nama;
     }
 </script>

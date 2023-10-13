@@ -166,6 +166,7 @@
 
 <script>
     function foto(id, keterangan, nama) {
+        // console.log(id, keterangan, nama)
         document.getElementById('namadokumen').innerHTML = 'Dokumen ' + keterangan;
         document.getElementById('iddoc').value = id;
         document.getElementById('img').src = '../assets/upload/document/' + nama;

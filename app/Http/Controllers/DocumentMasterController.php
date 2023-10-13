@@ -135,8 +135,15 @@ class DocumentMasterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        // dd($request->iddoc);
+        $id=$request->iddoc;
+        try{
+            Document::where('id',$id)->delete();
+            return back()->with('success','Data berhasil dihapus!');
+        }catch(Exception $e){
+            return back()->with('failed','Data gagal dihapus!');
+        }
     }
 }

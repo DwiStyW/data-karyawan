@@ -19,6 +19,7 @@ use App\Http\Controllers\StrukturController;
 use App\Http\Controllers\RiwkaryawanController;
 use App\Http\Controllers\BagianController;
 use App\Http\Controllers\DataController;
+use App\Http\Controllers\DocumentMasterController;
 use App\Http\Controllers\HakAksesController;
 use App\Http\Controllers\SectionController;
 use Illuminate\Support\Facades\Route;
@@ -146,3 +147,7 @@ Route::post('/tambahkaryawanbaru', [PengajuanController::class, 'tambah_karyawan
 Route::get('hakakses', [HakAksesController::class, 'index'])->middleware('auth');
 Route::get('tambahhakakses', [HakAksesController::class, 'create'])->middleware('auth');
 Route::post('/posthakakses', [HakAksesController::class, 'store'])->middleware('auth');
+
+Route::get('documentmaster/{id}', [DocumentMasterController::class, 'index'])->middleware('auth');
+Route::post('/tambahdocument', [DocumentMasterController::class, 'store'])->middleware('auth');
+Route::post('/hapusdokumen', [DocumentMasterController::class, 'destroy'])->middleware('auth');

@@ -45,14 +45,14 @@
                                 <img src="../assets/img/user.png" style="object-fit: cover;border: 1px solid black;"
                                     width="177px" height="236px" alt="">
                                 <?php } else{?>
-                                <img src="../assets/img/karyawan/{{ $m->foto }}"
+                                <img src="../assets/upload/karyawan/{{ $m->foto }}"
                                     style="object-fit: cover;border: 1px solid black;" width="177px" height="236px"
                                     alt="">
                                 <?php } ?>
                             </div>
                             <div class="d-flex justify-content-center mt-3 mb-5">
-                                <a type="button" onclick="ganti_foto({{ $id_master }})" data-bs-toggle="modal"
-                                    data-bs-target="#ganti_foto" class="btn btn-sm btn-primary">
+                                <a type="button" onclick="ganti_foto({{ $id_master }},'{{ $m->nama }}')"
+                                    data-bs-toggle="modal" data-bs-target="#ganti_foto" class="btn btn-sm btn-primary">
                                     Ganti Foto
                                 </a>
                                 <a href="/hapusFotoMaster/{{ $id_master }}" class="btn btn-sm btn-danger">
@@ -335,11 +335,16 @@
 
                     </div>
                 </div>
-                <div class="float-lg-end">
-                    <a href="/rekapabsensi/{{ $id_master }}">
+                <div class="float-lg-end ">
+                    <a href="/rekapabsensi/{{ $id_master }}" class="text-decoration-none">
                         <button class="btn btn-sm btn-secondary">
                             <i class="bi bi-card-heading"></i>
                             Rekap Absensi</button>
+                    </a>
+                    <a href="/documentmaster/{{ $id_master }}" class="text-decoration-none">
+                        <button class="btn btn-sm btn-secondary">
+                            <i class="bi bi-card-heading"></i>
+                            Dokumen Karyawan</button>
                     </a>
                 </div>
                 <div class="row col-lg-12 pt-3" style="margin-right: 0px !important">
@@ -382,7 +387,7 @@
                                             <td>{{ $p->tgl_akhir }}</td>
                                             <td>
                                                 @if ($p->sertifikat != '')
-                                                    <a href="/assets/img/sertifikat/{{ $p->sertifikat }}"
+                                                    <a href="/assets/upload/sertifikatpend/{{ $p->sertifikat }}"
                                                         target="_blank">
                                                         <i class="bi bi-image"></i>
                                                     </a>
@@ -618,7 +623,7 @@
                                                 @else
                                                     {{ $rk->keterangan }}
                                                 @endif
-                                                <a href="/assets/img/sertifikat/{{ $rk->sertifikat }}"
+                                                <a href="/assets/upload/sertifikatriw/{{ $rk->sertifikat }}"
                                                     target="_blank">
                                                     <i class="bi bi-image"></i>
                                                 </a>

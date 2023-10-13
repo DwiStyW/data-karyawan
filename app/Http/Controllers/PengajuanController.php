@@ -145,6 +145,7 @@ class PengajuanController extends Controller
                     'max_usia'=>$request->max_usia,
                     'jenis_kelamin'=>$request->jenis_kelamin,
                     'updateby'=>Auth::user()->id,
+                    'created_at'=>date('Y-m-d H:i:s'),
                     'updated_at'=>date('Y-m-d H:i:s'),
                 ];
                  try{
@@ -184,6 +185,7 @@ class PengajuanController extends Controller
                     'max_usia'=>$request->max_usia,
                     'jenis_kelamin'=>$request->jenis_kelamin,
                     'updateby'=>Auth::user()->id,
+                    'created_at'=>date('Y-m-d H:i:s'),
                     'updated_at'=>date('Y-m-d H:i:s'),
 
                 ];
@@ -386,7 +388,13 @@ class PengajuanController extends Controller
             $karyawan=Master::where('id_pengajuan',$idpengaju)->get();
             $idpenyetuju=$p->idpenyetuju;
             $penyetuju=User::where('id',$idpenyetuju)->get();
-            foreach($penyetuju as $py){}
+            if(count($penyetuju)!=0){
+                foreach($penyetuju as $pny){}
+                $namapenyetuju=$pny->name;
+            }else{
+                 $namapenyetuju="";
+            }
+
             $datapengajuan[]=[
                 'id'=>$p->id,
                 'idpengaju'=>$p->idpengaju,
@@ -402,7 +410,7 @@ class PengajuanController extends Controller
                 'updated_at'=>$p->updated_at,
                 'nama_jabatan'=>$p->nama_jabatan,
                 'name'=>$p->name,
-                'nama_penyetuju'=>$py->name
+                'nama_penyetuju'=>$namapenyetuju
             ];
         }
 
@@ -431,14 +439,22 @@ class PengajuanController extends Controller
             $image='image'.$index;
             $awal_kerja='awal_kerja'.$index;
             // dump($request->file('image1'));
-            if($request->hasFile($image)){
-                $resorce       = $request->file($image);
-                $name   = $resorce->getClientOriginalName();
-                $resorce->move(\base_path() ."/public/assets/img/karyawan", $name);
-                echo "Gambar berhasil di upload";
+            if($_FILES[$image]["name"] !=''){
+                $allowed_ext = array("jpg", "png");
+                $ext = explode('.', $_FILES[$image]["name"]);
+                $file_extension = end($ext);
+                if(in_array($file_extension, $allowed_ext)){
+                    $resorce       = $request->file($image);
+                    $name = $request->nama. '.' . $file_extension;
+                    $resorce->move(\base_path() ."/public/assets/upload/karyawan", $name);
+                    // echo "Gambar berhasil di upload";
+                }else{
+                    $name="";
+                    // echo "Gagal upload gambar";
+                }
             }else{
                 $name="";
-                echo "Gagal upload gambar";
+                // echo "Gagal upload gambar";
             }
             $data[]=[
                 'nama'=>$request->$nama,
@@ -525,6 +541,8 @@ class PengajuanController extends Controller
                 //alert gagal
                 return back()->with('failed','Data gagal ditambahkan!');
             }
+        }else{
+            return back()->with('success','Data berhasil ditambahkan!');
         }
 
     }

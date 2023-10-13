@@ -50,12 +50,25 @@ class RiwayatKaryawanController extends Controller
         }else{
             $keterangan=$request->keterangan;
         }
-        if($request->hasFile('sertifikat')){
-            $resorcesurat      = $request->file('sertifikat');
-            $sertifikat   = $resorcesurat->getClientOriginalName();
-            $resorcesurat->move(\base_path() ."/public/assets/img/sertifikat", $sertifikat);
+        $ceksertif=Riwayatkaryawan::where('id_master',$idm)->where('sertifikat','!=','')->get();
+        $nomorsertif=count($ceksertif)+1;
+        // dd($ceksertif);
+        if($_FILES["sertifikat"]["name"] !=''){
+            $allowed_ext = array("jpg", "png");
+            $ext = explode('.', $_FILES["sertifikat"]["name"]);
+            $file_extension = end($ext);
+            if(in_array($file_extension, $allowed_ext)){
+                $resorce       = $request->file('sertifikat');
+                $sertifikat = $idm.'_sertif'.$nomorsertif. '.' . $file_extension;
+                $resorce->move(\base_path() ."/public/assets/upload/sertifikatriw", $sertifikat);
+                echo "Gambar berhasil di upload";
+            }else{
+                $sertifikat="";
+                echo "Gagal upload gambar";
+            }
         }else{
             $sertifikat="";
+            echo "Gagal upload gambar";
         }
 
         $jenis=$request->jenis;

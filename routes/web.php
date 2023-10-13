@@ -95,6 +95,7 @@ Route::get('golongan', [GolonganController::class, 'index']);
 Route::get('/riwkaryawan', [RiwkaryawanController::class, 'index'])->middleware('auth');
 Route::get('/riwayatkaryawan', [RiwayatkaryawanController::class, 'index'])->middleware('auth');
 Route::post('/postriwayatkaryawan', [RiwayatKaryawanController::class, 'store'])->middleware('auth');
+Route::post('/updateriwayatkaryawan', [RiwayatKaryawanController::class, 'update'])->middleware('auth');
 
 Route::get('jabatan', [JabatanController::class, 'index']);
 Route::get('filterjabatan', [JabatanController::class, 'index']);

@@ -52,7 +52,7 @@ class PendidikanController extends Controller
                 $file_extension = end($ext);
                 if(in_array($file_extension, $allowed_ext)){
                     $resorce       = $request->file('sertifikatSD');
-                    $sertifikatSD = $idmaster. 'SD.' . $file_extension;
+                    $sertifikatSD = $idmaster. '_SD.' . $file_extension;
                     $resorce->move(\base_path() ."/public/assets/upload/sertifikatpend", $sertifikatSD);
                     echo "Gambar berhasil di upload";
                 }else{
@@ -73,7 +73,7 @@ class PendidikanController extends Controller
                 $file_extension = end($ext);
                 if(in_array($file_extension, $allowed_ext)){
                     $resorce       = $request->file('sertifikatSMP');
-                    $sertifikatSMP = $idmaster. 'SMP.' . $file_extension;
+                    $sertifikatSMP = $idmaster. '_SMP.' . $file_extension;
                     $resorce->move(\base_path() ."/public/assets/upload/sertifikatpend", $sertifikatSMP);
                     echo "Gambar berhasil di upload";
                 }else{
@@ -94,7 +94,7 @@ class PendidikanController extends Controller
                 $file_extension = end($ext);
                 if(in_array($file_extension, $allowed_ext)){
                     $resorce       = $request->file('sertifikatSMA');
-                    $sertifikatSMA = $idmaster. 'SMA.' . $file_extension;
+                    $sertifikatSMA = $idmaster. '_SMA.' . $file_extension;
                     $resorce->move(\base_path() ."/public/assets/upload/sertifikatpend", $sertifikatSMA);
                     echo "Gambar berhasil di upload";
                 }else{
@@ -115,7 +115,7 @@ class PendidikanController extends Controller
                 $file_extension = end($ext);
                 if(in_array($file_extension, $allowed_ext)){
                     $resorce       = $request->file('sertifikatDiploma');
-                    $sertifikatDiploma = $idmaster. 'Diploma.' . $file_extension;
+                    $sertifikatDiploma = $idmaster. '_Diploma.' . $file_extension;
                     $resorce->move(\base_path() ."/public/assets/upload/sertifikatpend", $sertifikatDiploma);
                     echo "Gambar berhasil di upload";
                 }else{
@@ -136,7 +136,7 @@ class PendidikanController extends Controller
                 $file_extension = end($ext);
                 if(in_array($file_extension, $allowed_ext)){
                     $resorce       = $request->file('sertifikatS1');
-                    $sertifikatS1 = $idmaster. 'S1.' . $file_extension;
+                    $sertifikatS1 = $idmaster. '_S1.' . $file_extension;
                     $resorce->move(\base_path() ."/public/assets/upload/sertifikatpend", $sertifikatS1);
                     echo "Gambar berhasil di upload";
                 }else{
@@ -157,7 +157,7 @@ class PendidikanController extends Controller
                 $file_extension = end($ext);
                 if(in_array($file_extension, $allowed_ext)){
                     $resorce       = $request->file('sertifikatS2');
-                    $sertifikatS2 = $idmaster. 'S2.' . $file_extension;
+                    $sertifikatS2 = $idmaster. '_S2.' . $file_extension;
                     $resorce->move(\base_path() ."/public/assets/upload/sertifikatpend", $sertifikatS2);
                     echo "Gambar berhasil di upload";
                 }else{
@@ -178,7 +178,7 @@ class PendidikanController extends Controller
                 $file_extension = end($ext);
                 if(in_array($file_extension, $allowed_ext)){
                     $resorce       = $request->file('sertifikatLainnya');
-                    $sertifikatLainnya = $idmaster. 'Lainnya.' . $file_extension;
+                    $sertifikatLainnya = $idmaster. '_Lainnya.' . $file_extension;
                     $resorce->move(\base_path() ."/public/assets/upload/sertifikatpend", $sertifikatLainnya);
                     echo "Gambar berhasil di upload";
                 }else{
@@ -379,6 +379,26 @@ class PendidikanController extends Controller
         $where=[
             'id_pendidikan'=>$request->id_pendidikan
         ];
+        $pendidikan=Pendidikan::where('id_pendidikan',$request->id_pendidikan)->get();
+        foreach($pendidikan as $p){}
+        if($_FILES["sertifikat"]["name"] !=''){
+            $allowed_ext = array("jpg", "png","pdf");
+            $ext = explode('.', $_FILES["sertifikat"]["name"]);
+            $file_extension = end($ext);
+            if(in_array($file_extension, $allowed_ext)){
+                $resorce       = $request->file('sertifikat');
+                $sertifikat = $request->id_pendidikan. '_'.$request->tingkat_pendidikan.'.' . $file_extension;
+                $resorce->move(\base_path() ."/public/assets/upload/sertifikatpend", $sertifikat);
+                echo "Gambar berhasil di upload";
+            }else{
+                $sertifikat=$p->sertifikat;
+                echo "Gagal upload gambar";
+            }
+        }else{
+            $sertifikat="$p->sertifikat";
+            echo "Gagal upload gambar";
+        }
+
 
         $data=[
             'tingkat_pendidikan'=>$request->tingkat_pendidikan,
@@ -387,6 +407,7 @@ class PendidikanController extends Controller
             'tgl_awal'=>$request->tglawal,
             'tgl_akhir'=>$request->tglakhir,
             'id_master'=>$request->id_master,
+            'sertifikat'=>$sertifikat,
         ];
         try {
             Pendidikan::where($where)->update($data);

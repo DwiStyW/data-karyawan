@@ -637,6 +637,16 @@
 
                                         </td>
                                         {{-- <td>
+                                            <div style="max-width:60px">
+                                                <button type="button" data-bs-toggle="modal"
+                                                    data-bs-target="#editriwayatkaryawan"
+                                                    onclick="editriwayatkaryawan({{ $rk->id }},'{{ $rk->jenis }}','{{ $rk->jabatan }}','{{ $rk->keterangan }}','{{ $rk->tanggal }}','{{ $m->nama_jabatan }}')"
+                                                    class="btn btn-sm btn-primary btn-block">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </button>
+                                            </div>
+                                        </td> --}}
+                                        {{-- <td>
                                             <div class="row justify-content-center">
                                                 <div style="max-width:60px">
                                                     <button type="button" data-bs-toggle="modal"
@@ -701,5 +711,6 @@
 @include('DetailMaster.editbpjstk')
 @include('DetailMaster.hapusbpjstk')
 @include('DetailMaster.tambahriwayatkaryawan')
+@include('DetailMaster.editriwayatkaryawan')
 
 </html>

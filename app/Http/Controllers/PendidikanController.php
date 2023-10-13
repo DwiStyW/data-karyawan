@@ -392,7 +392,7 @@ class PendidikanController extends Controller
                 echo "Gambar berhasil di upload";
             }else{
                 $sertifikat=$p->sertifikat;
-                echo "Gagal upload gambar";
+                return back()->with('failed','Data gagal diedit!');
             }
         }else{
             $sertifikat="$p->sertifikat";

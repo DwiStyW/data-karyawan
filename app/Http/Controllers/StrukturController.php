@@ -15,7 +15,7 @@ class StrukturController extends Controller
      */
     public function index()
     {
-        $data=DB::select("SELECT * from jabatan");
+        $data=DB::select("SELECT * from struktur");
         // $data=Jabatan::get();
         // dd($data);
 

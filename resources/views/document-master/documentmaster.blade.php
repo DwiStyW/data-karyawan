@@ -88,7 +88,7 @@
                                                 </svg>
                                             </div>
                                         @else
-                                            <img style="object-fit: cover;"
+                                            <img style="object-fit: cover;width:100%"
                                                 src="../assets/upload/document/{{ $d['file'] }}" height="150px">
                                         @endif
                                     </div>
@@ -180,17 +180,9 @@
                             </button>
                         </form>
                     </div>
-                    {{-- <div id="divfoto">
-                        <div class="w-100">
-                            <div class="d-flex align-items-center justify-content-center">
-                                <a target="_BLANK" href="" id="hrefdownload">
-                                    <img id="img" src="" class="height-lg-350 height-md-200 height-100"
-                                        style="object-fit: cover !important;">
-                                </a>
-                            </div>
-                        </div>
-                    </div> --}}
-                    <div id="divdokumen"></div>
+                    <div class="p-3">
+                        <div id="divdokumen"></div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">

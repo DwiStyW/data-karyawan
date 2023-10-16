@@ -37,7 +37,7 @@ class DashboardController extends Controller
             $datagender=[];
         }
         // pendidikan
-        $pend=DB::select("SELECT id_master,tanggal_lahir from pendidikan left join master on master.id=pendidikan.id_master where tingkat_pendidikan!='Lainnya' group by id_master,tanggal_lahir");
+        $pend=DB::select("SELECT id_master,tanggal_lahir from pendidikan join master on master.id=pendidikan.id_master where tingkat_pendidikan!='Lainnya' and master.status='Aktif' group by id_master,tanggal_lahir");
         if(count($pend)!=0){
             foreach($pend as $p){
                 $idm=$p->id_master;

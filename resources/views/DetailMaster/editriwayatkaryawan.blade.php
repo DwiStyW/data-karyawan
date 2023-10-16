@@ -19,7 +19,7 @@
                                 <input type="date" class="form-control" required name="tanggal" id="edittanggal">
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        {{-- <div class="row mb-3">
                             <div class="col-lg-3">
                                 <label for="">Jenis</label>
                             </div>
@@ -63,15 +63,31 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <div id="desk"></div>
                         <div id="sertifikat"></div>
+                        <div class="row mb-3">
+                            <div class="col-lg-3">
+                                <label for="">Deskripsi</label>
+                            </div>
+                            <div class="col-lg-9">
+                                <textarea type="text" rows="2" class="form-control" name="deskripsi" id="editdeskripsi"></textarea>
+                            </div>
+                        </div>
                         <div class="row mb-3">
                             <div class="col-lg-3">
                                 <label for="">Keterangan</label>
                             </div>
                             <div class="col-lg-9">
-                                <textarea type="text" rows="3" class="form-control" name="keterangan"></textarea>
+                                <textarea type="text" rows="3" class="form-control" name="keterangan" id="editketerangan"></textarea>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-lg-3">
+                                <label for="">Dokumen</label>
+                            </div>
+                            <div class="col-lg-9">
+                                <input type="file" class="form-control" name="sertifikat">
                             </div>
                         </div>
                         <input type="hidden" class="form-control" name="id_master" value="{{ $id_master }}">
@@ -87,11 +103,12 @@
     </div>
 </div>
 <script>
-    function editriwayatkaryawan(id, jenis, jabatan, keterangan, tanggal, namajabatan) {
+    function editriwayatkaryawan(id, tanggal, deskripsi, keterangan) {
         // console.log(id, jenis, jabatan, keterangan, tanggal, namajabatan);
-        document.getElementById('editnamajabatan').value = namajabatan;
-        document.getElementById('editjenis').value = jenis;
+        // document.getElementById('editnamajabatan').value = namajabatan;
+        // document.getElementById('editjenis').value = jenis;
         document.getElementById('edittanggal').value = tanggal;
+        document.getElementById('editdeskripsi').value = deskripsi;
         if (keterangan != '') {
             document.getElementById('editketerangan').value = keterangan;
         }

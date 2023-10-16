@@ -15,27 +15,32 @@ class StrukturController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        // $data=Jabatan::get();
-        // $data=DB::select("SELECT * from jabatan");
-        // foreach($data as $datalist){
+    // public function index()
+    // {
 
-        //     $datas[]=['id'=>$datalist['id'],
-        //             'nama'=>$datalist['nama_jabatan'],
-        //             'level'=>$datalist['level'],
-        //             'pid'=>$datalist['pid'],
-        //             'tags'=>["subLevels".$datalist['tags']]];
-        // }
-        // return $datas;
-        $data=DB::select("SELECT jabatan.*, nama from jabatan left join master on master.id_jabatan=jabatan.id  order by jabatan.id ASC");
-        // $data=Jabatan::get();
-        // dd($data);
+    //     $data=DB::select("SELECT jabatan.*, nama from jabatan left join master on master.id_jabatan=jabatan.id  order by jabatan.id ASC");
+    //     // $data=Jabatan::get();
+    //     // dd($data);
 
+    //     foreach($data as $datalist){
+
+    //         $datas[]=['id'=>$datalist->id,
+    //                 'jabatan'=>$datalist->nama_jabatan,
+    //                 'nama'=>$datalist->nama,
+    //                 'level'=>$datalist->level,
+    //                 'pid'=>$datalist->pid,
+    //                 'tags'=>["subLevels".$datalist->tags]];
+    //     }
+    //     return $datas;
+    // }
+
+    public function index(){
+        // $data=Jabatan::get();
+        $data=DB::select("SELECT * from struktur");
         foreach($data as $datalist){
 
-            $datas[]=['id'=>$datalist->id,
-                    'jabatan'=>$datalist->nama_jabatan,
+             $datas[]=['id'=>$datalist->id,
+                    'jabatan'=>$datalist->nama,
                     'nama'=>$datalist->nama,
                     'level'=>$datalist->level,
                     'pid'=>$datalist->pid,

@@ -382,7 +382,7 @@ class PendidikanController extends Controller
         $pendidikan=Pendidikan::where('id_pendidikan',$request->id_pendidikan)->get();
         foreach($pendidikan as $p){}
         if($_FILES["sertifikat"]["name"] !=''){
-            $allowed_ext = array("jpg", "png","pdf");
+            $allowed_ext = array("jpg","jpeg", "png","pdf");
             $ext = explode('.', $_FILES["sertifikat"]["name"]);
             $file_extension = end($ext);
             if(in_array($file_extension, $allowed_ext)){

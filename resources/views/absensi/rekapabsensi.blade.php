@@ -127,7 +127,6 @@
                 a.jenis == jenis);
         }
         console.log(filterabsen);
-
         // grupby
         const groupBy = (keys) => (array) =>
             array.reduce((objectsByKeyValue, obj) => {
@@ -144,26 +143,9 @@
             i = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'ijin'),
             c = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'cuti'),
             a = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'alpha');
+            t = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.potongan == "Terpotong")
             let number = no++;
-            const count = values.filter(element => {
-            if (element.statustetap == "Tetap" && element.surat == "ada") {
-                return true;
-            }
-
-            return false;
-            }).length;
-
-            console.log(count); // 👉️ 3
-            for (let b = 0; b < values.length; b++) {
-                var potongan;
-                var jm=0;
-                if (values[b].statustetap=="Tetap" && values[b].surat=="ada") {
-                    potongan = "Tidak Terpotong";
-                }else{
-                    potongan = "Terpotong";
-                    jm=values.length;
-                }
-                
+            for (let b = 0; b < values.length; b++) {   
                 dataabsensi.push({
                         no: number,
                         nama: nama,
@@ -172,8 +154,8 @@
                         cuti: c.length,
                         alpha: a.length,
                         jumlah: values.length,
-                        keterangan: values[b].tanggal + ' ( <b>' + values[b].jenis + '</b> ) : ' + values[b].ket+" (<b>"+potongan+"</b>)",
-                        potongan:2,
+                        keterangan: values[b].tanggal + ' ( <b>' + values[b].jenis + '</b> ) : ' + values[b].ket+" (<b>"+values[b].potongan+"</b>)",
+                        potongan:t.length,
                         surat: values[b].surat,
                     })
             }

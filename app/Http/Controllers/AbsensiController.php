@@ -155,23 +155,31 @@ class AbsensiController extends Controller
         $master=master::get();
         $absensi=Absen::leftjoin('master','master.id','=','absen.id_master')->select('absen.*','master.nama')->orderby('id_master','asc','tanggal','desc')->get();
         $alldata=[];
-        foreach($absensi as $al){
-            $idm=$al->id_master;
-            $riwkar=Riwayatkaryawan::where('id_master',$idm)->where('jenis','Tetap')->get();
-            if(count($riwkar)!=0){
-                $statustetap='Tetap';
-            }else{
-                $statustetap='Tidak Tetap';
+        $count=0;
+        foreach($absensi as $al) {
+            $idm = $al->id_master;
+            $riwkar = Riwayatkaryawan::where('id_master', $idm)->where('jenis', 'Tetap')->get();
+            if(count($riwkar) != 0) {
+                $statustetap = 'Tetap';
+            } else {
+                $statustetap = 'Tidak Tetap';
             }
-            $alldata[]=[
-                'nama'=>$al->nama,
-                'tanggal'=>$al->tanggal,
-                'jenis'=>$al->jenis,
-                'ket'=>$al->ket,
-                'surat'=>$al->surat,
-                'filesurat'=>$al->filesurat,
-                'status'=>$al->status,
-                'statustetap'=>$statustetap,
+            if(count($riwkar) != 0 && $al->surat == "ada") {
+                $potongan = "Tidak Terpotong";
+            } else {
+                $potongan = "Terpotong";
+            }
+            $alldata[] = [
+                'id_master' => $al->id_master,
+                'nama' => $al->nama,
+                'tanggal' => $al->tanggal,
+                'jenis' => $al->jenis,
+                'ket' => $al->ket,
+                'surat' => $al->surat,
+                'filesurat' => $al->filesurat,
+                'status' => $al->status,
+                'statustetap' => $statustetap,
+                'potongan' => $potongan,
             ];
         }
         return view('absensi.rekapabsensi',compact('master','absensi','alldata'));

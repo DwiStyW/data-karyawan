@@ -273,16 +273,36 @@ class MasterController extends Controller
      */
     public function store(Request $request)
     {
-
-        if($request->hasFile('image')){
-            $resorce       = $request->file('image');
-            $name   = $resorce->getClientOriginalName();
-            $resorce->move(\base_path() ."/public/assets/img/karyawan", $name);
-            echo "Gambar berhasil di upload";
+        if($_FILES["image"]["name"] !=''){
+            $allowed_ext = array("jpg", "png");
+            $ext = explode('.', $_FILES["image"]["name"]);
+            $file_extension = end($ext);
+            if(in_array($file_extension, $allowed_ext)){
+                $resorce       = $request->file('image');
+                $name = $request->nama. '.' . $file_extension;
+			    $path = "../public/assets/upload/karyawan/". $name;
+                $resorce->move(\base_path() ."/public/assets/upload/karyawan", $name);
+                echo "Gambar berhasil di upload";
+            }else{
+                $name="";
+                echo "Gagal upload gambar";
+            }
         }else{
             $name="";
             echo "Gagal upload gambar";
         }
+        // dd($name);
+
+        // if($request->hasFile('image')){
+        //     $resorce       = $request->file('image');
+        //     $name   = $resorce->getClientOriginalName();
+        //     $resorce->move(\base_path() ."/public/assets/upload/karyawan", $name);
+
+        // }else{
+        //     $name="";
+        //     echo "Gagal upload gambar";
+        // }
+
         $cek=Master::count();
         // dd($cek);
         $id_master=DB::select('SELECT id from master order by id DESC limit 1');
@@ -310,11 +330,30 @@ class MasterController extends Controller
             'golongan'=>$request->golongan,
             'status'=>'Aktif',
             'foto' => $name,
+            'id_pengajuan' => '',
             'updated_at'=>date("Y-m-d H:i:s")
         ];
 
+        // dd($data1,$data2);
+        // dd($data2);
+        DB::beginTransaction();
+        try{
+            master::insert($data1);
+            // riwayatkaryawan::insert($data2);
+            DB::commit();
+            //alert berhasil
+            // return back()->with('success','Data berhasil ditambahkan!');
+        }catch(Exception $e){
+            dd($e);
+            DB::rollback();
+            //alert gagal
+            return back()->with('failed','Data gagal ditambahkan!');
+        }
+        $master=master::where($data1)->get();
+        foreach($master as $m){}
+        // dd($master);
         $data2=[
-            'id_master'=>$id+1,
+            'id_master'=>$m->id,
             'jenis'=>'Masuk',
             'jabatan'=>$request->id_jabatan,
             'deskripsi'=>'karyawan baru',
@@ -322,22 +361,13 @@ class MasterController extends Controller
             'sertifikat'=>'',
             'tanggal'=>$request->awal_kerja,
         ];
-        // dd($data1,$data2);
-        // dd($data2);
-        DB::beginTransaction();
         try{
-            master::insert($data1);
             riwayatkaryawan::insert($data2);
-
-            DB::commit();
-            //alert berhasil
             return back()->with('success','Data berhasil ditambahkan!');
         }catch(Exception $e){
-            dd($e);
-            DB::rollback();
-            //alert gagal
             return back()->with('failed','Data gagal ditambahkan!');
         }
+        // dd($master);
     }
 
     /**
@@ -395,17 +425,37 @@ class MasterController extends Controller
 
 
     public function gantifoto(Request $request){
-        $id=$request->id_masterfoto;
+        // if()
 
-        if($request->hasFile('image')){
-            $resorce= $request->file('image');
-            $name   = $resorce->getClientOriginalName();
-            $resorce->move(\base_path() ."/public/assets/img/karyawan", $name);
-            echo "Gambar berhasil di upload";
+        $id=$request->id_masterfoto;
+        $master=master::where('id',$id)->get();
+        foreach($master as $m){}
+        // $nama=$m->nama;
+        if($m->foto!=""){
+            $files = glob('../public/assets/upload/karyawan/'.$m->foto);
+            if($files != []){
+                unlink('../public/assets/upload/karyawan/'.$m->foto);
+            }
+        }
+        if($_FILES["image"]["name"] !=''){
+            $allowed_ext = array("jpg", "png");
+            $ext = explode('.', $_FILES["image"]["name"]);
+            $file_extension = end($ext);
+            if(in_array($file_extension, $allowed_ext)){
+                $resorce       = $request->file('image');
+                $name = $request->namamaster. '.' . $file_extension;
+			    $path = "../public/assets/upload/karyawan/". $name;
+                $resorce->move(\base_path() ."/public/assets/upload/karyawan", $name);
+                echo "Gambar berhasil di upload";
+            }else{
+                $name="";
+                echo "Gagal upload gambar";
+            }
         }else{
+            $name="";
             echo "Gagal upload gambar";
         }
-
+        // dd($name);
         try {
             master::where('id',$id)->update(['foto'=>$name]);
             return back()->with('success','Data berhasil diedit!');
@@ -415,6 +465,16 @@ class MasterController extends Controller
 
     }
     public function hapusfoto($id){
+        $master=master::where('id',$id)->get();
+        foreach($master as $m){}
+        // $nama=$m->nama;
+        $files = glob('../public/assets/upload/karyawan/'.$m->foto);
+        $sem = glob('../public/assets/upload/karyawan/*');
+
+        if($files != []){
+            unlink('../public/assets/upload/karyawan/'.$m->foto);
+        }
+        // dd($master);
         try {
             master::where('id',$id)->update(['foto'=>'']);
             return back()->with('success','Data berhasil diedit!');

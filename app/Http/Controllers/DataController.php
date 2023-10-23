@@ -100,6 +100,20 @@ class DataController extends Controller
                 }
             }
         }
-        return count($data);
+        $grouptanggal = array_reduce($data, function($carry, $item){
+                if(!isset($carry[$item['tanggal']])){
+                    $carry[$item['tanggal']] = [
+                        'tanggal'=>$item['tanggal'],
+                    ];
+                }
+                return $carry;
+            });
+
+        if(count($data)!=0){
+            return count($grouptanggal);
+        }else{
+            return 0;
+        }
+
     }
 }

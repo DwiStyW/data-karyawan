@@ -27,9 +27,9 @@
                     </div>
                     <div class="col-lg-9">
                         <div class="input-daterange input-group">
-                            <input type="date" class="form-control" id="start" required />
+                            <input type="date" class="form-control" id="start" value="2000-01-01" required />
                             <span class="card p-1 pe-2 ps-2">to</span>
-                            <input type="date" class="form-control" id="end" required />
+                            <input type="date" class="form-control" id="end" value="2023-12-12" required />
                         </div>
                     </div>
                 </div>
@@ -63,9 +63,6 @@
                 <div class="mt-3">
                     <div class="float-end">
                         <div class="d-flex">
-                            <a href="/absensi">
-                                <button class="btn btn-sm btn-secondary m-1">kembali</button>
-                            </a>
                             <button class="btn btn-sm btn-primary m-1" onclick="carirekap()">cari</button>
                         </div>
                     </div>
@@ -117,7 +114,7 @@
         var jenis = document.getElementById('jenis').value;
         console.log(start, end, master, jenis);
 
-        var absen = @json($absensi);
+        var absen = @json($alldata);
         var filterabsen = [];
         if (master == 'All' && jenis == 'All') {
             filterabsen = absen.filter(a => a.tanggal >= start && a.tanggal <= end);
@@ -144,25 +141,42 @@
         var no = 1;
         for (let [nama, values] of Object.entries(groupByname(filterabsen))) {
             var s = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'sakit'),
-                i = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'ijin'),
-                c = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'cuti'),
-                a = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'alpha');
-            console.log(nama)
+            i = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'ijin'),
+            c = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'cuti'),
+            a = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'alpha');
             let number = no++;
-            for (let b = 0; b < values.length; b++) {
-                dataabsensi.push({
-                    no: number,
-                    nama: nama,
-                    sakit: s.length,
-                    ijin: i.length,
-                    cuti: c.length,
-                    alpha: a.length,
-                    jumlah: values.length,
-                    keterangan: values[b].tanggal + ' ( <b>' + values[b].jenis + '</b> ) : ' + values[b].ket,
-                    surat: values[b].surat,
-                })
+            const count = values.filter(element => {
+            if (element.statustetap == "Tetap" && element.surat == "ada") {
+                return true;
             }
 
+            return false;
+            }).length;
+
+            console.log(count); // 👉️ 3
+            for (let b = 0; b < values.length; b++) {
+                var potongan;
+                var jm=0;
+                if (values[b].statustetap=="Tetap" && values[b].surat=="ada") {
+                    potongan = "Tidak Terpotong";
+                }else{
+                    potongan = "Terpotong";
+                    jm=values.length;
+                }
+                
+                dataabsensi.push({
+                        no: number,
+                        nama: nama,
+                        sakit: s.length,
+                        ijin: i.length,
+                        cuti: c.length,
+                        alpha: a.length,
+                        jumlah: values.length,
+                        keterangan: values[b].tanggal + ' ( <b>' + values[b].jenis + '</b> ) : ' + values[b].ket+" (<b>"+potongan+"</b>)",
+                        potongan:2,
+                        surat: values[b].surat,
+                    })
+            }
         }
         // console.log(groupByname(filterabsen))
 
@@ -178,6 +192,7 @@
         tabel += '          <th data-priority="1">Alpha</th>';
         tabel += '          <th data-priority="3">jumlah</th>';
         tabel += '          <th data-priority="3">Keterangan</th>';
+        tabel += '          <th data-priority="3">Potongan</th>';
         tabel += '          <th data-priority="3">Surat</th>';
         tabel += '      </tr>';
         tabel += '  </thead>';
@@ -214,10 +229,13 @@
                         data: 'keterangan',
                     },
                     {
+                        data: 'potongan',
+                    },
+                    {
                         data: 'surat',
                     },
                 ],
-                rowsGroup: [0, 1, 2, 3, 4, 5, 6],
+                rowsGroup: [0, 1, 2, 3, 4, 5, 6, 8],
                 data: data,
                 pageLength: '10',
                 processing: true,

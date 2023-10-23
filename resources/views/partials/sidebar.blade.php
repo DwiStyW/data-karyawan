@@ -141,7 +141,7 @@
                         </a>
                     </li>
                     <li class="list-group-item">
-                        <a class="nav-link btn position-relativess {{ Request::is('absensi') ? 'active' : '' }}{{ Request::is('rekapabsensi') ? 'active' : '' }}{{ Request::is('rekappotongan') ? 'active' : '' }}"
+                        <a class="nav-link btn position-relativess {{ Request::is('absensi') ? 'active' : '' }}{{ Request::is('rekapabsensi') ? 'active' : '' }}{{ Request::is('rekappotongan') ? 'active' : '' }}{{ Request::is('daftardistribusiabsen') ? 'active' : '' }}{{ Request::is('rekapdistribusiabsen') ? 'active' : '' }}"
                             href="#">
                             <div class="btn-header me-3 d-flex align-items-center">
                                 <i class="bi bi-clock-history"></i>
@@ -154,7 +154,7 @@
                             </div>
                         </a>
                         <ul
-                            class="submenu collapse {{ Request::is('absensi') ? 'show' : '' }}{{ Request::is('rekapabsensi') ? 'show' : '' }}{{ Request::is('rekappotongan') ? 'show' : '' }}"style="padding-inline-start: 0px !important;">
+                            class="submenu collapse {{ Request::is('absensi') ? 'show' : '' }}{{ Request::is('rekapabsensi') ? 'show' : '' }}{{ Request::is('rekappotongan') ? 'show' : '' }}{{ Request::is('daftardistribusiabsen') ? 'show' : '' }}{{ Request::is('rekapdistribusiabsen') ? 'show' : '' }}"style="padding-inline-start: 0px !important;">
                             <li class="list-group-item bg-light">
                                 <a class="btn py-1 {{ Request::is('absensi') ? 'active' : '' }}" href="/absensi"
                                     id="navDAR">
@@ -199,9 +199,9 @@
                                     </div>
                                 </a>
                             </li>
-                            {{-- <li class="list-group-item bg-light">
-                                <a class="btn py-1 {{ Request::is('golongan') ? 'active' : '' }}" href="/golongan"
-                                    id="navDAR">
+                            <li class="list-group-item bg-light">
+                                <a class="btn py-1 {{ Request::is('rekapdistribusiabsen') ? 'active' : '' }}"
+                                    href="/rekapdistribusiabsen" id="navDAR">
                                     <div class="btn-header me-1">
                                         <i class="bi bi-dot"></i>
                                     </div>
@@ -209,19 +209,20 @@
                                         Rekap Distribusi Absen
                                     </div>
                                 </a>
-                            </li> --}}
+                            </li>
                         </ul>
                     </li>
-                    {{-- <li class="list-group-item">
-                    <a class="btn" href="/pengajuan" id="navDAR">
-                        <div class="btn-header me-3 d-flex align-items-center">
-                            <i class="bi bi-person-add"></i>
-                        </div>
-                        <div class="btn-body">
-                            Pengajuan Karyawan
-                        </div>
-                    </a>
-                </li> --}}
+                    <li class="list-group-item">
+                        <a class="btn  {{ Request::is('pengajuankaryawan') ? 'active' : '' }}"
+                            href="/pengajuankaryawan" id="navDAR">
+                            <div class="btn-header me-3 d-flex align-items-center">
+                                <i class="bi bi-person-add"></i>
+                            </div>
+                            <div class="btn-body">
+                                Pengajuan Karyawan
+                            </div>
+                        </a>
+                    </li>
                     <li class="list-group-item">
                         <a class="btn {{ Request::is('hakakses') ? 'active' : '' }}" href="/hakakses"
                             id="navDAR">

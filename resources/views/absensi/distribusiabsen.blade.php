@@ -21,7 +21,14 @@
         <div class="container-custome">
             <header class="mb-3">
                 <h5 class="title-pages fw-bold">Daftar Distribusi Absen</h5>
-                <h6>Pilih Tanggal <input type="date" id="date" oninput="getdate()"></h6>
+                <div class="row mt-2">
+                    <div class="col-3">
+                        <h6>Pilih Tanggal Distribusi Absen </h6>
+                    </div>
+                    <div class="col-9">
+                        <input class="form-control" type="date" id="date" oninput="getdate()">
+                    </div>
+                </div>
             </header>
             @include('alert')
             <div id="tabeldistribusi"></div>
@@ -71,7 +78,7 @@
                     str += '        <tr>';
                     str += '            <td>' + no++ + '</td>';
                     str += '            <td>' + data[i].nama + '</td>';
-                    if (data[i].status == "Sudah Mengetahui") {
+                    if (data[i].status == "Sudah Mengetahui" || data[i].status == "Sudah Terkirim") {
                         str += '        <td class="text-success">' + data[i].status + '</td>';
                     } else {
                         str += '        <td class="text-warning">' + data[i].status + '</td>';

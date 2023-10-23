@@ -19,6 +19,7 @@ use App\Http\Controllers\StrukturController;
 use App\Http\Controllers\RiwkaryawanController;
 use App\Http\Controllers\BagianController;
 use App\Http\Controllers\DataController;
+use App\Http\Controllers\DocumentMasterController;
 use App\Http\Controllers\HakAksesController;
 use App\Http\Controllers\SectionController;
 use Illuminate\Support\Facades\Route;
@@ -94,6 +95,7 @@ Route::get('golongan', [GolonganController::class, 'index']);
 Route::get('/riwkaryawan', [RiwkaryawanController::class, 'index'])->middleware('auth');
 Route::get('/riwayatkaryawan', [RiwayatkaryawanController::class, 'index'])->middleware('auth');
 Route::post('/postriwayatkaryawan', [RiwayatKaryawanController::class, 'store'])->middleware('auth');
+Route::post('/updateriwayatkaryawan', [RiwayatKaryawanController::class, 'update'])->middleware('auth');
 
 Route::get('jabatan', [JabatanController::class, 'index']);
 Route::get('filterjabatan', [JabatanController::class, 'index']);
@@ -127,7 +129,11 @@ Route::get('/distribusi-absensi/{strtime}', [AbsensiController::class, 'distribu
 Route::get('/rekappotongan', [AbsensiController::class, 'rekappotongan']);
 Route::get('/daftardistribusiabsen', [AbsensiController::class, 'daftardistribusiabsen']);
 Route::post('/daftardistribusiabsen', [AbsensiController::class, 'daftardistribusiabsenpost'])->name('daftardistribusiabsen.post');
+Route::get('/rekapdistribusiabsen', [AbsensiController::class, 'rekapdistribusiabsen']);
+Route::post('/rekapdistribusiabsen', [AbsensiController::class, 'rekapdistribusiabsenpost'])->name('rekapdistribusiabsen.post');
+Route::post('/absensi', [AbsensiController::class, 'absensipost'])->name('absensi.post');
 
+// pimpinan
 Route::get('pengajuan', [PengajuanController::class, 'index']);
 Route::get('pengajuan/add', [PengajuanController::class, 'create']);
 Route::post('pengajuan/post', [PengajuanController::class, 'store']);
@@ -135,7 +141,14 @@ Route::get('pengajuan/edit/{id}', [PengajuanController::class, 'edit']);
 Route::post('pengajuan/update/{id}', [PengajuanController::class, 'update']);
 Route::post('/persetujuan', [PengajuanController::class, 'persetujuan']);
 Route::post('/tolakpengajuan', [PengajuanController::class, 'tolakpengajuan']);
+// personalia
+Route::get('/pengajuankaryawan', [PengajuanController::class, 'pengajuan_karyawan']);
+Route::post('/tambahkaryawanbaru', [PengajuanController::class, 'tambah_karyawan']);
 
 Route::get('hakakses', [HakAksesController::class, 'index'])->middleware('auth');
 Route::get('tambahhakakses', [HakAksesController::class, 'create'])->middleware('auth');
 Route::post('/posthakakses', [HakAksesController::class, 'store'])->middleware('auth');
+
+Route::get('documentmaster/{id}', [DocumentMasterController::class, 'index'])->middleware('auth');
+Route::post('/tambahdocument', [DocumentMasterController::class, 'store'])->middleware('auth');
+Route::post('/hapusdokumen', [DocumentMasterController::class, 'destroy'])->middleware('auth');

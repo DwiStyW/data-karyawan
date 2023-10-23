@@ -44,52 +44,151 @@ class PendidikanController extends Controller
         $S2=$request->pendidikanS2;
         $Lainnya=$request->pendidikanLainnya;
 
+        $idmaster=$request->id_master;
         if($SD!="" && $request->hasFile('sertifikatSD')){
-            $resorceSD       = $request->file('sertifikatSD');
-            $sertifikatSD   = $resorceSD->getClientOriginalName();
-            $resorceSD->move(\base_path() ."/public/assets/img/sertifikat", $sertifikatSD);
+            if($_FILES["sertifikatSD"]["name"] !=''){
+                $allowed_ext = array("jpg", "png","pdf");
+                $ext = explode('.', $_FILES["sertifikatSD"]["name"]);
+                $file_extension = end($ext);
+                if(in_array($file_extension, $allowed_ext)){
+                    $resorce       = $request->file('sertifikatSD');
+                    $sertifikatSD = $idmaster. '_SD.' . $file_extension;
+                    $resorce->move(\base_path() ."/public/assets/upload/sertifikatpend", $sertifikatSD);
+                    echo "Gambar berhasil di upload";
+                }else{
+                    $sertifikatSD="";
+                    echo "Gagal upload gambar";
+                }
+            }else{
+                $sertifikatSD="";
+                echo "Gagal upload gambar";
+            }
         }else{
             $sertifikatSD="";
         }
         if($SMP!="" && $request->hasFile('sertifikatSMP')){
-            $resorceSMP       = $request->file('sertifikatSMP');
-            $sertifikatSMP   = $resorceSMP->getClientOriginalName();
-            $resorceSMP->move(\base_path() ."/public/assets/img/sertifikat", $sertifikatSMP);
+            if($_FILES["sertifikatSMP"]["name"] !=''){
+                $allowed_ext = array("jpg", "png","pdf");
+                $ext = explode('.', $_FILES["sertifikatSMP"]["name"]);
+                $file_extension = end($ext);
+                if(in_array($file_extension, $allowed_ext)){
+                    $resorce       = $request->file('sertifikatSMP');
+                    $sertifikatSMP = $idmaster. '_SMP.' . $file_extension;
+                    $resorce->move(\base_path() ."/public/assets/upload/sertifikatpend", $sertifikatSMP);
+                    echo "Gambar berhasil di upload";
+                }else{
+                    $sertifikatSMP="";
+                    echo "Gagal upload gambar";
+                }
+            }else{
+                $sertifikatSMP="";
+                echo "Gagal upload gambar";
+            }
         }else{
             $sertifikatSMP="";
         }
         if($SMA!="" && $request->hasFile('sertifikatSMA')){
-            $resorceSMA       = $request->file('sertifikatSMA');
-            $sertifikatSMA   = $resorceSMA->getClientOriginalName();
-            $resorceSMA->move(\base_path() ."/public/assets/img/sertifikat", $sertifikatSMA);
+            if($_FILES["sertifikatSMA"]["name"] !=''){
+                $allowed_ext = array("jpg", "png","pdf");
+                $ext = explode('.', $_FILES["sertifikatSMA"]["name"]);
+                $file_extension = end($ext);
+                if(in_array($file_extension, $allowed_ext)){
+                    $resorce       = $request->file('sertifikatSMA');
+                    $sertifikatSMA = $idmaster. '_SMA.' . $file_extension;
+                    $resorce->move(\base_path() ."/public/assets/upload/sertifikatpend", $sertifikatSMA);
+                    echo "Gambar berhasil di upload";
+                }else{
+                    $sertifikatSMA="";
+                    echo "Gagal upload gambar";
+                }
+            }else{
+                $sertifikatSMA="";
+                echo "Gagal upload gambar";
+            }
         }else{
             $sertifikatSMA="";
         }
         if($Diploma!="" && $request->hasFile('sertifikatDiploma')){
-            $resorceDiploma       = $request->file('sertifikatDiploma');
-            $sertifikatDiploma   = $resorceDiploma->getClientOriginalName();
-            $resorceDiploma->move(\base_path() ."/public/assets/img/sertifikat", $sertifikatDiploma);
+            if($_FILES["sertifikatDiploma"]["name"] !=''){
+                $allowed_ext = array("jpg", "png","pdf");
+                $ext = explode('.', $_FILES["sertifikatDiploma"]["name"]);
+                $file_extension = end($ext);
+                if(in_array($file_extension, $allowed_ext)){
+                    $resorce       = $request->file('sertifikatDiploma');
+                    $sertifikatDiploma = $idmaster. '_Diploma.' . $file_extension;
+                    $resorce->move(\base_path() ."/public/assets/upload/sertifikatpend", $sertifikatDiploma);
+                    echo "Gambar berhasil di upload";
+                }else{
+                    $sertifikatDiploma="";
+                    echo "Gagal upload gambar";
+                }
+            }else{
+                $sertifikatDiploma="";
+                echo "Gagal upload gambar";
+            }
         }else{
             $sertifikatDiploma="";
         }
         if($S1!="" && $request->hasFile('sertifikatS1')){
-            $resorceS1       = $request->file('sertifikatS1');
-            $sertifikatS1   = $resorceS1->getClientOriginalName();
-            $resorceS1->move(\base_path() ."/public/assets/img/sertifikat", $sertifikatS1);
+            if($_FILES["sertifikatS1"]["name"] !=''){
+                $allowed_ext = array("jpg", "png","pdf");
+                $ext = explode('.', $_FILES["sertifikatS1"]["name"]);
+                $file_extension = end($ext);
+                if(in_array($file_extension, $allowed_ext)){
+                    $resorce       = $request->file('sertifikatS1');
+                    $sertifikatS1 = $idmaster. '_S1.' . $file_extension;
+                    $resorce->move(\base_path() ."/public/assets/upload/sertifikatpend", $sertifikatS1);
+                    echo "Gambar berhasil di upload";
+                }else{
+                    $sertifikatS1="";
+                    echo "Gagal upload gambar";
+                }
+            }else{
+                $sertifikatS1="";
+                echo "Gagal upload gambar";
+            }
         }else{
             $sertifikatS1="";
         }
         if($S2!="" && $request->hasFile('sertifikatS2')){
-            $resorceS2       = $request->file('sertifikatS2');
-            $sertifikatS2   = $resorceS2->getClientOriginalName();
-            $resorceS2->move(\base_path() ."/public/assets/img/sertifikat", $sertifikatS2);
+            if($_FILES["sertifikatS2"]["name"] !=''){
+                $allowed_ext = array("jpg", "png","pdf");
+                $ext = explode('.', $_FILES["sertifikatS2"]["name"]);
+                $file_extension = end($ext);
+                if(in_array($file_extension, $allowed_ext)){
+                    $resorce       = $request->file('sertifikatS2');
+                    $sertifikatS2 = $idmaster. '_S2.' . $file_extension;
+                    $resorce->move(\base_path() ."/public/assets/upload/sertifikatpend", $sertifikatS2);
+                    echo "Gambar berhasil di upload";
+                }else{
+                    $sertifikatS2="";
+                    echo "Gagal upload gambar";
+                }
+            }else{
+                $sertifikatS2="";
+                echo "Gagal upload gambar";
+            }
         }else{
             $sertifikatS2="";
         }
         if($Lainnya!="" && $request->hasFile('sertifikatLainnya')){
-            $resorceLainnya       = $request->file('sertifikatLainnya');
-            $sertifikatLainnya   = $resorceLainnya->getClientOriginalName();
-            $resorceLainnya->move(\base_path() ."/public/assets/img/sertifikat", $sertifikatLainnya);
+            if($_FILES["sertifikatLainnya"]["name"] !=''){
+                $allowed_ext = array("jpg", "png","pdf");
+                $ext = explode('.', $_FILES["sertifikatLainnya"]["name"]);
+                $file_extension = end($ext);
+                if(in_array($file_extension, $allowed_ext)){
+                    $resorce       = $request->file('sertifikatLainnya');
+                    $sertifikatLainnya = $idmaster. '_Lainnya.' . $file_extension;
+                    $resorce->move(\base_path() ."/public/assets/upload/sertifikatpend", $sertifikatLainnya);
+                    echo "Gambar berhasil di upload";
+                }else{
+                    $sertifikatLainnya="";
+                    echo "Gagal upload gambar";
+                }
+            }else{
+                $sertifikatLainnya="";
+                echo "Gagal upload gambar";
+            }
         }else{
             $sertifikatLainnya="";
         }
@@ -240,6 +339,7 @@ class PendidikanController extends Controller
             Pendidikan::insert($data);
             return back()->with('success','Data berhasil ditambahkan!');
         }catch(Exception $e){
+            dd($e);
             //alert gagal
             return back()->with('failed','Data gagal ditambahkan!');
         }
@@ -279,6 +379,26 @@ class PendidikanController extends Controller
         $where=[
             'id_pendidikan'=>$request->id_pendidikan
         ];
+        $pendidikan=Pendidikan::where('id_pendidikan',$request->id_pendidikan)->get();
+        foreach($pendidikan as $p){}
+        if($_FILES["sertifikat"]["name"] !=''){
+            $allowed_ext = array("jpg","jpeg", "png","pdf");
+            $ext = explode('.', $_FILES["sertifikat"]["name"]);
+            $file_extension = end($ext);
+            if(in_array($file_extension, $allowed_ext)){
+                $resorce       = $request->file('sertifikat');
+                $sertifikat = $request->id_pendidikan. '_'.$request->tingkat_pendidikan.'.' . $file_extension;
+                $resorce->move(\base_path() ."/public/assets/upload/sertifikatpend", $sertifikat);
+                echo "Gambar berhasil di upload";
+            }else{
+                $sertifikat=$p->sertifikat;
+                return back()->with('failed','Data gagal diedit!');
+            }
+        }else{
+            $sertifikat="$p->sertifikat";
+            echo "Gagal upload gambar";
+        }
+
 
         $data=[
             'tingkat_pendidikan'=>$request->tingkat_pendidikan,
@@ -287,6 +407,7 @@ class PendidikanController extends Controller
             'tgl_awal'=>$request->tglawal,
             'tgl_akhir'=>$request->tglakhir,
             'id_master'=>$request->id_master,
+            'sertifikat'=>$sertifikat,
         ];
         try {
             Pendidikan::where($where)->update($data);

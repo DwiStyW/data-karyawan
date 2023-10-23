@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Bataspensiun;
 use App\Models\Hakakses;
 use App\Models\Jabatan;
+use App\Models\Master;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Pengajuan;
+use App\Models\Riwayatkaryawan;
 use App\Models\Riwayatpengajuan;
 use App\Models\User;
 use Exception;
@@ -68,7 +70,40 @@ class PengajuanController extends Controller
             }
         }
         // dump($akses);
-        $pengajuanpribadi=Pengajuan::leftjoin('users','users.id','=','idpengaju')->leftjoin('jabatan','jabatan.id','=','idjabatan')->where('idpengaju',$iduser)->select('pengajuan_karyawan.*','nama_jabatan','name')->get();
+        $pengajuanpribadi=[];
+        $pengajuanp=Pengajuan::leftjoin('users','users.id','=','idpengaju')
+        ->leftjoin('jabatan','jabatan.id','=','idjabatan')
+        ->where('idpengaju',$iduser)
+        ->select('pengajuan_karyawan.*','nama_jabatan','name')
+        ->get();
+        foreach($pengajuanp as $pp){
+            $idpenyetuju=$pp->idpenyetuju;
+            if($idpenyetuju!=null){
+                $penyetuju=User::where('id',$idpenyetuju)->get();
+                foreach($penyetuju as $py){}
+                $nama_penyetuju=$py->name;
+            }else{
+                $nama_penyetuju='-';
+            }
+            $pengajuanpribadi[]=[
+                'id'=>$pp->id,
+                'idpengaju'=>$pp->idpengaju,
+                'idpenyetuju'=>$pp->idpenyetuju,
+                'idjabatan'=>$pp->idjabatan,
+                'status'=>$pp->status,
+                'jumlah'=>$pp->jumlah,
+                'pendidikan_terakhir'=>$pp->pendidikan_terakhir,
+                'profesi'=>$pp->profesi,
+                'max_usia'=>$pp->max_usia,
+                'jenis_kelamin'=>$pp->jenis_kelamin,
+                'updated_at'=>$pp->updated_at,
+                'nama_jabatan'=>$pp->nama_jabatan,
+                'name'=>$pp->name,
+                'nama_penyetuju'=>$nama_penyetuju
+            ];
+        }
+        // dump($pengajuanp);
+        // dd($pengajuanpribadi);
         $countabsen=DataController::absen();
         return view('pengajuan.list_pengajuan',compact('pengajuanpribadi','pengajuanpersetujuan','countabsen'));
     }
@@ -110,6 +145,7 @@ class PengajuanController extends Controller
                     'max_usia'=>$request->max_usia,
                     'jenis_kelamin'=>$request->jenis_kelamin,
                     'updateby'=>Auth::user()->id,
+                    'created_at'=>date('Y-m-d H:i:s'),
                     'updated_at'=>date('Y-m-d H:i:s'),
                 ];
                  try{
@@ -149,6 +185,7 @@ class PengajuanController extends Controller
                     'max_usia'=>$request->max_usia,
                     'jenis_kelamin'=>$request->jenis_kelamin,
                     'updateby'=>Auth::user()->id,
+                    'created_at'=>date('Y-m-d H:i:s'),
                     'updated_at'=>date('Y-m-d H:i:s'),
 
                 ];
@@ -284,6 +321,7 @@ class PengajuanController extends Controller
             'id_user'=>Auth::user()->id,
             'deskripsi'=>'telah menyetujui',
             'status'=>'setuju',
+            'updated_at'=>date('Y-m-d H:i:s'),
         ];
         DB::beginTransaction();
         try{
@@ -333,5 +371,179 @@ class PengajuanController extends Controller
             //alert gagal
             return back()->with('failed','Data gagal ditambahkan!');
         }
+    }
+
+    public function pengajuan_karyawan(){
+        $pengajuankaryawwan=Pengajuan::leftjoin('users','users.id','=','idpengaju')
+        ->leftjoin('jabatan','jabatan.id','=','idjabatan')
+        ->where('pengajuan_karyawan.status','!=','ditolak')
+        ->where('pengajuan_karyawan.updateby','7')
+        ->orwhere('pengajuan_karyawan.updateby','1')
+        ->orderby('id','DESC')
+        ->select('pengajuan_karyawan.*','nama_jabatan','name')
+        ->get();
+        $datapengajuan=[];
+        foreach ($pengajuankaryawwan as $p) {
+            $idpengaju=$p->id;
+            $karyawan=Master::where('id_pengajuan',$idpengaju)->get();
+            $idpenyetuju=$p->idpenyetuju;
+            $penyetuju=User::where('id',$idpenyetuju)->get();
+            if(count($penyetuju)!=0){
+                foreach($penyetuju as $pny){}
+                $namapenyetuju=$pny->name;
+            }else{
+                 $namapenyetuju="";
+            }
+
+            $datapengajuan[]=[
+                'id'=>$p->id,
+                'idpengaju'=>$p->idpengaju,
+                'idpenyetuju'=>$p->idpenyetuju,
+                'id_jabatan'=>$p->idjabatan,
+                'status'=>$p->status,
+                'jumlah'=>$p->jumlah,
+                'karyawan_masuk'=>count($karyawan),
+                'pendidikan_terakhir'=>$p->pendidikan_terakhir,
+                'profesi'=>$p->profesi,
+                'max_usia'=>$p->max_usia,
+                'jenis_kelamin'=>$p->jenis_kelamin,
+                'updated_at'=>$p->updated_at,
+                'nama_jabatan'=>$p->nama_jabatan,
+                'name'=>$p->name,
+                'nama_penyetuju'=>$namapenyetuju
+            ];
+        }
+
+        // dump($pengajuankaryawwan);
+        return view('pengajuan.pengajuan',compact('datapengajuan'));
+    }
+
+    public function tambah_karyawan(Request $request){
+        $loop=$request->indexloop;
+        $idpengajuan=$request->idpengajuan;
+        $data=[];
+        for($i=0;$i<$loop;$i++){
+            $index=$i+1;
+            $nama='nama'.$index;
+            $nik='nik'.$index;
+            $nokk='nokk'.$index;
+            $norekening='norekening'.$index;
+            $no_hp='no_hp'.$index;
+            $tempat_lahir='tempat_lahir'.$index;
+            $tanggal_lahir='tanggal_lahir'.$index;
+            $jenis_kelamin='jenis_kelamin'.$index;
+            $alamat='alamat'.$index;
+            $agama='agama'.$index;
+            $golongan='golongan'.$index;
+            $id_jabatan='id_jabatan'.$index;
+            $image='image'.$index;
+            $awal_kerja='awal_kerja'.$index;
+            // dump($request->file('image1'));
+            if($_FILES[$image]["name"] !=''){
+                $allowed_ext = array("jpg", "png");
+                $ext = explode('.', $_FILES[$image]["name"]);
+                $file_extension = end($ext);
+                if(in_array($file_extension, $allowed_ext)){
+                    $resorce       = $request->file($image);
+                    $name = $request->nama. '.' . $file_extension;
+                    $resorce->move(\base_path() ."/public/assets/upload/karyawan", $name);
+                    // echo "Gambar berhasil di upload";
+                }else{
+                    $name="";
+                    // echo "Gagal upload gambar";
+                }
+            }else{
+                $name="";
+                // echo "Gagal upload gambar";
+            }
+            $data[]=[
+                'nama'=>$request->$nama,
+                'nik'=>$request->$nik,
+                'nokk'=>$request->$nokk,
+                'norekening'=>$request->$norekening,
+                'tempat_lahir'=>$request->$tempat_lahir,
+                'tanggal_lahir'=>$request->$tanggal_lahir,
+                'jenis_kelamin'=>$request->$jenis_kelamin,
+                'alamat'=>$request->$alamat,
+                'no_hp'=>$request->$no_hp,
+                'agama'=>$request->$agama,
+                'id_jabatan'=>$request->$id_jabatan,
+                'golongan'=>$request->$golongan,
+                'status'=>'Aktif',
+                'foto' => $name,
+                'id_pengajuan' => $idpengajuan,
+                'updated_at'=>date("Y-m-d H:i:s")
+            ];
+        }
+        try{
+            master::insert($data);
+        }catch(Exception $e){
+            //alert gagal
+            return back()->with('failed','Data gagal ditambahkan!');
+        }
+
+        foreach ($data as $key=>$value ) {
+            $indexke=$key+1;
+            $awal_kerja='awal_kerja'.$indexke;
+            $id_jabatan='id_jabatan'.$indexke;
+            $datawhere=[
+                'nama'=>$value['nama'],
+                'nik'=>$value['nik'],
+            ];
+            $master=master::where($datawhere)->get();
+            foreach($master as $m){
+                $idmaster=$m->id;
+            }
+            $datariwayat=[
+                'id_master'=>$idmaster,
+                'jenis'=>'Masuk',
+                'jabatan'=>$request->$id_jabatan,
+                'deskripsi'=>'karyawan baru',
+                'keterangan'=>'',
+                'sertifikat'=>'',
+                'tanggal'=>$request->$awal_kerja,
+            ];
+
+            try{
+                Riwayatkaryawan::insert($datariwayat);
+                // return back()->with('success','Data berhasil ditambahkan!');
+            }catch(Exception $e){
+                //alert gagal
+                return back()->with('failed','Data gagal ditambahkan!');
+            }
+        }
+
+        $pengajuan=Pengajuan::where('id',$idpengajuan)->get();
+        foreach($pengajuan as $png){}
+        $masterpengajuan=Master::where('id_pengajuan',$idpengajuan)->get();
+        if($png->jumlah==count($masterpengajuan)){
+            $data1=[
+                'status'=>'done',
+                'updateby'=>Auth::user()->id,
+            ];
+            $data2=[
+                'id_pengajuan'=>$idpengajuan,
+                'id_user'=>Auth::user()->id,
+                'deskripsi'=>'pengajuan done',
+                'status'=>'done',
+            ];
+            DB::beginTransaction();
+            try{
+                Pengajuan::where('id',$idpengajuan)->update($data1);
+                Riwayatpengajuan::insert($data2);
+
+                DB::commit();
+                //alert berhasil
+                return back()->with('success','Data berhasil ditambahkan!');
+            }catch(Exception $e){
+                // dd($e);
+                DB::rollback();
+                //alert gagal
+                return back()->with('failed','Data gagal ditambahkan!');
+            }
+        }else{
+            return back()->with('success','Data berhasil ditambahkan!');
+        }
+
     }
 }

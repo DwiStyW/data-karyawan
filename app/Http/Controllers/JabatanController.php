@@ -23,9 +23,18 @@ class JabatanController extends Controller
      */
     public function index()
     {
-        $Tjabatan=DB::select('SELECT jabatan.*, nama_jabatan,nama_departemen,nama_bagian,nama_sie FROM jabatan LEFT JOIN users ON users.id=jabatan.updateby LEFT JOIN departemen ON departemen.id=jabatan.departemen LEFT JOIN bagian ON bagian.id=jabatan.bagian LEFT JOIN sie ON sie.id=jabatan.sie where role="personalia"');
+        $Tjabatan=DB::select('SELECT jabatan.*, nama_jabatan,nama_departemen,nama_bagian,nama_sie,count(master.id) as jumlah
+        FROM jabatan
+        LEFT JOIN master ON master.id_jabatan=jabatan.id
+        LEFT JOIN users ON users.id=jabatan.updateby
+        LEFT JOIN departemen ON departemen.id=jabatan.departemen LEFT JOIN bagian ON bagian.id=jabatan.bagian
+        LEFT JOIN sie ON sie.id=jabatan.sie where role="personalia" group by jabatan.id');
         $jabatan=Jabatan::leftjoin('users','users.id','=','updateby')->where('role','personalia')->select('jabatan.*')->get();
-        $jtnblmaprove=Jabatan::leftjoin('users','users.id','=','updateby')->where('role','pimpinan')->select('jabatan.*','name')->get();
+        $jtnblmaprove=Jabatan::leftjoin('users','users.id','=','updateby')
+        ->leftjoin('pengajuan_karyawan','idjabatan','=','jabatan.id')
+        ->where('role','pimpinan')
+        ->select('jabatan.*','name','idpenyetuju')
+        ->get();
         $departemen=Departemen::get();
         $bagian=Bagian::get();
         // dd($Tjabatan);

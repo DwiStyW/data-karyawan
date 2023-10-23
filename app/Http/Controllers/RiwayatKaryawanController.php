@@ -50,12 +50,25 @@ class RiwayatKaryawanController extends Controller
         }else{
             $keterangan=$request->keterangan;
         }
-        if($request->hasFile('sertifikat')){
-            $resorcesurat      = $request->file('sertifikat');
-            $sertifikat   = $resorcesurat->getClientOriginalName();
-            $resorcesurat->move(\base_path() ."/public/assets/img/sertifikat", $sertifikat);
+        $ceksertif=Riwayatkaryawan::where('id_master',$idm)->where('sertifikat','!=','')->get();
+        $nomorsertif=count($ceksertif)+1;
+        // dd($ceksertif);
+        if($_FILES["sertifikat"]["name"] !=''){
+            $allowed_ext = array("jpg", "png");
+            $ext = explode('.', $_FILES["sertifikat"]["name"]);
+            $file_extension = end($ext);
+            if(in_array($file_extension, $allowed_ext)){
+                $resorce       = $request->file('sertifikat');
+                $sertifikat = $idm.'_sertif'.$nomorsertif. '.' . $file_extension;
+                $resorce->move(\base_path() ."/public/assets/upload/sertifikatriw", $sertifikat);
+                echo "Gambar berhasil di upload";
+            }else{
+                $sertifikat="";
+                echo "Gagal upload gambar";
+            }
         }else{
             $sertifikat="";
+            echo "Gagal upload gambar";
         }
 
         $jenis=$request->jenis;
@@ -245,9 +258,48 @@ class RiwayatKaryawanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+
+        $riwayat=Riwayatkaryawan::where('id_master',$request->id_master)->where('sertifikat','!=','')->get();
+        $nomorsertif=count($riwayat)+1;
+        foreach($riwayat as $r){}
+        if($_FILES["sertifikat"]["name"] !=''){
+            $allowed_ext = array("jpg","jpeg", "png","pdf");
+            $ext = explode('.', $_FILES["sertifikat"]["name"]);
+            $file_extension = end($ext);
+            if(in_array($file_extension, $allowed_ext)){
+                $resorce       = $request->file('sertifikat');
+                $sertifikat = $request->id_master. '_sertif'.$nomorsertif. '.' . $file_extension;
+                $resorce->move(\base_path() ."/public/assets/upload/sertifikatriw", $sertifikat);
+                echo "Gambar berhasil di upload";
+            }else{
+                if(count($riwayat)!=0){
+                    $sertifikat=$r->sertifikat;
+                }else{
+                    $sertifikat=" ";
+                }
+                return back()->with('failed','Data gagal diedit!');
+            }
+        }else{
+            $sertifikat="$r->sertifikat";
+            echo "Gagal upload gambar";
+        }
+        $data=[
+            'tanggal'=>$request->tanggal,
+            'deskripsi'=>$request->deskripsi,
+            'keterangan'=>$request->keterangan,
+            'sertifikat'=>$sertifikat,
+        ];
+        try{
+                Riwayatkaryawan::where('id',$request->idriwayat)->update($data);
+                //alert berhasil
+                return back()->with('success','Data berhasil ditambahkan!');
+            }catch(Exception $e){
+                dd($e);
+                //alert gagal
+                return back()->with('failed','Data gagal ditambahkan!');
+            }
     }
 
     /**

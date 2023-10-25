@@ -563,11 +563,11 @@
     }
 
     Highcharts.getJSON(
-        'http://127.0.0.1:8000/api/masuk',
+        'http://datakaryawan.net/api/masuk',
         success
     );
     Highcharts.getJSON(
-        'http://127.0.0.1:8000/api/keluar',
+        'http://datakaryawan.net/api/keluar',
         success
     );
 </script>
@@ -622,15 +622,15 @@
     }
 
     Highcharts.getJSON(
-        'http://127.0.0.1:8000/api/promosi',
+        'http://datakaryawan.net/api/promosi',
         berhasil
     );
     Highcharts.getJSON(
-        'http://127.0.0.1:8000/api/demosi',
+        'http://datakaryawan.net/api/demosi',
         berhasil
     );
     Highcharts.getJSON(
-        'http://127.0.0.1:8000/api/rotasi',
+        'http://datakaryawan.net/api/rotasi',
         berhasil
     );
 </script>

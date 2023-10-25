@@ -603,7 +603,7 @@
                                     <th>Jenis</th>
                                     <th class="text-center">Deskripsi</th>
                                     <th>Keterangan</th>
-                                    {{-- <th>Aksi</th> --}}
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -617,35 +617,29 @@
                                         <td>{{ $rk->jenis }}</td>
                                         <td>{{ $rk->deskripsi }}</td>
                                         <td>
-                                            @if ($rk->jenis == 'Penghargaan')
-                                                @if ($rk->keterangan == '')
-                                                    {{ '-' }}
-                                                @else
-                                                    {{ $rk->keterangan }}
-                                                @endif
+                                            @if ($rk->keterangan == '')
+                                                {{ '-' }}
+                                            @else
+                                                {{ $rk->keterangan }}
+                                            @endif
+                                            @if ($rk->sertifikat != '')
                                                 <a href="/assets/upload/sertifikatriw/{{ $rk->sertifikat }}"
                                                     target="_blank">
                                                     <i class="bi bi-image"></i>
                                                 </a>
-                                            @else
-                                                @if ($rk->keterangan == '')
-                                                    {{ '-' }}
-                                                @else
-                                                    {{ $rk->keterangan }}
-                                                @endif
                                             @endif
 
                                         </td>
-                                        {{-- <td>
+                                        <td>
                                             <div style="max-width:60px">
                                                 <button type="button" data-bs-toggle="modal"
                                                     data-bs-target="#editriwayatkaryawan"
-                                                    onclick="editriwayatkaryawan({{ $rk->id }},'{{ $rk->jenis }}','{{ $rk->jabatan }}','{{ $rk->keterangan }}','{{ $rk->tanggal }}','{{ $m->nama_jabatan }}')"
+                                                    onclick="editriwayatkaryawan({{ $rk->id }},'{{ $rk->tanggal }}','{{ $rk->deskripsi }}','{{ $rk->keterangan }}')"
                                                     class="btn btn-sm btn-primary btn-block">
                                                     <i class="bi bi-pencil-square"></i>
                                                 </button>
                                             </div>
-                                        </td> --}}
+                                        </td>
                                         {{-- <td>
                                             <div class="row justify-content-center">
                                                 <div style="max-width:60px">

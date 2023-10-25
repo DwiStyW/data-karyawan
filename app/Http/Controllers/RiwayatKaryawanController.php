@@ -260,189 +260,46 @@ class RiwayatKaryawanController extends Controller
      */
     public function update(Request $request)
     {
-        $idriwayat=$request->idriwayat;
-        $idm=$request->id_master;
-        $idj=$request->id_jabatan;
-        if($request->keterangan==''){
-            $keterangan='';
-        }else{
-            $keterangan=$request->keterangan;
-        }
-        $ceksertif=Riwayatkaryawan::where('id_master',$idm)->where('sertifikat','!=','')->get();
-        $nomorsertif=count($ceksertif)+1;
-        // dd($ceksertif);
+
+        $riwayat=Riwayatkaryawan::where('id_master',$request->id_master)->where('sertifikat','!=','')->get();
+        $nomorsertif=count($riwayat)+1;
+        foreach($riwayat as $r){}
         if($_FILES["sertifikat"]["name"] !=''){
-            $allowed_ext = array("jpg", "png");
+            $allowed_ext = array("jpg","jpeg", "png","pdf");
             $ext = explode('.', $_FILES["sertifikat"]["name"]);
             $file_extension = end($ext);
             if(in_array($file_extension, $allowed_ext)){
                 $resorce       = $request->file('sertifikat');
-                $sertifikat = $idm.'_sertif'.$nomorsertif. '.' . $file_extension;
+                $sertifikat = $request->id_master. '_sertif'.$nomorsertif. '.' . $file_extension;
                 $resorce->move(\base_path() ."/public/assets/upload/sertifikatriw", $sertifikat);
                 echo "Gambar berhasil di upload";
             }else{
-                $sertifikat="";
-                echo "Gagal upload gambar";
+                if(count($riwayat)!=0){
+                    $sertifikat=$r->sertifikat;
+                }else{
+                    $sertifikat=" ";
+                }
+                return back()->with('failed','Data gagal diedit!');
             }
         }else{
-            $sertifikat="";
+            $sertifikat="$r->sertifikat";
             echo "Gagal upload gambar";
         }
-
-        $jenis=$request->jenis;
-        if($jenis=='Demosi' or $jenis=='Rotasi' or $jenis=='Promosi'){
-            $jabatanlama=DB::select("SELECT id_jabatan,nama_jabatan,nama_departemen from master
-            join jabatan on jabatan.id=master.id_jabatan
-            left join departemen on jabatan.departemen=departemen.id
-            where master.id = $idm");
-            foreach($jabatanlama as $jl){
-            }
-            $jabatanbaru=DB::select("SELECT nama_jabatan,nama_departemen from jabatan
-            left join departemen on jabatan.departemen=departemen.id
-            where jabatan.id = $idj");
-            foreach($jabatanbaru as $jb){
-            }
-            $data1=[
-                'id_master'=>$request->id_master,
-                'tanggal'=>$request->tanggal,
-                'jenis'=>$request->jenis,
-                'jabatan'=>$request->id_jabatan,
-                'deskripsi'=>'Jenis mutasi '.$jenis.' dari Departemen '.$jl->nama_departemen.'bagian jabatan '.$jl->nama_jabatan.' menjadi Departemen '.$jb->nama_departemen.'bagian jabatan '.$jb->nama_jabatan,
-                'keterangan'=>$keterangan,
-                'sertifikat'=>$sertifikat,
-            ];
-            $data2=[
-                'id_jabatan'=>$request->id_jabatan,
-            ];
-            $where=[
-                'id'=>$request->id_master,
-            ];
-            DB::beginTransaction();
-                try{
-                    Master::where($where)->update($data2);
-                    Riwayatkaryawan::where('id',$idriwayat)->update($data1);
-
-                    DB::commit();
-                    //alert berhasil
-                    return back()->with('success','Data berhasil diedit!');
-                }catch(Exception $e){
-                    // dd($e);
-                    DB::rollback();
-                    //alert gagal
-                    return back()->with('failed','Data gagal diedit!');
-                }
-        }elseif($jenis=='Kontrak' || $jenis=='Tetap'){
-            $jabatanlama=DB::select("SELECT id_jabatan,nama_jabatan,nama_departemen from master
-            join jabatan on jabatan.id=master.id_jabatan
-            left join departemen on jabatan.departemen=departemen.id
-            where master.id = $idm");
-            foreach($jabatanlama as $jl){
-            }
-            $data1=[
-                'id_master'=>$request->id_master,
-                'tanggal'=>$request->tanggal,
-                'jenis'=>$request->jenis,
-                'jabatan'=>$jl->id_jabatan,
-                'deskripsi'=>'Status Karyawan menjadi '.$request->jenis,
-                'keterangan'=>$keterangan,
-                'sertifikat'=>$sertifikat,
-            ];
-            $data2=[
-                'golongan'=>$request->jenis,
-            ];
-            $where=[
-                'id'=>$request->id_master,
-            ];
-             DB::beginTransaction();
-                try{
-                    Master::where($where)->update($data2);
-                    Riwayatkaryawan::where('id',$idriwayat)->update($data1);
-
-                    DB::commit();
-                    //alert berhasil
-                    return back()->with('success','Data berhasil diedit!');
-                }catch(Exception $e){
-                    // dd($e);
-                    DB::rollback();
-                    //alert gagal
-                    return back()->with('failed','Data gagal diedit!');
-                }
-        }elseif($jenis=='SP 1' || $jenis=='SP 2' || $jenis=='SP 3'){
-            $jabatanlama=DB::select("SELECT id_jabatan,nama_jabatan,nama_departemen from master
-            join jabatan on jabatan.id=master.id_jabatan
-            left join departemen on jabatan.departemen=departemen.id
-            where master.id = $idm");
-            foreach($jabatanlama as $jl){
-            }
-            $data1=[
-                'id_master'=>$request->id_master,
-                'tanggal'=>$request->tanggal,
-                'jenis'=>$request->jenis,
-                'jabatan'=>$jl->id_jabatan,
-                'deskripsi'=>'Sanksi '.$request->jenis,
-                'keterangan'=>$keterangan,
-                'sertifikat'=>$sertifikat,
-            ];
-            try{
-                Riwayatkaryawan::where('id',$idriwayat)->update($data1);
+        $data=[
+            'tanggal'=>$request->tanggal,
+            'deskripsi'=>$request->deskripsi,
+            'keterangan'=>$request->keterangan,
+            'sertifikat'=>$sertifikat,
+        ];
+        try{
+                Riwayatkaryawan::where('id',$request->idriwayat)->update($data);
                 //alert berhasil
-                return back()->with('success','Data berhasil diedit!');
+                return back()->with('success','Data berhasil ditambahkan!');
             }catch(Exception $e){
-                // dd($e);
+                dd($e);
                 //alert gagal
-                return back()->with('failed','Data gagal diedit!');
+                return back()->with('failed','Data gagal ditambahkan!');
             }
-        }elseif($jenis=='Pelatihan' || $jenis=='Penghargaan' || $jenis=='Peringatan'){
-            $jabatanlama=DB::select("SELECT id_jabatan,nama_jabatan,nama_departemen from master
-            join jabatan on jabatan.id=master.id_jabatan
-            left join departemen on jabatan.departemen=departemen.id
-            where master.id = $idm");
-            foreach($jabatanlama as $jl){
-            }
-            $data1=[
-                'id_master'=>$request->id_master,
-                'tanggal'=>$request->tanggal,
-                'jenis'=>$request->jenis,
-                'jabatan'=>$jl->id_jabatan,
-                'deskripsi'=>'Mendapatkan '.$request->jenis.' '.$request->deskripsi,
-                'keterangan'=>$keterangan,
-                'sertifikat'=>$sertifikat,
-            ];
-            try{
-                Riwayatkaryawan::where('id',$idriwayat)->update($data1);
-                //alert berhasil
-                return back()->with('success','Data berhasil diedit!');
-            }catch(Exception $e){
-                // dd($e);
-                //alert gagal
-                return back()->with('failed','Data gagal diedit!');
-            }
-        }elseif($jenis=='Kesehatan'){
-            $jabatanlama=DB::select("SELECT id_jabatan,nama_jabatan,nama_departemen from master
-            join jabatan on jabatan.id=master.id_jabatan
-            left join departemen on jabatan.departemen=departemen.id
-            where master.id = $idm");
-            foreach($jabatanlama as $jl){
-            }
-            $data1=[
-                'id_master'=>$request->id_master,
-                'tanggal'=>$request->tanggal,
-                'jenis'=>$request->jenis,
-                'jabatan'=>$jl->id_jabatan,
-                'deskripsi'=>'Melakukan cek '.$request->jenis.' '.$request->deskripsi,
-                'keterangan'=>$keterangan,
-                'sertifikat'=>$sertifikat,
-            ];
-            try{
-                Riwayatkaryawan::where('id',$idriwayat)->update($data1);
-                //alert berhasil
-                return back()->with('success','Data berhasil diedit!');
-            }catch(Exception $e){
-                // dd($e);
-                //alert gagal
-                return back()->with('failed','Data gagal diedit!');
-            }
-        }
     }
 
     /**

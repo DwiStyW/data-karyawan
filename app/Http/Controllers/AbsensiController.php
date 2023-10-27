@@ -153,7 +153,7 @@ class AbsensiController extends Controller
 
     public function rekap(){
         $master=master::get();
-        $absensi=Absen::leftjoin('master','master.id','=','absen.id_master')->select('absen.*','master.nama')->orderby('id_master','asc','tanggal','desc')->get();
+        $absensi=Absen::leftjoin('master','master.id','=','absen.id_master')->select('absen.*','master.nama')->where('master.status','Aktif')->orderby('id_master','asc','tanggal','desc')->get();
         $alldata=[];
         $count=0;
         foreach($absensi as $al) {
@@ -161,14 +161,16 @@ class AbsensiController extends Controller
             $riwkar = Riwayatkaryawan::where('id_master', $idm)->where('jenis', 'Tetap')->get();
             if(count($riwkar) != 0) {
                 $statustetap = 'Tetap';
+                if(count($riwkar) != 0 && $al->surat == "ada") {
+                    $potongan = "Tidak Terpotong";
+                } else {
+                    $potongan = "Terpotong";
+                }
             } else {
                 $statustetap = 'Tidak Tetap';
-            }
-            if(count($riwkar) != 0 && $al->surat == "ada") {
-                $potongan = "Tidak Terpotong";
-            } else {
                 $potongan = "Terpotong";
             }
+            
             $alldata[] = [
                 'id_master' => $al->id_master,
                 'nama' => $al->nama,

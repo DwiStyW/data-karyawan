@@ -140,24 +140,25 @@
         var no = 1;
         for (let [nama, values] of Object.entries(groupByname(filterabsen))) {
             var s = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'sakit'),
-            i = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'ijin'),
-            c = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'cuti'),
-            a = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'alpha');
+                i = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'ijin'),
+                c = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'cuti'),
+                a = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.jenis == 'alpha');
             t = values.filter(a => a.tanggal >= start && a.tanggal <= end && a.potongan == "Terpotong")
             let number = no++;
-            for (let b = 0; b < values.length; b++) {   
+            for (let b = 0; b < values.length; b++) {
                 dataabsensi.push({
-                        no: number,
-                        nama: nama,
-                        sakit: s.length,
-                        ijin: i.length,
-                        cuti: c.length,
-                        alpha: a.length,
-                        jumlah: values.length,
-                        keterangan: values[b].tanggal + ' ( <b>' + values[b].jenis + '</b> ) : ' + values[b].ket+" (<b>"+values[b].potongan+"</b>)",
-                        potongan:t.length,
-                        surat: values[b].surat,
-                    })
+                    no: number,
+                    nama: nama,
+                    sakit: s.length,
+                    ijin: i.length,
+                    cuti: c.length,
+                    alpha: a.length,
+                    jumlah: values.length,
+                    keterangan: values[b].tanggal + ' ( <b>' + values[b].jenis + '</b> ) : ' + values[b].ket +
+                        " (<b>" + values[b].potongan + "</b>)",
+                    potongan: t.length,
+                    surat: values[b].surat,
+                })
             }
         }
         // console.log(groupByname(filterabsen))
@@ -220,6 +221,7 @@
                 rowsGroup: [0, 1, 2, 3, 4, 5, 6, 8],
                 data: data,
                 pageLength: '10',
+                paginate: false,
                 processing: true,
                 deferRender: true,
                 "lengthMenu": [

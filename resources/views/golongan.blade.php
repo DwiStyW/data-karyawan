@@ -104,6 +104,16 @@
                             </div>
                         </a>
                     </div>
+                    <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+                        <a href="pergolongan/Staff" style="text-decoration:none">
+                            <div class="box">
+                                <div class="text-center">
+                                    <i class="bi bi-person" style="font-size: 40px;"></i>
+                                    <h6 class="text-white">Staff</h6>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
 
                 </div>
             </div>

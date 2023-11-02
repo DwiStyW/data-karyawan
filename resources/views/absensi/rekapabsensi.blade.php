@@ -65,10 +65,13 @@
                         <div class="d-flex">
                             <button class="btn btn-sm btn-primary m-1" onclick="carirekap()">cari</button>
                         </div>
+                        <div class="d-flex">
+                            <button class="btn btn-sm btn-primary m-1" onclick="printabs()">Print</button>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="mt-2">
+            <div id="printab" class="mt-2">
                 <div id="tabelabsen"></div>
             </div>
         </div>
@@ -256,6 +259,17 @@
         });
         document.getElementById('tabelabsen').innerHTML = tabel;
 
+    }
+
+    function printabs() {
+        var divContents = document.getElementById("printab").innerHTML;
+        var a = window.open('', '', '');
+        a.document.write('<html>');
+        a.document.write('<body><main class="wrapper"><div class="container-custome">');
+        a.document.write(divContents);
+        a.document.write('</div></main></body></html>');
+        a.document.close();
+        a.print();
     }
 </script>
 

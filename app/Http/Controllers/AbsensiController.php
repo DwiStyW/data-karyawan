@@ -149,7 +149,7 @@ class AbsensiController extends Controller
         }catch(Exception $e){
             return back()->with('failed','Data gagal dihapus!');
         }
-    }
+    } 
 
     public function rekap(){
         $master=master::get();
